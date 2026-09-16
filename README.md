@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SG Laserzentrum
 
-## Getting Started
+Website for SG Laserzentrum (SinemgizemBeauty GbR) — permanent laser hair removal with six studios in Germany. Built with Next.js (App Router). The site is in German; the layout is one fluid build that serves desktop and mobile, with the navigation collapsing to a drawer below 900px.
 
-First, run the development server:
+## Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Language switch (development only)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+A floating DE / EN pill sits in the bottom-right corner so the site can be read in English while working on it. It is rendered only when `NODE_ENV` is not `production`, so the published site stays German-only. The choice is remembered per browser in `localStorage`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+German is the source of truth. Both languages live in `lib/content.ts` under `COPY.de` and `COPY.en`; the English object is typed against the German one, so a missing translation is a build error.
 
-## Learn More
+## Where things live
 
-To learn more about Next.js, take a look at the following resources:
+- `app/page.tsx` — section order
+- `components/` — one component per section (`Hero`, `About`, `Treatments`, `Statement`, `Proof`, `Numbers`, `Footer`) plus shared pieces (`Header`, `PillButton`, `ImageSlot`, `Wordmark`, `LangProvider`, `DevLangToggle`)
+- `lib/content.ts` — all copy in both languages, the six studio locations with their booking links, contact and imprint details, and the image map
+- `app/globals.css` — every style. Sizing uses container-query units so sections scale with the page rather than the viewport.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Business content
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Copy, addresses, phone numbers, booking links and imprint data were taken from sg-laserzentrum.de. Each studio links to its own StudioBookr booking page. Every "Termin buchen" button on the page scrolls to the locations block, because booking is per studio.
 
-## Deploy on Vercel
+## Images
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The nine photographs in `public/images` were generated with Google Nano Banana 2 as placeholders, shot against sage green backdrops with oat and cream wardrobe so they sit with the green palette. Swapping the palette means reshooting or regrading these too, since a scrim in one hue over photography in another goes muddy. Replace them with real studio photography when it is available; the filenames are mapped in the `IMAGES` object in `lib/content.ts`, and any entry set to `null` falls back to a labelled placeholder box.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Brand
+
+Colour tokens are at the top of `app/globals.css`: forest `#2C3828`, soft bone `#F2F0E8`, sage `#68795A` and the gold `#C6A36E` from the SG monogram. A warm espresso and caramel alternative sits beside them in a comment; swapping five values flips the whole site between the two.
+
+Headings use The Rankings, the client's own display serif, self-hosted from `app/fonts` through `next/font/local`. Body copy is DM Sans. The licence for The Rankings travels with the client, not with this repo.
+
+Treatments render as four full-viewport split panels that alternate which side carries the copy. Source photography is capped at 2400px wide and the image optimizer is limited to matching widths in `next.config.ts`, because upscaling past the source stalls the dev optimizer.
+
+## Not built yet
+
+- Prices are deliberately absent. Add them to the treatment items in `lib/content.ts` once confirmed.
+- Imprint, privacy and terms links point at the old site.
+- Opening hours were not published on the old site, so they are not shown.

@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    // Source photography is at most 2400px wide, so never ask the optimizer
+    // to upscale past that — a 3840 variant only costs time and bytes.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1600, 2048],
+    imageSizes: [256, 384, 512],
+  },
 };
 
 export default nextConfig;
