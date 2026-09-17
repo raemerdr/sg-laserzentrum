@@ -1,0 +1,69 @@
+/* Sticky full-bleed photograph. Its first 80px sit under the soft bottom
+   edge of the panel above (that panel overlaps by 80px), and it stays put
+   while the next panel rises. */
+
+.about {
+  position: sticky;
+  top: calc(-1 * var(--bleed));
+  z-index: 0;
+  height: calc(100svh + var(--bleed));
+  min-height: 640px;
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+/* light cream fade behind the copy instead of a dark scrim */
+.veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(var(--paper-rgb), 0.78) 0%,
+    rgba(var(--paper-rgb), 0.42) 24%,
+    rgba(var(--paper-rgb), 0) 48%
+  );
+}
+
+.inner {
+  position: absolute;
+  inset: var(--bleed) 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 48px;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 120px var(--gutter) clamp(72px, 14svh, 160px);
+}
+
+.titleCol {
+  display: grid;
+  gap: 20px;
+}
+
+.eyebrow {
+  color: var(--muted);
+}
+
+.text {
+  justify-self: end;
+  max-width: 460px;
+}
+
+@media (max-width: 899px) {
+  .inner {
+    grid-template-columns: 1fr;
+    align-content: end;
+    gap: 24px;
+    padding-bottom: 64px;
+  }
+
+  .text {
+    justify-self: start;
+  }
+}

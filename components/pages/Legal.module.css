@@ -1,0 +1,42 @@
+.page {
+  max-width: calc(680px + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(150px, 16vw, 220px) var(--gutter) calc(var(--curve) + 120px);
+}
+
+.title {
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.block {
+  display: grid;
+  gap: 12px;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+}
+
+.label {
+  color: var(--muted);
+}
+
+.strong {
+  font-weight: 500;
+}
+
+.rows {
+  display: grid;
+  gap: 4px;
+}
+
+.rows a {
+  border-bottom: 1px solid var(--line);
+}
+
+.devNote {
+  padding: 16px 20px;
+  border: 1px dashed rgba(var(--ink-rgb), 0.28);
+  border-radius: var(--r-item);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 20px;
+}

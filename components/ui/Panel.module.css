@@ -1,0 +1,52 @@
+/* Off-white panel with an elliptical top edge that rises over the sticky
+   photography behind it. The shape is 80px wider than the viewport on each
+   side, like the reference, so the steep part of the curve sits off screen. */
+
+.panel {
+  --curve-top: var(--curve);
+  position: relative;
+  z-index: 1;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 calc(-1 * var(--bleed));
+  background: var(--paper);
+  border-radius: 50% / var(--curve-top) var(--curve-top) 0 0;
+  pointer-events: none;
+}
+
+/* Runs 80px into the next section with a shallow bowl, so the photograph
+   below appears from under a soft edge instead of a straight cut. The
+   overlap is part of the box (negative margin plus padding) so hit testing,
+   like the nav's surface check, sees paper there. */
+.overhang {
+  margin-bottom: calc(-1 * var(--bleed));
+  padding-bottom: var(--bleed);
+}
+
+.overhang::before {
+  border-bottom-left-radius: 50% 72px;
+  border-bottom-right-radius: 50% 72px;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .panel {
+      animation: deepen linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+@keyframes deepen {
+  from {
+    --curve-top: calc(var(--curve) * 0.35);
+  }
+  to {
+    --curve-top: var(--curve);
+  }
+}

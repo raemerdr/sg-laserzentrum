@@ -1,0 +1,89 @@
+.section {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(140px, 17vw, 240px) var(--gutter) 0;
+}
+
+.pin {
+  position: relative;
+}
+
+/* The title stays pinned while the cards scroll up over it. */
+.titleWrap {
+  position: sticky;
+  top: clamp(100px, 16svh, 150px);
+  z-index: 0;
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cards {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: clamp(40px, 5.5vw, 80px);
+  max-width: 912px;
+  margin: clamp(80px, 16svh, 180px) auto 0;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+  border-radius: var(--r-card);
+  background: var(--white);
+  box-shadow: 0 1px 2px rgba(19, 12, 6, 0.03);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 440 / 580;
+  overflow: hidden;
+  border-radius: var(--r-inner);
+  background: var(--stone);
+}
+
+.figure {
+  display: grid;
+  align-content: space-between;
+  gap: 32px;
+  padding: clamp(20px, 2.2vw, 32px) clamp(16px, 2.2vw, 32px);
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  color: var(--ink);
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.details {
+  display: grid;
+  gap: 8px;
+}
+
+.source {
+  color: var(--muted);
+}
+
+.summary {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  margin-top: clamp(56px, 7vw, 96px);
+  text-align: center;
+}
+
+@media (max-width: 699px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .media {
+    aspect-ratio: 16 / 13;
+  }
+}

@@ -1,0 +1,77 @@
+.section {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(120px, 14vw, 200px) var(--gutter) 0;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+  border-radius: var(--r-card);
+  background: var(--white);
+}
+
+.media {
+  position: relative;
+  min-height: 560px;
+  overflow: hidden;
+  border-radius: var(--r-inner);
+  /* matches the product photo's backdrop while it loads */
+  background: #c9c9c8;
+}
+
+.text {
+  display: grid;
+  align-content: space-between;
+  gap: 40px;
+  padding: clamp(24px, 3.4vw, 48px);
+}
+
+.top {
+  display: grid;
+  gap: 20px;
+}
+
+.body {
+  color: var(--muted);
+}
+
+.specs {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.spec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.specValue {
+  font-family: var(--font-serif);
+  font-variation-settings: "opsz" 24;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.5px;
+}
+
+.specLabel {
+  color: var(--muted);
+  text-align: right;
+}
+
+@media (max-width: 899px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .media {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+}

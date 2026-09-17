@@ -1,0 +1,210 @@
+.section {
+  padding-top: clamp(150px, 20.8vw, 300px);
+}
+
+.intro {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  text-align: center;
+}
+
+.eyebrow {
+  color: var(--ink);
+}
+
+/* ─────────────── Stage ───────────────
+   The stage is tall; its first child sticks while the page scrolls one
+   step per treatment. */
+
+.stage {
+  --step: 80svh;
+  position: relative;
+  height: calc(100svh + (var(--count) - 1) * var(--step));
+  margin-top: 40px;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 48px;
+  height: 100svh;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 88px var(--gutter) 40px;
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+  justify-self: start;
+}
+
+.item {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--faint);
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  text-align: left;
+  transition: color 0.5s var(--ease-out);
+}
+
+.item:hover {
+  color: rgba(var(--ink-rgb), 0.4);
+}
+
+.item[aria-pressed="true"] {
+  color: var(--ink);
+}
+
+.deck {
+  position: relative;
+  height: min(660px, calc(100svh - 200px));
+  aspect-ratio: 520 / 660;
+}
+
+.card {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--stone);
+  transform: translateY(calc(var(--d) * 9.7%)) scale(calc(1 - var(--d) * 0.08));
+  transition:
+    transform 0.85s var(--ease-in-out),
+    opacity 0.5s var(--ease-out);
+  will-change: transform;
+}
+
+.card[data-state="gone"] {
+  transform: translateY(-165%);
+}
+
+.card[data-state="hidden"] {
+  opacity: 0;
+}
+
+.desc {
+  display: grid;
+  gap: 16px;
+  justify-self: end;
+  width: 100%;
+  max-width: 332px;
+}
+
+.swap {
+  animation: swap 0.7s var(--ease-out) both;
+}
+
+@keyframes swap {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.service {
+  color: var(--muted);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  margin-top: 8px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 500;
+  transition: border-color 0.3s var(--ease-out);
+}
+
+.cta:hover {
+  border-color: var(--ink);
+}
+
+.cta svg {
+  transition: transform 0.35s var(--ease-out);
+}
+
+.cta:hover svg {
+  transform: translateX(3px);
+}
+
+@media (max-width: 999px) {
+  .stage {
+    --step: 70svh;
+  }
+
+  .sticky {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    align-content: center;
+    justify-items: stretch;
+    gap: 20px;
+    padding: 84px 24px 28px;
+  }
+
+  .deck {
+    order: -1;
+    width: 100%;
+    height: clamp(220px, 42svh, 420px);
+    aspect-ratio: auto;
+    /* room for the cards peeking out below */
+    margin-bottom: 30px;
+  }
+
+  .card {
+    transform: translateY(calc(var(--d) * 12px)) scale(calc(1 - var(--d) * 0.05));
+  }
+
+  .card[data-depth="3"] {
+    opacity: 0;
+  }
+
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+  }
+
+  .item {
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: -0.3px;
+  }
+
+  .desc {
+    justify-self: start;
+    max-width: 520px;
+    gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card[data-state="gone"] {
+    transform: none;
+    transition: opacity 0.4s linear;
+  }
+
+  .card[data-state="gone"],
+  .card[data-state="behind"] {
+    opacity: 0;
+  }
+
+  .swap {
+    animation: none;
+  }
+}

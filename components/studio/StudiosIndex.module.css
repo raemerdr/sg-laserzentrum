@@ -1,0 +1,82 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(64px, 8vw, 112px) var(--gutter) 0;
+}
+
+.grid > li {
+  display: flex;
+}
+
+.card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--r-card);
+  background: var(--white);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: var(--r-inner);
+  background: var(--stone);
+}
+
+.media img {
+  transition: transform 1.2s var(--ease-out);
+}
+
+.card:hover .media img {
+  transform: scale(1.03);
+}
+
+.body {
+  display: grid;
+  align-content: space-between;
+  gap: 24px;
+  padding: 20px 20px 16px;
+}
+
+.address {
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.planned {
+  display: grid;
+  align-content: end;
+  gap: 12px;
+  width: 100%;
+  min-height: 320px;
+  padding: 28px;
+  border-radius: var(--r-card);
+  background: var(--stone);
+}
+
+.plannedBody {
+  max-width: 360px;
+  color: var(--muted);
+}
+
+@media (max-width: 799px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .planned {
+    min-height: 220px;
+  }
+}

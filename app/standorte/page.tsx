@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
-import LocationsIndex from "@/components/LocationsIndex";
-import Footer from "@/components/Footer";
+import Footer from "@/components/layout/Footer";
+import StudiosIndex from "@/components/studio/StudiosIndex";
+import { STUDIOS } from "@/lib/locations";
 
 export const metadata: Metadata = {
-  title: "Standorte | SG Laserzentrum",
-  description:
-    "SG Laserzentrum in Mainz, Karlsruhe, Mannheim, Stuttgart, Frankfurt und Nürnberg. Adressen, Kontakt und Online-Terminbuchung für jedes Studio.",
+  title: "Standorte",
+  description: `SG Laserzentrum in ${STUDIOS.map((s) => s.city).join(", ")}. Adressen, Öffnungszeiten, Preise und Online-Terminbuchung für jedes Studio.`,
+  alternates: { canonical: "/standorte" },
 };
 
-export default function StandortePage() {
+export default function Page() {
   return (
-    <main className="site">
-      <LocationsIndex />
+    <div className="page">
+      <main id="inhalt">
+        <StudiosIndex />
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 }

@@ -1,0 +1,87 @@
+/* Black intro: "DAUERHAFT" plus a ticking word. The black then lifts while
+   the hero word rises. Rendered only while <html data-intro> is "play" or
+   "reveal"; the head script sets "play" once per session. */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: none;
+  background: #000;
+  transition: opacity 0.9s var(--ease-out);
+}
+
+:global(html[data-intro="play"]) .overlay,
+:global(html[data-intro="reveal"]) .overlay {
+  display: block;
+}
+
+:global(html[data-intro="reveal"]) .overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.group {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--paper);
+  animation: fade 0.5s var(--ease-out) both;
+  transition: transform 0.9s var(--ease-out);
+}
+
+:global(html[data-intro="reveal"]) .group {
+  transform: translateY(-12px);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.label {
+  display: block;
+  white-space: nowrap;
+}
+
+.ticker {
+  display: block;
+  height: 16px;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  flex-direction: column;
+  animation: tick 1.15s var(--ease-in-out) 0.2s both;
+}
+
+@keyframes tick {
+  0%,
+  16% {
+    transform: translateY(0);
+  }
+  30%,
+  46% {
+    transform: translateY(-16px);
+  }
+  60%,
+  76% {
+    transform: translateY(-32px);
+  }
+  90%,
+  100% {
+    transform: translateY(-48px);
+  }
+}
+
+@media (max-width: 699px) {
+  .group {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

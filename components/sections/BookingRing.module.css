@@ -1,0 +1,152 @@
+/* Closing call to action: title and studio picker in the middle of a slowly
+   turning ring of tilted photo cards. */
+
+.section {
+  --size: clamp(96px, 14.5vw, 214px);
+  --radius: clamp(340px, 50vw, 760px);
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* the footer rises over the bottom by one curve height, so add most of it back */
+  min-height: max(calc(100svh + var(--curve) * 0.7), 960px);
+  margin-top: clamp(80px, 10vw, 160px);
+  padding: 120px var(--gutter) calc(var(--curve) + 96px);
+  overflow: hidden;
+}
+
+.ring {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - var(--curve) / 2 + 12px);
+  width: 0;
+  height: 0;
+  animation: spin 200s linear infinite;
+}
+
+.card {
+  position: absolute;
+  left: calc(var(--size) / -2);
+  top: calc(var(--size) / -2);
+  width: var(--size);
+  height: var(--size);
+  overflow: hidden;
+  border-radius: clamp(10px, 1.1vw, 16px);
+  background: var(--stone);
+  transform: rotate(calc(var(--i) * 360deg / var(--n))) translateY(calc(-1 * var(--radius)));
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  max-width: 640px;
+  text-align: center;
+}
+
+.body {
+  max-width: 420px;
+  color: var(--muted);
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(500px, 100%);
+  margin-top: 16px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 14px;
+  background: var(--stone);
+}
+
+.selectWrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.select {
+  width: 100%;
+  height: 40px;
+  padding: 0 28px 0 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+  appearance: none;
+}
+
+.select:invalid {
+  color: var(--muted);
+}
+
+.select:focus-visible {
+  outline: none;
+}
+
+.form:focus-within {
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.chevron {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--muted);
+  border-bottom: 1.5px solid var(--muted);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.submit {
+  flex: none;
+  height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--r-btn);
+  background: var(--black);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s var(--ease-out);
+}
+
+.submit:hover {
+  background: var(--black-hover);
+}
+
+@media (max-width: 699px) {
+  .section {
+    --size: 104px;
+    --radius: 330px;
+    min-height: 900px;
+  }
+
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px;
+  }
+
+  .selectWrap {
+    padding: 0 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring {
+    animation: none;
+  }
+}

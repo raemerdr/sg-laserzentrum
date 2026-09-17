@@ -1,0 +1,37 @@
+.toggle {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 140;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 10px;
+  background: rgba(26, 24, 22, 0.88);
+  color: var(--paper);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(19, 12, 6, 0.18);
+}
+
+.tag {
+  padding: 0 6px 0 7px;
+  color: rgba(var(--paper-rgb), 0.5);
+  font-size: 10px !important;
+}
+
+.option {
+  height: 26px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(var(--paper-rgb), 0.7);
+  font-size: 11px !important;
+}
+
+.option[data-active="true"] {
+  background: var(--paper);
+  color: var(--ink);
+}

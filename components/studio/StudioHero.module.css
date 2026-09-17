@@ -1,0 +1,51 @@
+.hero {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  height: 100svh;
+  min-height: 600px;
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(19, 12, 6, 0.25), transparent 30%, transparent 60%, rgba(19, 12, 6, 0.3)),
+    var(--scrim-deep);
+}
+
+.center {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  max-width: calc(960px + 2 * var(--gutter));
+  padding: 80px var(--gutter) 40px;
+  text-align: center;
+}
+
+.eyebrow {
+  color: var(--paper-muted);
+}
+
+.address {
+  color: var(--paper-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}

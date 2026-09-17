@@ -1,0 +1,27 @@
+.seal {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.seal img {
+  width: auto;
+  height: 120px;
+}
+
+.link {
+  border-bottom: 1px solid var(--line);
+  font-weight: 500;
+}
+
+.devSlot {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+  padding: 20px 24px;
+  border: 1px dashed rgba(var(--ink-rgb), 0.28);
+  border-radius: var(--r-item);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 20px;
+}

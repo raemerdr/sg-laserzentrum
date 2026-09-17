@@ -1,0 +1,14 @@
+.header {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  max-width: calc(960px + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(150px, 16vw, 230px) var(--gutter) 0;
+  text-align: center;
+}
+
+.intro {
+  max-width: 620px;
+  color: var(--muted);
+}

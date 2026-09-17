@@ -1,27 +1,42 @@
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Treatments from "@/components/Treatments";
-import Statement from "@/components/Statement";
-import Proof from "@/components/Proof";
-import Technology from "@/components/Technology";
-import Reviews from "@/components/Reviews";
-import Numbers from "@/components/Numbers";
-import Faq from "@/components/Faq";
-import Footer from "@/components/Footer";
+import About from "@/components/home/About";
+import Hero from "@/components/home/Hero";
+import Proof from "@/components/home/Proof";
+import Technology from "@/components/home/Technology";
+import Treatments from "@/components/home/Treatments";
+import Footer from "@/components/layout/Footer";
+import IntroOverlay from "@/components/layout/IntroOverlay";
+import BookingRing from "@/components/sections/BookingRing";
+import Faq from "@/components/sections/Faq";
+import Reviews from "@/components/sections/Reviews";
+import StudioList from "@/components/sections/StudioList";
+import Panel from "@/components/ui/Panel";
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <main className="site">
-      <Hero />
-      <About />
-      <Treatments />
-      <Statement />
-      <Proof />
-      <Technology />
-      <Reviews />
-      <Numbers />
-      <Faq />
+    <div className="page">
+      <IntroOverlay />
+      <main id="inhalt">
+        <div className={styles.stackTop}>
+          <Hero />
+          <Panel overhang>
+            <Treatments />
+          </Panel>
+        </div>
+
+        <div id="ueber-uns" className={styles.stackBottom} data-scroll-offset="-80">
+          <About />
+          <Panel>
+            <Proof />
+            <Technology />
+            <Reviews />
+            <Faq />
+            <StudioList />
+            <BookingRing />
+          </Panel>
+        </div>
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 }

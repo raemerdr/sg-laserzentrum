@@ -1,689 +1,768 @@
+import type { ServiceId, TreatmentId } from "./services";
+
 export type Lang = "de" | "en";
 
-/**
- * Image sources. Files live in /public/images.
- * Set a value to null to fall back to the labelled placeholder.
- */
-export const IMAGES: Record<string, string | null> = {
-  hero: "/images/hero.jpg",
-  xlaser: "/images/xlaser.jpg",
-  benefit1: "/images/vorteil-1.jpg",
-  benefit2: "/images/vorteil-2.jpg",
-  benefit3: "/images/vorteil-3.jpg",
-  treatment1: "/images/gesicht.jpg",
-  treatment2: "/images/achseln.jpg",
-  treatment3: "/images/bikinizone.jpg",
-  treatment4: "/images/beine.jpg",
-  band1: "/images/silk.jpg",
-  proof1: "/images/portrait.jpg",
-  proof2: "/images/laser.jpg",
-  band2: "/images/studio.jpg",
-};
+type Link = { label: string; href: string };
+type Faq = { q: string; a: string; list?: string[] };
 
-export const LOCATIONS = [
-  {
-    slug: "mainz",
-    city: "Mainz",
-    street: "An der Fahrt 2A",
-    zip: "55124 Mainz",
-    phone: "01522 1799094",
-    phoneHref: "tel:+4915221799094",
-    whatsapp: "http://wa.me/message/KIFZ2RDI7H7YH1",
-    booking: "https://www.studiobookr.com/sg-beauty-73325",
-    image: "/images/studio.jpg",
-    hasXLaser: true,
-  },
-  {
-    slug: "karlsruhe",
-    city: "Karlsruhe",
-    street: "Peter und Paul Platz 4",
-    zip: "76185 Karlsruhe",
-    phone: "01525 5823470",
-    phoneHref: "tel:+4915255823470",
-    whatsapp: "http://wa.me/message/WJGAUTLGVEXRK1",
-    booking: "https://www.studiobookr.com/sg-beauty-71344",
-    image: "/images/vorteil-2.jpg",
-    hasXLaser: true,
-  },
-  {
-    slug: "mannheim",
-    city: "Mannheim",
-    street: "Schwetzinger Str. 69",
-    zip: "68165 Mannheim",
-    phone: "0176 83393934",
-    phoneHref: "tel:+4917683393934",
-    whatsapp: "http://wa.me/message/YEEFLIC27DFEO1",
-    booking: "https://www.studiobookr.com/sinem-gizem-beauty-gbr-71750",
-    image: "/images/hero-chair.jpg",
-    hasXLaser: true,
-  },
-  {
-    slug: "stuttgart",
-    city: "Stuttgart",
-    street: "Heilbronner Str. 93",
-    zip: "70191 Stuttgart",
-    phone: "0176 30636683",
-    phoneHref: "tel:+4917630636683",
-    whatsapp: "http://wa.me/message/HVGZUS2BWHG6I1",
-    booking: "https://www.studiobookr.com/sg-beauty-stuttgart-73466",
-    image: "/images/vorteil-3.jpg",
-    hasXLaser: true,
-  },
-  {
-    slug: "frankfurt",
-    city: "Frankfurt",
-    street: "Grempstr. 10",
-    zip: "60487 Frankfurt am Main",
-    phone: "0160 6337377",
-    phoneHref: "tel:+491606337377",
-    whatsapp: "tel:+491606337377",
-    booking: "https://www.studiobookr.com/sg-beauty-72869",
-    image: "/images/laser.jpg",
-    hasXLaser: true,
-  },
-  {
-    slug: "nuernberg",
-    city: "Nürnberg",
-    street: "Schönweißstr. 41",
-    zip: "90461 Nürnberg",
-    phone: "0172 2632858",
-    phoneHref: "tel:+491722632858",
-    whatsapp: "tel:+491722632858",
-    booking: "https://www.studiobookr.com/sg-laserzentrum-nuernberg-74077",
-    image: "/images/portrait.jpg",
-    hasXLaser: true,
-  },
-];
+const DE_NUMBERS = ["null", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf"];
+const EN_NUMBERS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
 
-export type Location = (typeof LOCATIONS)[number];
-
-export function findLocation(slug: string) {
-  return LOCATIONS.find((l) => l.slug === slug);
-}
-
-/** Google Maps link built from the address, so no third-party embed is loaded. */
-export function mapsUrl(l: Location) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    `SG Laserzentrum, ${l.street}, ${l.zip}`,
-  )}`;
-}
-
-/** Announced on sg-laserzentrum.de but not open yet. */
-export const COMING_SOON = ["München", "Köln"];
-
-export const CONTACT = {
-  email: "sg-laser-beauty@hotmail.com",
-  phone: "01525 5823470",
-  phoneHref: "tel:+4915255823470",
-  instagram: "https://www.instagram.com/sg_laserzentrum_mannheim/",
-  company: "SinemgizemBeauty GbR",
-  companyStreet: "Westliche Ringstr. 16",
-  companyZip: "67227 Frankenthal",
-  vat: "DE368172174",
-  owners: "Gizem Achenbach & Sinem Bulukgiray",
-};
+const word = (list: string[], n: number) => list[n] ?? String(n);
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const COPY_DE = {
-  nav: [
-    { label: "Behandlungen", href: "/#behandlungen" },
-    { label: "Technologie", href: "/#technologie" },
-    { label: "Ergebnisse", href: "/#ergebnisse" },
-    { label: "Standorte", href: "/standorte" },
-  ],
-  navCta: "Termin buchen",
-  menuOpen: "Menü öffnen",
-  menuClose: "Menü schließen",
-  brandLine: "Laserzentrum",
+  brand: "SG Laserzentrum",
+
+  a11y: {
+    skip: "Zum Inhalt springen",
+    mainNav: "Hauptnavigation",
+    footerNav: "Fußnavigation",
+    opensNewTab: "(öffnet in neuem Tab)",
+    devLang: "Sprache umschalten (nur Entwicklung)",
+  },
+
+  nav: {
+    treatments: "Behandlungen",
+    treatmentLinks: [
+      { label: "Dauerhafte Haarentfernung", href: "/#behandlungen" },
+      { label: "Technologie", href: "/#technologie" },
+      { label: "Bewertungen", href: "/#bewertungen" },
+      { label: "Häufige Fragen", href: "/#faq" },
+    ] as Link[],
+    studios: "Standorte",
+    allStudios: "Alle Standorte",
+    planned: "in Planung",
+    links: [
+      { label: "Über uns", href: "/#ueber-uns" },
+      { label: "Karriere", href: "/franchise-karriere" },
+      { label: "Kontakt", href: "#kontakt" },
+    ] as Link[],
+    start: "Startseite",
+    book: "Termin buchen",
+    bookShort: "Buchen",
+    menu: "Menü",
+    close: "Schließen",
+    menuOpen: "Menü öffnen",
+    menuClose: "Menü schließen",
+    home: "SG Laserzentrum Startseite",
+    contact: "Kontakt",
+  },
+
+  intro: {
+    lead: "Dauerhaft",
+    words: ["sanft", "präzise", "sicher", "glatt"],
+  },
 
   hero: {
-    badge: "Dauerhafte Haarentfernung",
-    title: "seidig glatt",
-    giant: "laserzentrum",
-    lede: "SG Laserzentrum ist Ihr Spezialist für dauerhafte Haarentfernung und bringt langjährige Erfahrung mit allen Haar- und Hauttypen mit.",
-    cta: "Termin buchen",
-    tagLeft: "Sechs Standorte in Deutschland",
-    tagRight: "Über 600 positive Google-Bewertungen",
-    imageAlt: "Frau auf einem Stuhl mit erhobenem Arm vor warmem Hintergrund",
+    brand: "SG Laserzentrum",
+    word: "Laserzentrum",
+    intro: "SG Laserzentrum – dauerhafte Haarentfernung mit Gefühl für Ihre Haut.",
+    labels: (studios: number) => ["Dauerhafte Haarentfernung", "Moderne Lasertechnologie", `${studios} Standorte in Deutschland`],
+    imageAlt: "Nahaufnahme eines Frauengesichts mit glatter, strahlender Haut",
+  },
+
+  statement: {
+    eyebrow: "In wenigen Worten",
+    text: "Seit 2022 konzentrieren wir uns auf eine einzige Sache: dauerhafte Haarentfernung. Mit moderner Lasertechnik, NiSV-zertifiziertem Fachpersonal und fairen, transparenten Preisen.",
+  },
+
+  services: {
+    laser: "Dauerhafte Haarentfernung",
+    aquafacial: "Aquafacial",
+  } satisfies Record<ServiceId, string>,
+
+  treatments: {
+    listLabel: "Behandlungsbereiche",
+    cta: "Preise & Termin",
+    items: {
+      gesicht: {
+        name: "Gesicht",
+        body: "Oberlippe, Kinn und Wangen behandeln wir mit kleinen Impulsen und ruhiger Hand, damit die Haut rundherum unberührt bleibt.",
+        alt: "Frau mit geschlossenen Augen berührt ihr glattes Kinn",
+      },
+      achseln: {
+        name: "Achseln",
+        body: "In wenigen Minuten behandelt und dauerhaft glatt. Schluss mit Rasurbrand und eingewachsenen Haaren.",
+        alt: "Frau mit erhobenem Arm zeigt eine glatte Achsel",
+      },
+      bikinizone: {
+        name: "Bikinizone",
+        body: "Sensible Bereiche behandeln wir mit gekühltem Handstück und angepasster Intensität, diskret und in Ihrem Tempo.",
+        alt: "Körpermitte einer Frau in heller Unterwäsche",
+      },
+      beine: {
+        name: "Beine & Körper",
+        body: "Vom Unterschenkel bis zum Ganzkörperpaket: Das Hochleistungs-Handstück erfasst große Flächen zügig und präzise.",
+        alt: "Glatte Beine einer Frau auf einem Holzhocker",
+      },
+      aquafacial: {
+        name: "Aquafacial",
+        body: "Tiefenreinigung, sanftes Peeling und intensive Feuchtigkeit in einer Behandlung, für einen frischen, ebenmäßigen Teint.",
+        alt: "Nahaufnahme von glatter, gepflegter Gesichtshaut",
+      },
+    } satisfies Record<TreatmentId, { name: string; body: string; alt: string }>,
   },
 
   about: {
     eyebrow: "Über uns",
-    title: "Schonend, präzise und auf Ihre Haut abgestimmt.",
-    intro:
-      "Wir arbeiten seit Jahren mit unterschiedlichsten Methoden und kennen die Unterschiede zwischen feinem und kräftigem Haar, heller und dunkler Haut. Daraus entsteht ein Behandlungsplan, der zu Ihnen passt und nicht umgekehrt.",
-    benefits: [
-      {
-        id: "benefit1",
-        title: "Schnelle Ergebnisse",
-        body: "Unser Hochleistungs-Medizinlaser erfasst große Flächen in kurzer Zeit. Schon nach wenigen Sitzungen sehen und spüren Sie den Unterschied.",
-        alt: "Nahaufnahme einer glatten Schulter",
-      },
-      {
-        id: "benefit2",
-        title: "Sanft statt schmerzhaft",
-        body: "Die integrierte Kontaktkühlung bis −15 °C minimiert die Schmerzen erheblich. Die meisten Kundinnen beschreiben nur ein leichtes Kribbeln.",
-        alt: "Entspannte Kundin während einer Behandlung",
-      },
-      {
-        id: "benefit3",
-        title: "Geprüfte Expertise",
-        body: "Geschultes Fachpersonal, staatlich zertifiziert nach NiSV-Standards, faire Preise und eine Atmosphäre, in der Sie sich wohlfühlen.",
-        alt: "Fachkraft bedient den medizinischen Laser",
-      },
-    ],
-  },
-
-  treatments: {
-    eyebrow: "Behandlungen",
-    title: "Behandlungen für jede Zone",
-    intro:
-      "Ob einzelnes Areal oder Komplettpaket: Wir stimmen Anzahl und Intensität der Sitzungen individuell auf Ihre Haut ab. Die Erstberatung ist kostenlos.",
-    cta: "Termin buchen",
-    badge: "Behandlung",
-    items: [
-      {
-        id: "treatment1",
-        lead: "Präzise und sanft",
-        name: "Gesicht & Oberlippe",
-        body: "Feine Areale wie Oberlippe, Kinn und Wangen verlangen eine ruhige Hand und kleine Impulse. Wir arbeiten Areal für Areal, damit die Haut rundherum unberührt bleibt.",
-        alt: "Nahaufnahme des Gesichts einer Frau mit glatter Haut",
-      },
-      {
-        id: "treatment2",
-        lead: "In wenigen Minuten",
-        name: "Achseln",
-        body: "Der Klassiker unter den Zonen: schnell behandelt, dauerhaft glatt und endlich Schluss mit Rasurbrand und eingewachsenen Haaren.",
-        alt: "Frau mit erhobenem Arm zeigt glatte Achsel",
-      },
-      {
-        id: "treatment3",
-        lead: "Besonders schonend",
-        name: "Bikinizone",
-        body: "Empfindliche Areale behandeln wir mit gekühltem Handstück und reduzierter Intensität, in einem geschützten Raum und in Ihrem Tempo.",
-        alt: "Körpermitte einer Frau in heller Unterwäsche",
-      },
-      {
-        id: "treatment4",
-        lead: "Große Flächen, eine Sitzung",
-        name: "Beine & Ganzkörper",
-        body: "Vom Unterschenkel bis zum Komplettpaket: Das Hochleistungs-Handstück erfasst große Flächen zügig, ohne an Präzision zu verlieren.",
-        alt: "Glatte Beine einer sitzenden Frau",
-      },
-    ],
-  },
-
-  statement: {
-    eyebrow: "Unser Anspruch",
-    title:
-      "Effektive, schonende Haarentfernung auf höchstem Niveau. Modernste Medizintechnik, abgestimmt auf Ihre Haut.",
-    imageAlt: "Weich fallender Seidenstoff in warmen Brauntönen",
+    title: "Ganz auf eines spezialisiert",
+    body: (studios: number) =>
+      `SG Laserzentrum wurde 2022 gegründet und widmet sich seitdem zu 100 % der dauerhaften Haarentfernung. Unser Fachpersonal ist nach NiSV zertifiziert, wird regelmäßig intern geschult und arbeitet mit moderner Lasertechnologie, heute an ${word(DE_NUMBERS, studios)} Standorten in Deutschland.`,
+    imageAlt: "Heller Behandlungsraum mit Liege, Vorhängen und Pflanzen",
   },
 
   proof: {
-    label: "Zufriedene Kundinnen",
-    stat: "99 %",
-    body: "Über 600 positive Google-Bewertungen an sechs Standorten. Unsere Kundinnen kommen wieder und bringen ihre Freundinnen mit.",
-    portraitAlt: "Ruhiges Porträt einer Frau mit glatter Haut",
-    techAlt: "Handstück eines medizinischen Lasers in einer Behandlungskabine",
-    notes: [
-      "SG XLaser Pro",
-      "Vier Wellenlängen: 808, 755, 955 und 1064 nm.",
-      "Kontaktkühlung bis −15 °C für eine nahezu schmerzfreie Sitzung.",
+    eyebrow: "Warum SG Laserzentrum",
+    title: "Was uns ausmacht",
+    stats: (studios: number, treatments: string, reviews: string) => [
+      { value: `${treatments}+`, label: "durchgeführte Behandlungen" },
+      { value: `${reviews}+`, label: "positive Google-Bewertungen" },
+      { value: String(studios), label: "Standorte in Deutschland" },
+      { value: "2022", label: "gegründet" },
     ],
-  },
-
-  numbers: {
-    eyebrow: "In Zahlen",
-    title: "Sichtbar glatt,",
-    stats: ["99 %", "600+", "6"],
-    statsLabel: "Kennzahlen",
-    body: "Sechs Standorte in Deutschland, über 600 positive Bewertungen und ein Team, das jeden Haut- und Haartyp kennt.",
-    imageAlt: "Ruhiger Behandlungsraum in warmen Naturtönen",
-  },
-
-  locations: {
-    eyebrow: "Standorte",
-    title: "Sechs Studios in Deutschland",
-    intro:
-      "Jedes Studio arbeitet mit demselben Gerät, denselben Standards und demselben geschulten Fachpersonal. Wählen Sie den Standort, der Ihnen am nächsten liegt.",
-    comingLabel: "Bald auch in",
-    detailPrefix: "SG Laserzentrum",
-    addressLabel: "Adresse",
-    phoneLabel: "Telefon",
-    whatsappLabel: "WhatsApp",
-    bookLabel: "Online Termin buchen",
-    routeLabel: "Route planen",
-    hoursLabel: "Öffnungszeiten",
-    hoursNote: "Termine nach Vereinbarung. Schreiben Sie uns per WhatsApp oder buchen Sie direkt online.",
-    otherTitle: "Weitere Standorte",
-    backLabel: "Alle Standorte",
-    cityIntro:
-      "Dauerhafte Haarentfernung mit dem SG XLaser Pro, schonend und abgestimmt auf jeden Haut- und Haartyp.",
+    usps: (studios: number) => [
+      {
+        title: "100 % Haarentfernung",
+        body: "Wir konzentrieren uns auf eine einzige Behandlung und beherrschen sie entsprechend gut.",
+      },
+      {
+        title: "NiSV-zertifiziertes Personal",
+        body: "Unser Fachpersonal ist nach der NiSV zertifiziert, der Verordnung für den Einsatz von Lasern am Menschen.",
+      },
+      {
+        title: "Moderne Lasertechnologie",
+        body: "Ein Hochleistungslaser mit vier Wellenlängen und integrierter Kontaktkühlung.",
+      },
+      {
+        title: "Regelmäßige Schulungen",
+        body: "Wir schulen unser Team laufend intern, damit jede Behandlung dem aktuellen Stand entspricht.",
+      },
+      {
+        title: "Faire, transparente Preise",
+        body: "Jeder Standort hat eine eigene, klar aufgeführte Preisliste.",
+      },
+      {
+        title: `${cap(word(DE_NUMBERS, studios))} Standorte`,
+        body: "Von Mainz bis Nürnberg, von Stuttgart bis Köln. München ist in Planung.",
+      },
+    ],
   },
 
   technology: {
-    eyebrow: "Unsere Technologie",
+    eyebrow: "Technologie",
     title: "SG XLaser Pro",
-    intro:
-      "Der SG XLaser Pro gehört zu den modernsten Hochleistungs-Medizinlasern und sorgt für ein herausragendes Behandlungserlebnis. Unsere Geräte arbeiten mit vier Wellenlängen, die eine optimale und professionelle Anwendung ermöglichen.",
-    specsLabel: "Vier Wellenlängen",
+    body: "Ein Hochleistungs-Medizinlaser mit vier Wellenlängen, abgestimmt auf unterschiedliche Haut- und Haartypen. Die integrierte Kontaktkühlung bis −15 °C kühlt die Haut während der Behandlung und macht die Sitzung spürbar angenehmer.",
     specs: [
-      { value: "808 nm", label: "Diodenlaser" },
-      { value: "755 nm", label: "Alexandritlaser" },
+      { value: "755 nm", label: "Alexandrit" },
+      { value: "808 nm", label: "Diode" },
       { value: "955 nm", label: "Ergänzende Wellenlänge" },
-      { value: "1064 nm", label: "Nd:YAG-Laser" },
+      { value: "1064 nm", label: "Nd:YAG" },
+      { value: "−15 °C", label: "Kontaktkühlung" },
     ],
-    body: [
-      "Dank des fortschrittlichen Handstücks des SG XLaser Pro erzielen wir noch schnellere und effektivere Ergebnisse.",
-      "Ein besonderes Highlight ist die integrierte Kühlung, die Temperaturen bis −15 °C erreicht. Die Haut wird während der Behandlung gleichzeitig gekühlt, was die Schmerzen deutlich minimiert und die Sitzung besonders angenehm macht.",
-    ],
-    closing: "Effektive, schonende Haarentfernung auf höchstem Niveau.",
-    imageAlt: "SG XLaser Pro Gerät neben einer Behandlungsliege",
+    imageAlt: "SG XLaser Pro mit Touchscreen und Handstück",
   },
 
   reviews: {
-    label: "Kundenfeedback",
-    title: "Was unsere Kundinnen sagen",
-    intro:
-      "Wir danken unseren Kundinnen und Kunden für ihr tolles Feedback und freuen uns, Ihnen zu seidig glatter Haut verhelfen zu dürfen.",
-    summary: "99 % zufriedene Kunden · Über 600 positive Google-Bewertungen",
-    prev: "Vorherige Bewertung",
-    next: "Nächste Bewertung",
+    title: "Vertrauen, das man in jeder Bewertung liest",
+    source: "Google-Bewertung",
+    rating: "5 von 5 Sternen",
+    quoteOpen: "„",
+    quoteClose: "“",
+    summary: (reviews: string) => `Über ${reviews} positive Google-Bewertungen`,
     items: [
+      // Quoted verbatim from Google reviews shown on sg-laserzentrum.de. Do not edit the wording.
       {
         name: "Anna B.",
-        quote:
-          "Super Arbeit, sehr nette Mitarbeiterinnen! Schon nach kurzer Zeit sehe ich erste Ergebnisse! Nur weiterzuempfehlen.",
-      },
-      {
-        name: "Nilo H.",
-        quote: "Ich bin sehr zufrieden. Beratung, Behandlung, Hygiene und Freundlichkeit sind top!",
-      },
-      {
-        name: "Donike Z.",
-        quote:
-          "Ich bin so unglaublich zufrieden. So freundlich, und die Ergebnisse sind der Wahnsinn! Absolut empfehlenswert!",
+        quote: "Super Arbeit, sehr nette Mitarbeiterinnen! Schon nach kurzer Zeit sehe ich erste Ergebnisse! Nur weiterzuempfehlen.",
+        image: "/images/silk.jpg",
+        alt: "Weich fallender Seidenstoff in warmem Grau",
       },
       {
         name: "Katherina F.",
         quote:
           "Top Preis-Leistungs-Verhältnis! Man wird immer super freundlich empfangen, und ich habe schon nach zwei Anwendungen weniger Haarwuchs bemerkt!",
+        image: "/images/laser.jpg",
+        alt: "Behandlung mit dem Laser-Handstück am Unterarm",
       },
       {
-        name: "Vanessa G.",
-        quote:
-          "Ich bin das zweite Mal hier und super zufrieden. Sehr sauberes Studio und nette Gespräche während der Behandlungen. Einfühlsame Mitarbeiter, und ich wurde von Anfang an hervorragend beraten. Klare Empfehlung!",
+        name: "Donike Z.",
+        quote: "Ich bin so unglaublich zufrieden. So freundlich, und die Ergebnisse sind der Wahnsinn! Absolut empfehlenswert!",
+        image: "/images/vorteil-1.jpg",
+        alt: "Glatte Schulter einer Frau vor einem Leinenvorhang",
       },
       {
-        name: "Yasmin",
-        quote:
-          "Ich hatte gestern meine 6. Behandlung, und ich bin mehr als zufrieden. Sei es die Mitarbeiterinnen, die extrem viel Wert auf deinen Komfort legen, oder einfach nur die Behandlung. Kann ich nur mehr als weiterempfehlen!",
+        name: "Nilo H.",
+        quote: "Ich bin sehr zufrieden. Beratung, Behandlung, Hygiene und Freundlichkeit sind top!",
+        image: "/images/beine.jpg",
+        alt: "Glatte Beine einer Frau auf einem Holzhocker",
       },
     ],
+    provenExpert: {
+      label: "ProvenExpert",
+      link: "Alle Bewertungen auf ProvenExpert",
+      devSlot: "ProvenExpert-Siegel: erscheint hier, sobald Profil-URL und Siegel in lib/site.ts eingetragen sind.",
+    },
   },
 
   faq: {
-    label: "Häufige Fragen",
-    title: "Häufige Fragen zur dauerhaften Haarentfernung",
+    eyebrow: "Häufige Fragen",
+    title: "Gut zu wissen",
     items: [
       {
         q: "Wie viele Behandlungen sind notwendig?",
-        a: "Im Allgemeinen werden 8–12 Sitzungen benötigt. Die genaue Anzahl hängt von Faktoren wie der Haardicke, dem Hauttyp und der zu behandelnden Körperzone ab.",
-        list: [] as string[],
+        a: "Im Allgemeinen werden 8 bis 12 Sitzungen benötigt. Die genaue Anzahl hängt von Haardicke, Hauttyp und der behandelten Körperzone ab.",
       },
       {
-        q: "Wie funktioniert die dauerhafte Haarentfernung überhaupt?",
-        a: "Die dauerhafte Haarentfernung basiert auf der Absorption von Licht, das in Hitze umgewandelt wird. Das energiereiche Laserlicht erzeugt hohe Temperaturen im Haar; bei über 68 °C beginnt die Hitze, die Proteine in den Haarzellen und im Haarfollikel zu zerstören. Der Haarfollikel, der die Haarwurzel umgibt, verliert die Struktur, die zur Bildung neuer Haare notwendig ist. Die Haarwurzel wird verödet, sodass kein neues Haar nachwachsen kann.",
-        list: [],
+        q: "Ist die Behandlung schmerzhaft?",
+        a: "Die meisten Kundinnen und Kunden spüren nur ein leichtes Kribbeln. Die integrierte Kontaktkühlung bis −15 °C kühlt die Haut während der Behandlung und macht die Sitzung deutlich angenehmer.",
       },
       {
-        q: "Wie dauerhaft ist die dauerhafte Haarentfernung wirklich?",
-        a: "Die Ergebnisse sind langfristig, allerdings wird empfohlen, einmal jährlich eine Auffrischungsbehandlung durchzuführen, um das Ergebnis optimal zu erhalten. Die Notwendigkeit für Auffrischungen kann individuell variieren und hängt von Faktoren wie Hormonschwankungen oder anderen Einflüssen ab.",
-        list: [],
+        q: "Wie funktioniert die dauerhafte Haarentfernung?",
+        a: "Das Laserlicht wird vom Pigment im Haar aufgenommen und in Wärme umgewandelt. Ab etwa 68 °C werden die Proteine im Haarfollikel zerstört, sodass die Haarwurzel kein neues Haar mehr bilden kann.",
+      },
+      {
+        q: "Wie dauerhaft ist das Ergebnis?",
+        a: "Die Ergebnisse sind langfristig. Wir empfehlen eine Auffrischung etwa einmal im Jahr, da zum Beispiel hormonelle Veränderungen neue Haare anregen können.",
       },
       {
         q: "Wie lange dauert eine Sitzung?",
-        a: "Die Sitzungsdauer richtet sich nach der Größe des zu behandelnden Bereichs. Behandlungen größerer Areale wie Brust oder Beine dauern länger als kleinere, wie im Gesicht. Typischerweise können Sie mit einer Dauer von 30 bis 75 Minuten rechnen.",
-        list: [],
+        a: "Das hängt von der Größe der Zone ab. Kleine Bereiche wie das Gesicht gehen schnell, große wie Beine oder Rücken dauern länger. Rechnen Sie mit 30 bis 75 Minuten.",
       },
       {
         q: "Welche Haut- und Haartypen können behandelt werden?",
-        a: "Optimale Ergebnisse erzielen wir bei hellen bis mittleren Hauttypen und bei Haaren mit ausreichend Melaningehalt, da Melanin das Haar pigmentiert und die Laserenergie besser absorbiert. Dunklere Haare sprechen daher am besten an. Für sehr helle oder feine Haare ist die Laserbehandlung weniger geeignet.",
-        list: [],
+        a: "Die besten Ergebnisse erzielen wir bei hellen bis mittleren Hauttypen und dunklerem Haar mit ausreichend Melanin. Sehr helles oder feines Haar spricht weniger gut an.",
       },
       {
-        q: "Was ist vor einer Behandlung zu beachten?",
-        a: "Vier Dinge helfen uns, das beste Ergebnis für Sie zu erzielen:",
+        q: "Was sollte ich vor der Behandlung beachten?",
+        a: "Vier Dinge helfen uns, das beste Ergebnis zu erzielen:",
         list: [
-          "Rasur: Am Tag vor der Behandlung sollte das zu behandelnde Areal glatt rasiert sein.",
-          "Gesichtsbehandlungen: Make-up muss vollständig entfernt und die Haut gründlich gereinigt sein.",
-          "Sonnenexposition: Zwei Wochen vorher Sonnenbäder und Solariumbesuche vermeiden.",
-          "Medikamente: Vor der Behandlung auf Impfungen und die Einnahme von Antibiotika verzichten.",
+          "Am Tag vor der Behandlung die Zone glatt rasieren.",
+          "Bei Gesichtsbehandlungen Make-up vollständig entfernen.",
+          "Zwei Wochen vorher Sonnenbäder und Solarium meiden.",
+          "Vorher auf Impfungen und Antibiotika verzichten.",
         ],
       },
-    ],
+      {
+        q: "Wo finde ich die Preise?",
+        a: "Jeder Standort hat eine eigene Preisliste. Sie finden sie auf der Seite Ihres Studios, dort können Sie auch direkt online buchen.",
+      },
+    ] as Faq[],
+    toggle: "Antwort ein- oder ausblenden",
+  },
+
+  locations: {
+    eyebrow: "Standorte",
+    title: (studios: number) => `${cap(word(DE_NUMBERS, studios))} Studios in Deutschland`,
+    intro:
+      "Jedes Studio arbeitet mit derselben Technik und denselben Standards. Wählen Sie Ihren Standort für Öffnungszeiten, Preise und Online-Buchung.",
+    planned: "In Planung",
+    details: "Zum Standort",
+    book: "Buchen",
+    all: "Alle Standorte",
+  },
+
+  booking: {
+    title: "Ihr Weg zu dauerhaft glatter Haut",
+    body: "Wählen Sie Ihr Studio und buchen Sie Ihren Termin direkt online.",
+    select: "Standort wählen",
+    submit: "Termin buchen",
+    dialogTitle: "Wo möchten Sie Ihren Termin buchen?",
+    dialogBody: "Jedes Studio hat einen eigenen Online-Kalender. Die Buchung öffnet sich in einem neuen Tab.",
+    close: "Schließen",
   },
 
   footer: {
-    eyebrow: "Termin vereinbaren",
-    pitch: "Dauerhaft glatte Haut beginnt mit einem Gespräch. Wir beraten Sie kostenlos.",
-    cta: "Termin buchen",
-    locationsHeading: "Standorte",
-    contactHeading: "Kontakt",
-    bookLabel: "Online buchen",
-    columns: [
-      {
-        heading: "Behandlungen",
-        links: [
-          { label: "Gesicht & Oberlippe", href: "#behandlungen" },
-          { label: "Achseln", href: "#behandlungen" },
-          { label: "Bikinizone", href: "#behandlungen" },
-          { label: "Beine & Ganzkörper", href: "#behandlungen" },
-        ],
-      },
-      {
-        heading: "Über uns",
-        links: [
-          { label: "Unsere Technologie", href: "#technologie" },
-          { label: "Bewertungen", href: "#bewertungen" },
-          { label: "Häufige Fragen", href: "#faq" },
-          { label: "Standorte", href: "/standorte" },
-          { label: "Jobs & Franchise", href: "https://sg-laserzentrum.de/jobs-and-franchise-/" },
-        ],
-      },
-      {
-        heading: "Rechtliches",
-        links: [
-          { label: "Impressum", href: "https://sg-laserzentrum.de/online-terminbuchung/" },
-          { label: "Datenschutz", href: "https://sg-laserzentrum.de/online-terminbuchung/" },
-          { label: "AGB", href: "https://sg-laserzentrum.de/online-terminbuchung/" },
-        ],
-      },
-    ],
-    legal: "Inhaberinnen: Gizem Achenbach & Sinem Bulukgiray · USt-IdNr. DE368172174",
+    tagline: (studios: number) => `Dauerhafte Haarentfernung an ${word(DE_NUMBERS, studios)} Standorten in Deutschland.`,
+    studios: "Standorte",
+    company: "Unternehmen",
+    contact: "Kontakt",
+    links: [
+      { label: "Behandlungen", href: "/#behandlungen" },
+      { label: "Über uns", href: "/#ueber-uns" },
+      { label: "Häufige Fragen", href: "/#faq" },
+      { label: "Franchise & Karriere", href: "/franchise-karriere" },
+    ] as Link[],
+    legal: [
+      { label: "Impressum", href: "/impressum" },
+      { label: "Datenschutz", href: "/datenschutz" },
+    ] as Link[],
+    phone: "Telefon & WhatsApp",
+    email: "E-Mail",
+    planned: "in Planung",
+  },
+
+  studio: {
+    eyebrow: "SG Laserzentrum",
+    title: (city: string) => `Dauerhafte Haarentfernung in ${city}`,
+    intro: "Moderne Lasertechnik, NiSV-zertifiziertes Fachpersonal und eine ruhige Atmosphäre, in der Sie sich wohlfühlen.",
+    book: "Online Termin buchen",
+    call: "Anrufen",
+    whatsapp: "WhatsApp",
+    address: "Adresse",
+    route: "Route planen",
+    contact: "Kontakt",
+    hours: "Öffnungszeiten",
+    weekdays: "Montag – Freitag",
+    saturday: "Samstag",
+    sunday: "Sonntag",
+    closed: "geschlossen",
+    clock: "Uhr",
+    pricesEyebrow: "Preise",
+    pricesTitle: (city: string) => `Preise in ${city}`,
+    pricesPending:
+      "Die Preisliste für diesen Standort wird gerade aktualisiert. Gerne beraten wir Sie telefonisch, per WhatsApp oder direkt im Studio.",
+    pricesSample: "Beispieldaten · nur in der Entwicklung sichtbar",
+    others: "Weitere Standorte",
+    all: "Alle Standorte",
+  },
+
+  studiosPage: {
+    eyebrow: "Standorte",
+    title: "Unsere Studios",
+    intro: (studios: number) =>
+      `${cap(word(DE_NUMBERS, studios))} Studios, ein Anspruch: dauerhafte Haarentfernung mit moderner Technik und geschultem Fachpersonal. München ist bereits in Planung.`,
+    plannedBody: "Wir bereiten ein Studio in München vor. Die Eröffnung kündigen wir hier an.",
+  },
+
+  careers: {
+    eyebrow: "Franchise & Karriere",
+    title: "Wachsen Sie mit uns",
+    intro: (studios: number) =>
+      `Seit 2022 ist SG Laserzentrum auf ${word(DE_NUMBERS, studios)} Standorte gewachsen. Ob mit einem eigenen Studio oder als Teil unseres Teams: Wir freuen uns, von Ihnen zu hören.`,
+    franchise: {
+      eyebrow: "Franchise",
+      title: "Ein eigenes SG Laserzentrum eröffnen",
+      body: "Sie möchten ein Studio für dauerhafte Haarentfernung führen und auf ein klar fokussiertes Konzept setzen? Erzählen Sie uns von sich und Ihrem Wunschstandort.",
+      points: [
+        "Ein Konzept mit klarem Fokus: dauerhafte Haarentfernung",
+        "Moderne Lasertechnologie",
+        "Schulungen nach unseren internen Standards",
+        "Eine Marke mit über 600 positiven Google-Bewertungen",
+      ],
+      cta: "Franchise-Anfrage senden",
+      subject: "Franchise-Anfrage",
+      imageAlt: "Heller Behandlungsraum mit Liege und Vorhängen",
+    },
+    jobs: {
+      eyebrow: "Karriere",
+      title: "Teil unseres Teams werden",
+      body: "Wir suchen Menschen, die präzise arbeiten und sich gern um andere kümmern. Schicken Sie uns Ihre Bewerbung, auch initiativ.",
+      points: ["Regelmäßige interne Schulungen", "Arbeit mit moderner Lasertechnologie", "Ein herzliches Team an mehreren Standorten"],
+      cta: "Bewerbung senden",
+      subject: "Bewerbung",
+      imageAlt: "Fachkraft bereitet eine Behandlung vor",
+    },
+    contactTitle: "Direkter Kontakt",
+    contactBody: "Schreiben Sie uns eine E-Mail oder eine Nachricht per WhatsApp.",
+    draft: "Entwurf · Inhalt und Umfang werden noch mit SG Laserzentrum abgestimmt",
+  },
+
+  imprint: {
+    title: "Impressum",
+    provider: "Angaben gemäß § 5 DDG",
+    register: "Registergericht",
+    registerNumber: "Registernummer",
+    representedBy: "Vertreten durch die persönlich haftende Gesellschafterin",
+    managingDirectors: "Geschäftsführerinnen",
+    contact: "Kontakt",
+    phone: "Telefon & WhatsApp",
+    email: "E-Mail",
+    vat: "Umsatzsteuer-Identifikationsnummer",
+    vatPending: "Wird nachgereicht",
+  },
+
+  privacy: {
+    title: "Datenschutzerklärung",
+    controller: "Verantwortliche Stelle",
+    pending:
+      "Die vollständige Datenschutzerklärung wird derzeit überarbeitet und hier veröffentlicht. Bei Fragen zum Datenschutz erreichen Sie uns jederzeit unter den oben genannten Kontaktdaten.",
+    devNote: "Vor dem Livegang: vollständigen Text einsetzen (u. a. Hosting, Studiolution-Buchung, ProvenExpert, WhatsApp).",
+  },
+
+  notFound: {
+    eyebrow: "404",
+    title: "Diese Seite gibt es nicht",
+    body: "Vielleicht wurde sie verschoben. Auf der Startseite finden Sie alles Wichtige.",
+    cta: "Zur Startseite",
   },
 };
 
 export type Copy = typeof COPY_DE;
 
 const COPY_EN: Copy = {
-  nav: [
-    { label: "Treatments", href: "/#behandlungen" },
-    { label: "Technology", href: "/#technologie" },
-    { label: "Results", href: "/#ergebnisse" },
-    { label: "Locations", href: "/standorte" },
-  ],
-  navCta: "Book now",
-  menuOpen: "Open menu",
-  menuClose: "Close menu",
-  brandLine: "Laser Clinic",
+  brand: "SG Laserzentrum",
+
+  a11y: {
+    skip: "Skip to content",
+    mainNav: "Main navigation",
+    footerNav: "Footer navigation",
+    opensNewTab: "(opens in a new tab)",
+    devLang: "Switch language (development only)",
+  },
+
+  nav: {
+    treatments: "Treatments",
+    treatmentLinks: [
+      { label: "Permanent hair removal", href: "/#behandlungen" },
+      { label: "Technology", href: "/#technologie" },
+      { label: "Reviews", href: "/#bewertungen" },
+      { label: "FAQ", href: "/#faq" },
+    ],
+    studios: "Locations",
+    allStudios: "All locations",
+    planned: "planned",
+    links: [
+      { label: "About", href: "/#ueber-uns" },
+      { label: "Careers", href: "/franchise-karriere" },
+      { label: "Contact", href: "#kontakt" },
+    ],
+    start: "Home",
+    book: "Book now",
+    bookShort: "Book",
+    menu: "Menu",
+    close: "Close",
+    menuOpen: "Open menu",
+    menuClose: "Close menu",
+    home: "SG Laserzentrum home",
+    contact: "Contact",
+  },
+
+  intro: {
+    lead: "Lastingly",
+    words: ["gentle", "precise", "safe", "smooth"],
+  },
 
   hero: {
-    badge: "Permanent hair removal",
-    title: "silky smooth",
-    giant: "laser clinic",
-    lede: "SG Laserzentrum is your specialist for permanent hair removal, with years of experience across every hair and skin type.",
-    cta: "Book now",
-    tagLeft: "Six locations across Germany",
-    tagRight: "Over 600 positive Google reviews",
-    imageAlt: "Woman seated with a raised arm against a warm backdrop",
+    brand: "SG Laserzentrum",
+    word: "Laserzentrum",
+    intro: "SG Laserzentrum – permanent hair removal with a feel for your skin.",
+    labels: (studios: number) => ["Permanent hair removal", "Modern laser technology", `${studios} locations in Germany`],
+    imageAlt: "Close-up of a woman's face with smooth, glowing skin",
+  },
+
+  statement: {
+    eyebrow: "In a few words",
+    text: "Since 2022 we have focused on one thing only: permanent hair removal. With modern laser technology, NiSV-certified specialists and fair, transparent prices.",
+  },
+
+  services: {
+    laser: "Permanent hair removal",
+    aquafacial: "Aquafacial",
+  },
+
+  treatments: {
+    listLabel: "Treatment areas",
+    cta: "Prices & booking",
+    items: {
+      gesicht: {
+        name: "Face",
+        body: "Upper lip, chin and cheeks are treated with small pulses and a steady hand, so the surrounding skin stays untouched.",
+        alt: "Woman with closed eyes touching her smooth chin",
+      },
+      achseln: {
+        name: "Underarms",
+        body: "Treated in a few minutes and smooth for good. No more razor burn or ingrown hairs.",
+        alt: "Woman with a raised arm showing a smooth underarm",
+      },
+      bikinizone: {
+        name: "Bikini line",
+        body: "Sensitive areas are treated with a cooled handpiece and adjusted intensity, discreetly and at your pace.",
+        alt: "Midsection of a woman in light underwear",
+      },
+      beine: {
+        name: "Legs & body",
+        body: "From lower legs to the full-body package: the high-performance handpiece covers large areas quickly and precisely.",
+        alt: "Smooth legs of a woman on a wooden stool",
+      },
+      aquafacial: {
+        name: "Aquafacial",
+        body: "Deep cleansing, a gentle peel and intense hydration in one treatment, for a fresh, even complexion.",
+        alt: "Close-up of smooth, well-kept facial skin",
+      },
+    },
   },
 
   about: {
     eyebrow: "About us",
-    title: "Gentle, precise and matched to your skin.",
-    intro:
-      "We have worked with a wide range of methods for years, and we know the difference between fine and coarse hair, light and deep skin tones. The treatment plan is built around you, not the other way round.",
-    benefits: [
-      {
-        id: "benefit1",
-        title: "Fast results",
-        body: "Our high-performance medical laser covers large areas quickly. You will see and feel the difference after only a few sessions.",
-        alt: "Close-up of a smooth shoulder",
-      },
-      {
-        id: "benefit2",
-        title: "Gentle, not painful",
-        body: "Built-in contact cooling down to −15 °C dramatically reduces discomfort. Most clients describe nothing more than a light tingle.",
-        alt: "Relaxed client during a treatment",
-      },
-      {
-        id: "benefit3",
-        title: "Proven expertise",
-        body: "Trained specialists, state certification to NiSV standards, fair prices and a space where you actually feel at ease.",
-        alt: "Specialist operating the medical laser",
-      },
-    ],
-  },
-
-  treatments: {
-    eyebrow: "Treatments",
-    title: "Treatments for every area",
-    intro:
-      "A single area or the full package: we tailor the number and intensity of sessions to your skin. The first consultation is free.",
-    cta: "Book now",
-    badge: "Treatment",
-    items: [
-      {
-        id: "treatment1",
-        lead: "Precise and gentle",
-        name: "Face & upper lip",
-        body: "Delicate areas such as the upper lip, chin and cheeks call for a steady hand and small pulses. We work area by area so the surrounding skin stays untouched.",
-        alt: "Close-up of a woman's face with smooth skin",
-      },
-      {
-        id: "treatment2",
-        lead: "In just a few minutes",
-        name: "Underarms",
-        body: "The classic zone: quick to treat, permanently smooth, and an end to razor burn and ingrown hairs.",
-        alt: "Woman with a raised arm showing a smooth underarm",
-      },
-      {
-        id: "treatment3",
-        lead: "Especially gentle",
-        name: "Bikini line",
-        body: "Sensitive areas are treated with a cooled handpiece and reduced intensity, in a private room and at your own pace.",
-        alt: "Midsection of a woman in light-coloured underwear",
-      },
-      {
-        id: "treatment4",
-        lead: "Large areas, one session",
-        name: "Legs & full body",
-        body: "From lower legs to the complete package: the high-performance handpiece covers large areas quickly without losing precision.",
-        alt: "Smooth legs of a seated woman",
-      },
-    ],
-  },
-
-  statement: {
-    eyebrow: "Our standard",
-    title:
-      "Effective, gentle hair removal at the highest level. Advanced medical technology, matched to your skin.",
-    imageAlt: "Softly draped silk fabric in warm brown tones",
+    title: "Specialised in one thing",
+    body: (studios: number) =>
+      `SG Laserzentrum was founded in 2022 and has been 100% dedicated to permanent hair removal ever since. Our specialists are NiSV certified, trained in-house on a regular basis and work with modern laser technology, today at ${word(EN_NUMBERS, studios)} locations across Germany.`,
+    imageAlt: "Bright treatment room with a couch, curtains and plants",
   },
 
   proof: {
-    label: "Happy clients",
-    stat: "99 %",
-    body: "Over 600 positive Google reviews across six locations. Our clients come back and bring their friends.",
-    portraitAlt: "Calm portrait of a woman with smooth skin",
-    techAlt: "Medical laser handpiece in a treatment room",
-    notes: [
-      "SG XLaser Pro",
-      "Four wavelengths: 808, 755, 955 and 1064 nm.",
-      "Contact cooling to −15 °C for a near painless session.",
+    eyebrow: "Why SG Laserzentrum",
+    title: "What sets us apart",
+    stats: (studios: number, treatments: string, reviews: string) => [
+      { value: `${treatments.replace(".", ",")}+`, label: "treatments performed" },
+      { value: `${reviews}+`, label: "positive Google reviews" },
+      { value: String(studios), label: "locations in Germany" },
+      { value: "2022", label: "founded" },
     ],
-  },
-
-  numbers: {
-    eyebrow: "By the numbers",
-    title: "Visibly smooth,",
-    stats: ["99 %", "600+", "6"],
-    statsLabel: "Key figures",
-    body: "Six locations across Germany, more than 600 positive reviews and a team that knows every skin and hair type.",
-    imageAlt: "Calm treatment room in warm natural tones",
-  },
-
-  locations: {
-    eyebrow: "Locations",
-    title: "Six studios across Germany",
-    intro:
-      "Every studio works with the same device, the same standards and the same trained specialists. Choose whichever one is closest to you.",
-    comingLabel: "Coming soon to",
-    detailPrefix: "SG Laserzentrum",
-    addressLabel: "Address",
-    phoneLabel: "Phone",
-    whatsappLabel: "WhatsApp",
-    bookLabel: "Book online",
-    routeLabel: "Get directions",
-    hoursLabel: "Opening hours",
-    hoursNote: "By appointment. Message us on WhatsApp or book directly online.",
-    otherTitle: "Other locations",
-    backLabel: "All locations",
-    cityIntro:
-      "Permanent hair removal with the SG XLaser Pro, gentle and matched to every skin and hair type.",
+    usps: (studios: number) => [
+      {
+        title: "100% hair removal",
+        body: "We focus on a single treatment and are very good at it as a result.",
+      },
+      {
+        title: "NiSV-certified staff",
+        body: "Our specialists are certified under the NiSV, the German regulation on using lasers on people.",
+      },
+      {
+        title: "Modern laser technology",
+        body: "A high-performance laser with four wavelengths and built-in contact cooling.",
+      },
+      {
+        title: "Regular training",
+        body: "We train our team in-house on an ongoing basis, so every treatment reflects current practice.",
+      },
+      {
+        title: "Fair, transparent prices",
+        body: "Every location has its own clearly listed price list.",
+      },
+      {
+        title: `${cap(word(EN_NUMBERS, studios))} locations`,
+        body: "From Mainz to Nuremberg, from Stuttgart to Cologne. Munich is being planned.",
+      },
+    ],
   },
 
   technology: {
-    eyebrow: "Our technology",
+    eyebrow: "Technology",
     title: "SG XLaser Pro",
-    intro:
-      "The SG XLaser Pro is one of the latest high-performance medical lasers and gives you an outstanding treatment experience. Our devices work with four wavelengths, which allows for optimal and professional handling.",
-    specsLabel: "Four wavelengths",
+    body: "A high-performance medical laser with four wavelengths, matched to different skin and hair types. Built-in contact cooling down to −15 °C cools the skin during treatment and makes the session noticeably more comfortable.",
     specs: [
-      { value: "808 nm", label: "Diode laser" },
-      { value: "755 nm", label: "Alexandrite laser" },
+      { value: "755 nm", label: "Alexandrite" },
+      { value: "808 nm", label: "Diode" },
       { value: "955 nm", label: "Supporting wavelength" },
-      { value: "1064 nm", label: "Nd:YAG laser" },
+      { value: "1064 nm", label: "Nd:YAG" },
+      { value: "−15 °C", label: "Contact cooling" },
     ],
-    body: [
-      "Thanks to the advanced handpiece of the SG XLaser Pro, we achieve faster and more effective results.",
-      "A particular highlight is the integrated cooling, which reaches temperatures down to −15 °C. The skin is cooled during the treatment itself, which noticeably reduces discomfort and makes the session especially comfortable.",
-    ],
-    closing: "Effective, gentle hair removal at the highest level.",
-    imageAlt: "SG XLaser Pro device beside a treatment bed",
+    imageAlt: "SG XLaser Pro with touchscreen and handpiece",
   },
 
   reviews: {
-    label: "Client feedback",
-    title: "What our clients say",
-    intro:
-      "We are grateful to our clients for their wonderful feedback, and glad to help them to silky smooth skin.",
-    summary: "99 % satisfied clients · Over 600 positive Google reviews",
-    prev: "Previous review",
-    next: "Next review",
+    title: "Trust you can read in every review",
+    source: "Google review",
+    rating: "5 out of 5 stars",
+    quoteOpen: "“",
+    quoteClose: "”",
+    summary: (reviews: string) => `Over ${reviews} positive Google reviews`,
     items: [
       {
         name: "Anna B.",
-        quote:
-          "Great work, very kind staff. I could already see the first results after a short time. Thoroughly recommended.",
-      },
-      {
-        name: "Nilo H.",
-        quote: "I am very happy. The advice, the treatment, the hygiene and the friendliness are all excellent.",
-      },
-      {
-        name: "Donike Z.",
-        quote:
-          "I am unbelievably happy. So friendly, and the results are incredible. Absolutely recommended.",
+        quote: "Great work, very kind staff! I could see the first results after a short time! Thoroughly recommended.",
+        image: "/images/silk.jpg",
+        alt: "Softly draped silk in warm grey",
       },
       {
         name: "Katherina F.",
         quote:
-          "Excellent value for money. You are always welcomed so warmly, and I noticed less hair growth after only two sessions.",
+          "Excellent value for money! You are always welcomed so warmly, and I noticed less hair growth after only two sessions!",
+        image: "/images/laser.jpg",
+        alt: "Laser handpiece treatment on a forearm",
       },
       {
-        name: "Vanessa G.",
-        quote:
-          "This is my second visit and I am delighted. A very clean studio and lovely conversation during the treatments. Considerate staff, and I was given excellent advice from the very start. A clear recommendation.",
+        name: "Donike Z.",
+        quote: "I am so unbelievably happy. So friendly, and the results are incredible! Absolutely recommended!",
+        image: "/images/vorteil-1.jpg",
+        alt: "Smooth shoulder of a woman in front of a linen curtain",
       },
       {
-        name: "Yasmin",
-        quote:
-          "I had my sixth treatment yesterday and I am more than happy. Whether it is the staff, who care enormously about your comfort, or simply the treatment itself. I can only recommend it.",
+        name: "Nilo H.",
+        quote: "I am very happy. Advice, treatment, hygiene and friendliness are all excellent!",
+        image: "/images/beine.jpg",
+        alt: "Smooth legs of a woman on a wooden stool",
       },
     ],
+    provenExpert: {
+      label: "ProvenExpert",
+      link: "All reviews on ProvenExpert",
+      devSlot: "ProvenExpert seal: appears here once the profile URL and seal are set in lib/site.ts.",
+    },
   },
 
   faq: {
-    label: "Frequently asked",
-    title: "Common questions about permanent hair removal",
+    eyebrow: "Frequently asked",
+    title: "Good to know",
     items: [
       {
         q: "How many treatments are needed?",
-        a: "Generally 8 to 12 sessions. The exact number depends on factors such as hair thickness, skin type and the area being treated.",
-        list: [] as string[],
+        a: "Generally 8 to 12 sessions. The exact number depends on hair thickness, skin type and the area treated.",
       },
       {
-        q: "How does permanent hair removal actually work?",
-        a: "It relies on light being absorbed and converted into heat. The high-energy laser light creates high temperatures in the hair; above 68 °C the heat begins to destroy the proteins in the hair cells and the follicle. The follicle surrounding the root loses the structure it needs to form new hair, so the root is sealed off and no new hair can grow.",
-        list: [],
+        q: "Does the treatment hurt?",
+        a: "Most clients only feel a light tingle. Built-in contact cooling down to −15 °C cools the skin during treatment and makes the session much more comfortable.",
       },
       {
-        q: "How permanent is permanent hair removal really?",
-        a: "The results are long term, though we recommend one refresher treatment a year to keep them at their best. How often a refresher is needed varies from person to person and depends on factors such as hormonal changes.",
-        list: [],
+        q: "How does permanent hair removal work?",
+        a: "The laser light is absorbed by the pigment in the hair and turned into heat. From around 68 °C the proteins in the follicle are destroyed, so the root can no longer grow new hair.",
+      },
+      {
+        q: "How permanent is the result?",
+        a: "The results are long term. We recommend a refresher roughly once a year, since hormonal changes, for example, can trigger new hair growth.",
       },
       {
         q: "How long does a session take?",
-        a: "Session length depends on the size of the area. Larger areas such as the chest or legs take longer than smaller ones such as the face. Typically you can expect 30 to 75 minutes.",
-        list: [],
+        a: "It depends on the size of the area. Small areas such as the face are quick, large ones such as legs or back take longer. Expect 30 to 75 minutes.",
       },
       {
         q: "Which skin and hair types can be treated?",
-        a: "We achieve the best results on light to medium skin types and on hair with enough melanin, since melanin pigments the hair and absorbs the laser energy better. Darker hair therefore responds best. Laser treatment is less suitable for very light or fine hair.",
-        list: [],
+        a: "We get the best results on light to medium skin types and darker hair with enough melanin. Very light or fine hair responds less well.",
       },
       {
         q: "What should I do before a treatment?",
-        a: "Four things help us achieve the best result for you:",
+        a: "Four things help us get the best result:",
         list: [
-          "Shaving: the area should be shaved smooth the day before the treatment.",
-          "Facial treatments: make-up must be fully removed and the skin thoroughly cleansed.",
-          "Sun exposure: avoid sunbathing and tanning beds for two weeks beforehand.",
-          "Medication: avoid vaccinations and courses of antibiotics before the treatment.",
+          "Shave the area smooth the day before.",
+          "For facial treatments, remove all make-up.",
+          "Avoid sunbathing and tanning beds for two weeks beforehand.",
+          "Avoid vaccinations and antibiotics beforehand.",
         ],
       },
+      {
+        q: "Where can I find the prices?",
+        a: "Every location has its own price list. You will find it on your studio's page, where you can also book online.",
+      },
     ],
+    toggle: "Show or hide answer",
+  },
+
+  locations: {
+    eyebrow: "Locations",
+    title: (studios: number) => `${cap(word(EN_NUMBERS, studios))} studios across Germany`,
+    intro:
+      "Every studio works with the same technology and the same standards. Choose your location for opening hours, prices and online booking.",
+    planned: "Planned",
+    details: "View location",
+    book: "Book",
+    all: "All locations",
+  },
+
+  booking: {
+    title: "Your way to lastingly smooth skin",
+    body: "Choose your studio and book your appointment online.",
+    select: "Choose location",
+    submit: "Book now",
+    dialogTitle: "Where would you like to book?",
+    dialogBody: "Every studio has its own online calendar. Booking opens in a new tab.",
+    close: "Close",
   },
 
   footer: {
-    eyebrow: "Book an appointment",
-    pitch: "Lasting smooth skin starts with a conversation. The consultation is free.",
-    cta: "Book now",
-    locationsHeading: "Locations",
-    contactHeading: "Contact",
-    bookLabel: "Book online",
-    columns: [
-      {
-        heading: "Treatments",
-        links: [
-          { label: "Face & upper lip", href: "#behandlungen" },
-          { label: "Underarms", href: "#behandlungen" },
-          { label: "Bikini line", href: "#behandlungen" },
-          { label: "Legs & full body", href: "#behandlungen" },
-        ],
-      },
-      {
-        heading: "About",
-        links: [
-          { label: "Our technology", href: "#technologie" },
-          { label: "Reviews", href: "#bewertungen" },
-          { label: "FAQs", href: "#faq" },
-          { label: "Locations", href: "/standorte" },
-          { label: "Jobs & franchise", href: "https://sg-laserzentrum.de/jobs-and-franchise-/" },
-        ],
-      },
-      {
-        heading: "Legal",
-        links: [
-          { label: "Imprint", href: "https://sg-laserzentrum.de/online-terminbuchung/" },
-          { label: "Privacy", href: "https://sg-laserzentrum.de/online-terminbuchung/" },
-          { label: "Terms", href: "https://sg-laserzentrum.de/online-terminbuchung/" },
-        ],
-      },
+    tagline: (studios: number) => `Permanent hair removal at ${word(EN_NUMBERS, studios)} locations across Germany.`,
+    studios: "Locations",
+    company: "Company",
+    contact: "Contact",
+    links: [
+      { label: "Treatments", href: "/#behandlungen" },
+      { label: "About", href: "/#ueber-uns" },
+      { label: "FAQ", href: "/#faq" },
+      { label: "Franchise & careers", href: "/franchise-karriere" },
     ],
-    legal: "Owners: Gizem Achenbach & Sinem Bulukgiray · VAT ID DE368172174",
+    legal: [
+      { label: "Imprint", href: "/impressum" },
+      { label: "Privacy", href: "/datenschutz" },
+    ],
+    phone: "Phone & WhatsApp",
+    email: "Email",
+    planned: "planned",
+  },
+
+  studio: {
+    eyebrow: "SG Laserzentrum",
+    title: (city: string) => `Permanent hair removal in ${city}`,
+    intro: "Modern laser technology, NiSV-certified specialists and a calm atmosphere where you feel at ease.",
+    book: "Book online",
+    call: "Call",
+    whatsapp: "WhatsApp",
+    address: "Address",
+    route: "Get directions",
+    contact: "Contact",
+    hours: "Opening hours",
+    weekdays: "Monday – Friday",
+    saturday: "Saturday",
+    sunday: "Sunday",
+    closed: "closed",
+    clock: "",
+    pricesEyebrow: "Prices",
+    pricesTitle: (city: string) => `Prices in ${city}`,
+    pricesPending:
+      "The price list for this location is being updated. We are happy to advise you by phone, on WhatsApp or in the studio.",
+    pricesSample: "Sample data · visible in development only",
+    others: "Other locations",
+    all: "All locations",
+  },
+
+  studiosPage: {
+    eyebrow: "Locations",
+    title: "Our studios",
+    intro: (studios: number) =>
+      `${cap(word(EN_NUMBERS, studios))} studios, one standard: permanent hair removal with modern technology and trained specialists. Munich is already being planned.`,
+    plannedBody: "We are preparing a studio in Munich. The opening will be announced here.",
+  },
+
+  careers: {
+    eyebrow: "Franchise & careers",
+    title: "Grow with us",
+    intro: (studios: number) =>
+      `Since 2022 SG Laserzentrum has grown to ${word(EN_NUMBERS, studios)} locations. Whether with a studio of your own or as part of our team, we would love to hear from you.`,
+    franchise: {
+      eyebrow: "Franchise",
+      title: "Open your own SG Laserzentrum",
+      body: "Would you like to run a permanent hair removal studio built on a clearly focused concept? Tell us about yourself and the location you have in mind.",
+      points: [
+        "A concept with a clear focus: permanent hair removal",
+        "Modern laser technology",
+        "Training to our in-house standards",
+        "A brand with over 600 positive Google reviews",
+      ],
+      cta: "Send a franchise enquiry",
+      subject: "Franchise-Anfrage",
+      imageAlt: "Bright treatment room with a couch and curtains",
+    },
+    jobs: {
+      eyebrow: "Careers",
+      title: "Join our team",
+      body: "We are looking for people who work precisely and enjoy caring for others. Send us your application, speculative ones included.",
+      points: ["Regular in-house training", "Working with modern laser technology", "A warm team across several locations"],
+      cta: "Send an application",
+      subject: "Bewerbung",
+      imageAlt: "Specialist preparing a treatment",
+    },
+    contactTitle: "Direct contact",
+    contactBody: "Send us an email or a WhatsApp message.",
+    draft: "Draft · content and scope still to be agreed with SG Laserzentrum",
+  },
+
+  imprint: {
+    title: "Imprint",
+    provider: "Information pursuant to § 5 DDG",
+    register: "Register court",
+    registerNumber: "Registration number",
+    representedBy: "Represented by the general partner",
+    managingDirectors: "Managing directors",
+    contact: "Contact",
+    phone: "Phone & WhatsApp",
+    email: "Email",
+    vat: "VAT ID",
+    vatPending: "To follow",
+  },
+
+  privacy: {
+    title: "Privacy policy",
+    controller: "Controller",
+    pending:
+      "The full privacy policy is being revised and will be published here. If you have questions about data protection, you can reach us at any time using the contact details above.",
+    devNote: "Before launch: insert the full text (hosting, Studiolution booking, ProvenExpert, WhatsApp and so on).",
+  },
+
+  notFound: {
+    eyebrow: "404",
+    title: "This page does not exist",
+    body: "It may have moved. You will find everything important on the home page.",
+    cta: "Go to home page",
   },
 };
 

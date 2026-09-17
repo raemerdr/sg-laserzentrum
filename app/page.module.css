@@ -1,0 +1,15 @@
+/* Two stacks: sticky photography with a paper panel rising over it. The top
+   stack paints above the bottom one so its soft panel edge overlaps the
+   About photograph. */
+
+.stackTop {
+  position: relative;
+  z-index: 2;
+}
+
+.stackBottom {
+  position: relative;
+  z-index: 1;
+  /* land the About photograph exactly in view when jumping to #ueber-uns */
+  scroll-margin-top: calc(-1 * var(--bleed));
+}

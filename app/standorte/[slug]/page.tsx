@@ -1,32 +1,59 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { LOCATIONS, findLocation } from "@/lib/content";
-import LocationDetail from "@/components/LocationDetail";
-import Footer from "@/components/Footer";
+import Footer from "@/components/layout/Footer";
+import StudioPage from "@/components/studio/StudioPage";
+import { STUDIOS, findStudio } from "@/lib/locations";
+import { COMPANY, SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
-  return LOCATIONS.map((l) => ({ slug: l.slug }));
+  return STUDIOS.map((s) => ({ slug: s.slug }));
 }
+
+export const dynamicParams = false;
 
 export async function generateMetadata({ params }: PageProps<"/standorte/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const location = findLocation(slug);
-  if (!location) return {};
+  const studio = findStudio(slug);
+  if (!studio) return {};
   return {
-    title: `Dauerhafte Haarentfernung ${location.city} | SG Laserzentrum`,
-    description: `SG Laserzentrum ${location.city}, ${location.street}, ${location.zip}. Dauerhafte Haarentfernung mit dem SG XLaser Pro. Jetzt online Termin buchen.`,
+    title: `Dauerhafte Haarentfernung in ${studio.city}`,
+    description: `SG Laserzentrum ${studio.city}, ${studio.street}, ${studio.zip}: dauerhafte Haarentfernung mit moderner Lasertechnik und NiSV-zertifiziertem Fachpersonal. Preise, Öffnungszeiten und Online-Terminbuchung.`,
+    alternates: { canonical: `/standorte/${studio.slug}` },
   };
 }
 
-export default async function LocationPage({ params }: PageProps<"/standorte/[slug]">) {
+export default async function Page({ params }: PageProps<"/standorte/[slug]">) {
   const { slug } = await params;
-  const location = findLocation(slug);
-  if (!location) notFound();
+  const studio = findStudio(slug);
+  if (!studio) notFound();
+
+  const [postalCode, ...locality] = studio.zip.split(" ");
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BeautySalon",
+    name: `SG Laserzentrum ${studio.city}`,
+    url: `${SITE_URL}/standorte/${studio.slug}`,
+    telephone: studio.phoneHref.replace("tel:", ""),
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: studio.street,
+      postalCode,
+      addressLocality: locality.join(" "),
+      addressCountry: "DE",
+    },
+    parentOrganization: { "@type": "Organization", name: COMPANY.legalName, url: SITE_URL },
+  };
 
   return (
-    <main className="site">
-      <LocationDetail location={location} />
+    <div className="page">
+      <main id="inhalt">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        />
+        <StudioPage slug={studio.slug} />
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 }

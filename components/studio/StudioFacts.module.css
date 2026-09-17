@@ -1,0 +1,79 @@
+.section {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(150px, 20vw, 290px) var(--gutter) 0;
+}
+
+.card {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  height: 100%;
+  padding: 28px;
+  border-radius: var(--r-card);
+  background: var(--stone);
+}
+
+.label {
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+
+.big {
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+}
+
+.links {
+  display: grid;
+  gap: 6px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  border-bottom: 1px solid var(--line);
+  transition: border-color 0.3s var(--ease-out);
+}
+
+.link:hover {
+  border-color: var(--ink);
+}
+
+.hours {
+  display: grid;
+}
+
+.hoursRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.hoursRow:first-child {
+  padding-top: 0;
+}
+
+.hoursRow:last-child {
+  border-bottom: 0;
+}
+
+.hoursRow dd {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+@media (max-width: 899px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+}

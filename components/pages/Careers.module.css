@@ -1,0 +1,105 @@
+.draft {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--stone);
+  color: var(--muted);
+}
+
+.cards {
+  display: grid;
+  gap: 16px;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(64px, 8vw, 112px) var(--gutter) 0;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+  border-radius: var(--r-card);
+  background: var(--white);
+}
+
+.reverse .media {
+  order: 2;
+}
+
+.media {
+  position: relative;
+  min-height: 520px;
+  overflow: hidden;
+  border-radius: var(--r-inner);
+  background: var(--stone);
+}
+
+.text {
+  display: grid;
+  align-content: center;
+  gap: 20px;
+  padding: clamp(24px, 4vw, 56px);
+}
+
+.body {
+  color: var(--muted);
+}
+
+.points {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.point {
+  display: flex;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.pointIndex {
+  padding-top: 4px;
+  color: var(--muted);
+}
+
+.cta {
+  justify-self: start;
+  margin-top: 8px;
+}
+
+.contact {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  max-width: calc(760px + 2 * var(--gutter));
+  margin: clamp(80px, 10vw, 140px) auto 0;
+  padding: 0 var(--gutter) calc(var(--curve) + 120px);
+  text-align: center;
+}
+
+.contactBody {
+  color: var(--muted);
+}
+
+.contactActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+@media (max-width: 899px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .reverse .media {
+    order: 0;
+  }
+
+  .media {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+}
