@@ -4,52 +4,66 @@
   padding: clamp(140px, 17vw, 240px) var(--gutter) 0;
 }
 
-.pin {
-  position: relative;
+/* Full-bleed stage. Everything past its first screen of height is scroll
+   distance: while the view is pinned, the cards travel from past the right
+   edge to past the left edge, at 0.8px of scroll per px of travel. */
+.stage {
+  --card: clamp(300px, 32vw, 440px);
+  --gap: clamp(16px, 2vw, 28px);
+  --track: calc(var(--count) * var(--card) + (var(--count) - 1) * var(--gap));
+  --progress: 0;
+  height: calc(100svh + (100vw + var(--track)) * 0.8);
+  margin-inline: calc(50% - 50vw);
 }
 
-/* The title stays pinned while the cards scroll up over it. */
-.titleWrap {
+.sticky {
   position: sticky;
-  top: clamp(100px, 16svh, 150px);
-  z-index: 0;
+  top: 0;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  align-items: center;
+  height: 100svh;
+  padding-top: var(--nav-h);
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+/* The title and the track share one cell, so the cards pass over the title. */
+.titleWrap,
+.track {
+  grid-area: 1 / 1;
+}
+
+.titleWrap {
+  justify-self: center;
   max-width: 880px;
-  margin: 0 auto;
+  padding: 0 var(--gutter);
   text-align: center;
 }
 
-.cards {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: clamp(40px, 5.5vw, 80px);
-  max-width: 912px;
-  margin: clamp(80px, 16svh, 180px) auto 0;
+.track {
+  display: flex;
+  gap: var(--gap);
+  width: max-content;
+  transform: translateX(calc((1 - var(--progress)) * 100cqw - var(--progress) * 100%));
+  will-change: transform;
 }
 
 .card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 8px;
-  padding: 8px;
+  display: flex;
+  flex: 0 0 var(--card);
+  min-height: clamp(320px, 30vw, 400px);
+  padding: clamp(24px, 2.6vw, 36px);
   border-radius: var(--r-card);
   background: var(--white);
   box-shadow: 0 1px 2px rgba(19, 12, 6, 0.03);
-}
-
-.media {
-  position: relative;
-  aspect-ratio: 440 / 580;
-  overflow: hidden;
-  border-radius: var(--r-inner);
-  background: var(--stone);
 }
 
 .figure {
   display: grid;
   align-content: space-between;
   gap: 32px;
-  padding: clamp(20px, 2.2vw, 32px) clamp(16px, 2.2vw, 32px);
+  width: 100%;
 }
 
 .stars {
@@ -79,11 +93,38 @@
 }
 
 @media (max-width: 699px) {
-  .card {
-    grid-template-columns: 1fr;
+  .stage {
+    --card: 84vw;
+    --gap: 12px;
+  }
+}
+
+/* No pinning or travel: the title sits above a plain grid of cards. */
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    height: auto;
+    margin-inline: 0;
   }
 
-  .media {
-    aspect-ratio: 16 / 13;
+  .sticky {
+    position: static;
+    grid-template: none;
+    gap: clamp(48px, 7vw, 96px);
+    height: auto;
+    padding-top: 0;
+    overflow: visible;
+    container-type: normal;
+  }
+
+  .titleWrap,
+  .track {
+    grid-area: auto;
+  }
+
+  .track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    width: auto;
+    transform: none;
   }
 }

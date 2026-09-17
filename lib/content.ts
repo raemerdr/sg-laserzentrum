@@ -4,6 +4,8 @@ export type Lang = "de" | "en";
 
 type Link = { label: string; href: string };
 type Faq = { q: string; a: string; list?: string[] };
+/** `position` is the photo's object-position inside the tall card crop. */
+type Usp = { title: string; body: string; photo: { src: string; alt: string; position: string } };
 
 const DE_NUMBERS = ["null", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf"];
 const EN_NUMBERS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
@@ -67,6 +69,13 @@ const COPY_DE = {
     text: "Seit 2022 konzentrieren wir uns auf eine einzige Sache: dauerhafte Haarentfernung. Mit moderner Lasertechnik, NiSV-zertifiziertem Fachpersonal und fairen, transparenten Preisen.",
   },
 
+  belief: {
+    eyebrow: "Unser Anspruch",
+    title: "Wir glauben an glatte Haut, die bleibt.",
+    body: "Dauerhafte Haarentfernung ist Vertrauenssache. Deshalb arbeitet jedes unserer Studios mit denselben Standards, derselben Technik und einem Team, das regelmäßig geschult wird.",
+    imageAlt: "Frau mit geschlossenen Augen streicht mit den Fingerspitzen über ihren glatten Hals",
+  },
+
   services: {
     laser: "Dauerhafte Haarentfernung",
     aquafacial: "Aquafacial",
@@ -121,30 +130,36 @@ const COPY_DE = {
       { value: String(studios), label: "Standorte in Deutschland" },
       { value: "2022", label: "gegründet" },
     ],
-    usps: (studios: number) => [
+    usps: (studios: number): Usp[] => [
       {
-        title: "100 % Haarentfernung",
+        title: "100\u00A0% Haarentfernung",
         body: "Wir konzentrieren uns auf eine einzige Behandlung und beherrschen sie entsprechend gut.",
+        photo: { src: "/images/usp-spezialisiert.jpg", alt: "Glatte, nackte Schulter einer Frau im warmen Licht", position: "60% 50%" },
       },
       {
         title: "NiSV-zertifiziertes Personal",
         body: "Unser Fachpersonal ist nach der NiSV zertifiziert, der Verordnung für den Einsatz von Lasern am Menschen.",
+        photo: { src: "/images/usp-fachpersonal.jpg", alt: "Fachkraft in Leinenkasack hält das Laser-Handstück mit Handschuhen", position: "60% 50%" },
       },
       {
         title: "Moderne Lasertechnologie",
         body: "Ein Hochleistungslaser mit vier Wellenlängen und integrierter Kontaktkühlung.",
+        photo: { src: "/images/usp-technologie.jpg", alt: "Laser-Handstück mit Kühlfenster auf hellem Leinen", position: "78% 50%" },
       },
       {
         title: "Regelmäßige Schulungen",
         body: "Wir schulen unser Team laufend intern, damit jede Behandlung dem aktuellen Stand entspricht.",
+        photo: { src: "/images/usp-schulungen.jpg", alt: "Eine erfahrene Fachkraft führt die Hand einer Kollegin am Laser-Handstück", position: "62% 50%" },
       },
       {
         title: "Faire, transparente Preise",
         body: "Jeder Standort hat eine eigene, klar aufgeführte Preisliste.",
+        photo: { src: "/images/usp-preise.jpg", alt: "Empfangstheke aus Travertin mit Karte und Trockengräsern", position: "60% 50%" },
       },
       {
         title: `${cap(word(DE_NUMBERS, studios))} Standorte`,
         body: "Von Mainz bis Nürnberg, von Stuttgart bis Köln. München ist in Planung.",
+        photo: { src: "/images/usp-standorte.jpg", alt: "Eingang eines Studios mit Glastür, Leinenvorhang und Olivenbaum", position: "55% 50%" },
       },
     ],
   },
@@ -175,27 +190,19 @@ const COPY_DE = {
       {
         name: "Anna B.",
         quote: "Super Arbeit, sehr nette Mitarbeiterinnen! Schon nach kurzer Zeit sehe ich erste Ergebnisse! Nur weiterzuempfehlen.",
-        image: "/images/silk.jpg",
-        alt: "Weich fallender Seidenstoff in warmem Grau",
       },
       {
         name: "Katherina F.",
         quote:
           "Top Preis-Leistungs-Verhältnis! Man wird immer super freundlich empfangen, und ich habe schon nach zwei Anwendungen weniger Haarwuchs bemerkt!",
-        image: "/images/laser.jpg",
-        alt: "Behandlung mit dem Laser-Handstück am Unterarm",
       },
       {
         name: "Donike Z.",
         quote: "Ich bin so unglaublich zufrieden. So freundlich, und die Ergebnisse sind der Wahnsinn! Absolut empfehlenswert!",
-        image: "/images/vorteil-1.jpg",
-        alt: "Glatte Schulter einer Frau vor einem Leinenvorhang",
       },
       {
         name: "Nilo H.",
         quote: "Ich bin sehr zufrieden. Beratung, Behandlung, Hygiene und Freundlichkeit sind top!",
-        image: "/images/beine.jpg",
-        alt: "Glatte Beine einer Frau auf einem Holzhocker",
       },
     ],
     provenExpert: {
@@ -446,6 +453,13 @@ const COPY_EN: Copy = {
     text: "Since 2022 we have focused on one thing only: permanent hair removal. With modern laser technology, NiSV-certified specialists and fair, transparent prices.",
   },
 
+  belief: {
+    eyebrow: "Our promise",
+    title: "We believe in smooth skin that lasts.",
+    body: "Permanent hair removal is a matter of trust. That is why every one of our studios works to the same standards, with the same technology and a team that is trained regularly.",
+    imageAlt: "Woman with closed eyes running her fingertips along her smooth neck",
+  },
+
   services: {
     laser: "Permanent hair removal",
     aquafacial: "Aquafacial",
@@ -500,30 +514,36 @@ const COPY_EN: Copy = {
       { value: String(studios), label: "locations in Germany" },
       { value: "2022", label: "founded" },
     ],
-    usps: (studios: number) => [
+    usps: (studios: number): Usp[] => [
       {
         title: "100% hair removal",
         body: "We focus on a single treatment and are very good at it as a result.",
+        photo: { src: "/images/usp-spezialisiert.jpg", alt: "A woman's smooth bare shoulder in warm light", position: "60% 50%" },
       },
       {
         title: "NiSV-certified staff",
         body: "Our specialists are certified under the NiSV, the German regulation on using lasers on people.",
+        photo: { src: "/images/usp-fachpersonal.jpg", alt: "Specialist in a linen tunic holding the laser handpiece in gloved hands", position: "60% 50%" },
       },
       {
         title: "Modern laser technology",
         body: "A high-performance laser with four wavelengths and built-in contact cooling.",
+        photo: { src: "/images/usp-technologie.jpg", alt: "Laser handpiece with its cooling window on pale linen", position: "78% 50%" },
       },
       {
         title: "Regular training",
         body: "We train our team in-house on an ongoing basis, so every treatment reflects current practice.",
+        photo: { src: "/images/usp-schulungen.jpg", alt: "An experienced specialist guiding a colleague's hand on the laser handpiece", position: "62% 50%" },
       },
       {
         title: "Fair, transparent prices",
         body: "Every location has its own clearly listed price list.",
+        photo: { src: "/images/usp-preise.jpg", alt: "Travertine reception counter with a card and dried grasses", position: "60% 50%" },
       },
       {
         title: `${cap(word(EN_NUMBERS, studios))} locations`,
         body: "From Mainz to Nuremberg, from Stuttgart to Cologne. Munich is being planned.",
+        photo: { src: "/images/usp-standorte.jpg", alt: "Studio entrance with a glass door, linen curtain and olive tree", position: "55% 50%" },
       },
     ],
   },
@@ -553,27 +573,19 @@ const COPY_EN: Copy = {
       {
         name: "Anna B.",
         quote: "Great work, very kind staff! I could see the first results after a short time! Thoroughly recommended.",
-        image: "/images/silk.jpg",
-        alt: "Softly draped silk in warm grey",
       },
       {
         name: "Katherina F.",
         quote:
           "Excellent value for money! You are always welcomed so warmly, and I noticed less hair growth after only two sessions!",
-        image: "/images/laser.jpg",
-        alt: "Laser handpiece treatment on a forearm",
       },
       {
         name: "Donike Z.",
         quote: "I am so unbelievably happy. So friendly, and the results are incredible! Absolutely recommended!",
-        image: "/images/vorteil-1.jpg",
-        alt: "Smooth shoulder of a woman in front of a linen curtain",
       },
       {
         name: "Nilo H.",
         quote: "I am very happy. Advice, treatment, hygiene and friendliness are all excellent!",
-        image: "/images/beine.jpg",
-        alt: "Smooth legs of a woman on a wooden stool",
       },
     ],
     provenExpert: {

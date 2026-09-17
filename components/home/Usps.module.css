@@ -1,0 +1,108 @@
+/* Edge-to-edge strip of square-cornered photo tiles directly below the About
+   photograph, split by hairline gaps like the reference. On the home page it
+   is pinned together with the photograph (PinToBottom), so the paper panel
+   that follows rises over it with its curve. */
+.section {
+  --cols: 6;
+  position: relative;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 4px;
+}
+
+.card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  aspect-ratio: 1 / 2;
+  padding: clamp(24px, 2.2vw, 40px) clamp(12px, 1.1vw, 20px) 20px;
+  overflow: hidden;
+  text-align: center;
+  /* shows while the photo loads */
+  background: var(--stone-deep);
+}
+
+/* light band of shade across the middle, behind the centered text only */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--ink-rgb), 0) 22%,
+    rgba(var(--ink-rgb), 0.4) 50%,
+    rgba(var(--ink-rgb), 0) 78%
+  );
+}
+
+.photo {
+  z-index: -2;
+}
+
+.title {
+  max-width: 100%;
+  color: var(--paper);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 36;
+  /* sized so the longest German word ("Lasertechnologie") fits a sixth of the screen */
+  font-size: clamp(18px, 1.45vw, 28px);
+  line-height: 1.1;
+  letter-spacing: -0.4px;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  text-shadow: 0 2px 18px rgba(var(--ink-rgb), 0.35);
+}
+
+.body {
+  max-width: 24em;
+  color: var(--paper);
+  font-size: 14px;
+  line-height: 20px;
+  text-wrap: balance;
+  text-shadow: 0 1px 12px rgba(var(--ink-rgb), 0.45);
+}
+
+/* below 1200px six tiles get too narrow: three per row, less tall */
+@media (max-width: 1199px) {
+  .section {
+    --cols: 3;
+  }
+
+  .card {
+    aspect-ratio: 3 / 4;
+    padding: clamp(24px, 3vw, 40px) 20px 20px;
+  }
+
+  .title {
+    font-size: clamp(24px, 3vw, 34px);
+  }
+}
+
+@media (max-width: 599px) {
+  .section {
+    --cols: 1;
+  }
+
+  .card {
+    aspect-ratio: 4 / 5;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .body {
+    font-size: 15px;
+    line-height: 22px;
+  }
+}

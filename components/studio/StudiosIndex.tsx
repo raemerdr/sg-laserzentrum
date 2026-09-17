@@ -2,7 +2,7 @@
 
 import { PLANNED_CITIES, STUDIOS } from "@/lib/locations";
 import { useCopy } from "../LangProvider";
-import BookingRing from "../sections/BookingRing";
+import BookingCta from "../sections/BookingCta";
 import Button from "../ui/Button";
 import PageHeader from "../ui/PageHeader";
 import Photo from "../ui/Photo";
@@ -52,7 +52,7 @@ export default function StudiosIndex() {
         ))}
       </ul>
 
-      <BookingRing />
+      <BookingCta />
     </div>
   );
 }

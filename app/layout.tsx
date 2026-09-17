@@ -13,6 +13,7 @@ import "./globals.css";
 /** Display serif. Closest free match to the reference's LT Superior Serif at opsz 36. */
 const serif = Literata({
   subsets: ["latin", "latin-ext"],
+  style: ["normal", "italic"],
   axes: ["opsz"],
   variable: "--font-literata",
   display: "swap",

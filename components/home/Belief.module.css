@@ -1,0 +1,51 @@
+.section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5.5vw, 80px);
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(120px, 15vw, 220px) var(--gutter) 0;
+}
+
+/* eyebrow at the top, statement at the bottom, level with the portrait's edges */
+.text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-variation-settings: "opsz" 72;
+  font-size: clamp(44px, 7.2vw, 104px);
+  line-height: 0.98;
+  letter-spacing: clamp(-5px, -0.35vw, -1.5px);
+  text-wrap: balance;
+}
+
+.body {
+  max-width: 420px;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  color: var(--muted);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--stone-deep);
+}
+
+@media (max-width: 899px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+
+  .media {
+    aspect-ratio: 4 / 5;
+    max-height: 720px;
+  }
+}

@@ -2,7 +2,7 @@
 
 import { findStudio } from "@/lib/locations";
 import { useCopy } from "../LangProvider";
-import BookingRing from "../sections/BookingRing";
+import BookingCta from "../sections/BookingCta";
 import Faq from "../sections/Faq";
 import Reviews from "../sections/Reviews";
 import StudioList from "../sections/StudioList";
@@ -25,7 +25,7 @@ export default function StudioPage({ slug }: { slug: string }) {
         <Reviews limit={2} />
         <Faq />
         <StudioList exclude={studio.slug} title={t.studio.others} />
-        <BookingRing studio={studio.slug} />
+        <BookingCta studio={studio.slug} />
       </Panel>
     </>
   );

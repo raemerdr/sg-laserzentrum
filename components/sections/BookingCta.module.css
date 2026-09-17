@@ -1,10 +1,9 @@
-/* Closing call to action: title and studio picker in the middle of a slowly
-   turning ring of tilted photo cards. */
+/* Closing call to action: title and studio picker over a full-bleed, sunlit
+   photograph that rises out of the paper and runs under the footer curve. */
 
 .section {
-  --size: clamp(96px, 14.5vw, 214px);
-  --radius: clamp(340px, 50vw, 760px);
   position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   /* the footer rises over the bottom by one curve height, so add most of it back */
@@ -14,36 +13,17 @@
   overflow: hidden;
 }
 
-.ring {
+.backdrop {
   position: absolute;
-  left: 50%;
-  top: calc(50% - var(--curve) / 2 + 12px);
-  width: 0;
-  height: 0;
-  animation: spin 200s linear infinite;
-}
-
-.card {
-  position: absolute;
-  left: calc(var(--size) / -2);
-  top: calc(var(--size) / -2);
-  width: var(--size);
-  height: var(--size);
-  overflow: hidden;
-  border-radius: clamp(10px, 1.1vw, 16px);
+  inset: 0;
+  z-index: -1;
   background: var(--stone);
-  transform: rotate(calc(var(--i) * 360deg / var(--n))) translateY(calc(-1 * var(--radius)));
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  /* fade in from the paper above instead of starting on a hard edge */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 26%);
+  mask-image: linear-gradient(to bottom, transparent, #000 26%);
 }
 
 .content {
-  position: relative;
-  z-index: 1;
   display: grid;
   justify-items: center;
   gap: 16px;
@@ -129,8 +109,6 @@
 
 @media (max-width: 699px) {
   .section {
-    --size: 104px;
-    --radius: 330px;
     min-height: 900px;
   }
 
@@ -142,11 +120,5 @@
 
   .selectWrap {
     padding: 0 8px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ring {
-    animation: none;
   }
 }

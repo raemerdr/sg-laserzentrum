@@ -1,10 +1,9 @@
-/* Sticky full-bleed photograph. Its first 80px sit under the soft bottom
-   edge of the panel above (that panel overlaps by 80px), and it stays put
-   while the next panel rises. */
+/* Full-bleed photograph. Its first 80px sit under the soft bottom edge of the
+   panel above (that panel overlaps by 80px); it scrolls away normally so the
+   USP tiles follow directly below it. */
 
 .about {
-  position: sticky;
-  top: calc(-1 * var(--bleed));
+  position: relative;
   z-index: 0;
   height: calc(100svh + var(--bleed));
   min-height: 640px;
@@ -17,32 +16,36 @@
   inset: 0;
 }
 
-/* light cream fade behind the copy instead of a dark scrim */
+/* light cream fade from the top behind the copy instead of a dark scrim */
 .veil {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to top,
-    rgba(var(--paper-rgb), 0.78) 0%,
-    rgba(var(--paper-rgb), 0.42) 24%,
-    rgba(var(--paper-rgb), 0) 48%
+    to bottom,
+    rgba(var(--paper-rgb), 0.85) 0%,
+    rgba(var(--paper-rgb), 0.7) 30%,
+    rgba(var(--paper-rgb), 0.35) 52%,
+    rgba(var(--paper-rgb), 0) 70%
   );
 }
 
+/* copy centered at the top of the photograph */
 .inner {
   position: absolute;
   inset: var(--bleed) 0 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: end;
-  gap: 48px;
+  align-content: start;
+  justify-items: center;
+  gap: 24px;
   max-width: calc(var(--max) + 2 * var(--gutter));
   margin: 0 auto;
-  padding: 120px var(--gutter) clamp(72px, 14svh, 160px);
+  padding: clamp(96px, 16svh, 160px) var(--gutter) 64px;
+  text-align: center;
 }
 
 .titleCol {
   display: grid;
+  justify-items: center;
   gap: 20px;
 }
 
@@ -51,19 +54,11 @@
 }
 
 .text {
-  justify-self: end;
-  max-width: 460px;
+  max-width: 580px;
 }
 
 @media (max-width: 899px) {
   .inner {
-    grid-template-columns: 1fr;
-    align-content: end;
-    gap: 24px;
-    padding-bottom: 64px;
-  }
-
-  .text {
-    justify-self: start;
+    gap: 20px;
   }
 }

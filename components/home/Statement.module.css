@@ -1,0 +1,13 @@
+.section {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(150px, 20.8vw, 300px) var(--gutter) 0;
+  text-align: center;
+}
+
+.eyebrow {
+  color: var(--ink);
+}

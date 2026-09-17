@@ -7,8 +7,6 @@ import { scrollToY } from "@/lib/scroll";
 import { useCopy } from "../LangProvider";
 import Icon from "../ui/Icon";
 import Photo from "../ui/Photo";
-import Reveal from "../ui/Reveal";
-import SplitWords from "../ui/SplitWords";
 import styles from "./Treatments.module.css";
 
 /** How far the card sits in the deck: gone (flown up), active, behind, hidden. */
@@ -70,12 +68,9 @@ export default function Treatments() {
 
   return (
     <section id="behandlungen" className={styles.section} aria-labelledby="treatments-title">
-      <header className={styles.intro}>
-        <Reveal>
-          <p className={`t-mono ${styles.eyebrow}`}>{t.statement.eyebrow}</p>
-        </Reveal>
-        <SplitWords as="h2" id="treatments-title" text={t.statement.text} className="t-h3" />
-      </header>
+      <h2 id="treatments-title" className="sr-only">
+        {t.nav.treatments}
+      </h2>
 
       <div ref={stageRef} className={styles.stage} style={{ "--count": items.length } as CSSProperties}>
         <div ref={stickyRef} className={styles.sticky}>

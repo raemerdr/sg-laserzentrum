@@ -1,19 +1,5 @@
 .section {
-  padding-top: clamp(150px, 20.8vw, 300px);
-}
-
-.intro {
-  display: grid;
-  justify-items: center;
-  gap: 24px;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 var(--gutter);
-  text-align: center;
-}
-
-.eyebrow {
-  color: var(--ink);
+  padding-top: clamp(40px, 6vw, 80px);
 }
 
 /* ─────────────── Stage ───────────────

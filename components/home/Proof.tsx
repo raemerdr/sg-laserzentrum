@@ -28,18 +28,6 @@ export default function Proof() {
           </Reveal>
         ))}
       </dl>
-
-      <ul className={styles.usps}>
-        {t.proof.usps(STUDIOS.length).map((u, i) => (
-          <li key={u.title}>
-            <Reveal className={styles.usp} delay={(i % 3) * 90}>
-              <span className={`t-mono ${styles.index}`}>{String(i + 1).padStart(2, "0")}</span>
-              <h3 className={styles.uspTitle}>{u.title}</h3>
-              <p className={styles.uspBody}>{u.body}</p>
-            </Reveal>
-          </li>
-        ))}
-      </ul>
     </section>
   );
 }
