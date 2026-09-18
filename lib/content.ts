@@ -1,5 +1,4 @@
 import type { ServiceId, TreatmentId } from "./services";
-import type { ZoneSlug } from "./zones";
 
 export type Lang = "de" | "en";
 
@@ -39,6 +38,7 @@ const COPY_DE = {
     planned: "in Planung",
     links: [
       { label: "Über uns", href: "/#ueber-uns" },
+      { label: "Ratgeber", href: "/ratgeber" },
       { label: "Karriere", href: "/franchise-karriere" },
       { label: "Kontakt", href: "/kontakt" },
     ] as Link[],
@@ -86,7 +86,7 @@ const COPY_DE = {
 
   treatments: {
     listLabel: "Behandlungsbereiche",
-    cta: "Preise & Termin",
+    cta: "Standort wählen",
     items: {
       gesicht: {
         name: "Gesicht",
@@ -114,73 +114,6 @@ const COPY_DE = {
         alt: "Nahaufnahme von glatter, gepflegter Gesichtshaut",
       },
     } satisfies Record<TreatmentId, { name: string; body: string; alt: string }>,
-  },
-
-  zones: {
-    eyebrow: "Laser-Haarentfernung",
-    listEyebrow: "Behandlungsbereiche",
-    book: "Termin buchen",
-    toStudios: "Standorte ansehen",
-    facts: [
-      { value: "8–12", label: "Sitzungen im Durchschnitt" },
-      { value: "−15 °C", label: "Kontaktkühlung für angenehme Sitzungen" },
-      { value: "4", label: "Wellenlängen für unterschiedliche Haut- und Haartypen" },
-      { value: "NiSV", label: "zertifiziertes Fachpersonal" },
-    ],
-    stepsEyebrow: "Ablauf",
-    stepsTitle: "So läuft Ihre Behandlung ab",
-    steps: [
-      {
-        title: "Beratung",
-        body: "Wir besprechen Hauttyp, Haarstruktur und Ihre Wunschzone und stimmen die Behandlung darauf ab.",
-      },
-      {
-        title: "Vorbereitung",
-        body: "Rasieren Sie die Zone am Tag vor der Behandlung und meiden Sie zwei Wochen vorher Sonnenbäder und Solarium.",
-      },
-      {
-        title: "Behandlung",
-        body: "Der SG XLaser Pro vereint Dioden-, Alexandrit- und Nd:YAG-Wellenlängen. Die Kontaktkühlung bis −15 °C hält die Haut dabei angenehm kühl.",
-      },
-      {
-        title: "Ergebnis",
-        body: "Im Allgemeinen sind 8 bis 12 Sitzungen nötig. Danach empfehlen wir etwa einmal im Jahr eine Auffrischung.",
-      },
-    ],
-    noteTitle: "Gut zu wissen",
-    studiosTitle: (zone: string) => `Haarentfernung ${zone} in Ihrer Stadt`,
-    othersTitle: "Weitere Behandlungsbereiche",
-    cityTitle: (city: string) => `Laser-Haarentfernung in ${city}`,
-    cityIntro: (city: string) =>
-      `In unserem Studio in ${city} entfernen wir Haare an Gesicht, Achseln, Intimbereich und Beinen dauerhaft, mit dem SG XLaser Pro und NiSV-zertifiziertem Fachpersonal.`,
-    more: "Mehr erfahren",
-    items: {
-      gesicht: {
-        name: "Gesicht",
-        title: "Laser-Haarentfernung im Gesicht",
-        intro:
-          "Oberlippe, Kinn und Wangen behandeln wir mit kleinen Impulsen und ruhiger Hand, damit die Haut rundherum unberührt bleibt. Die Kontaktkühlung bis −15 °C macht die kurzen Sitzungen im Gesicht angenehm.",
-        note: "Vor einer Behandlung im Gesicht muss das Make-up vollständig entfernt und die Haut gründlich gereinigt werden. Kleine Bereiche wie das Gesicht gehören zu den kürzesten Sitzungen.",
-      },
-      achseln: {
-        name: "Achseln",
-        title: "Laser-Haarentfernung an den Achseln",
-        intro: "In wenigen Minuten behandelt und dauerhaft glatt: Schluss mit täglichem Rasieren, Rasurbrand und eingewachsenen Haaren.",
-        note: "Die Achseln sind eine kleine Zone und schnell behandelt. Rasieren Sie sie am Tag vor der Sitzung und meiden Sie in den zwei Wochen davor Sonnenbäder und Solarium.",
-      },
-      intimbereich: {
-        name: "Intimbereich",
-        title: "Laser-Haarentfernung im Intimbereich",
-        intro: "Bikinizone und Intimbereich behandeln wir mit gekühltem Handstück und angepasster Intensität, diskret und in Ihrem Tempo.",
-        note: "Für empfindliche Haut stimmen wir die Intensität individuell ab. Die Kontaktkühlung bis −15 °C macht die Behandlung spürbar angenehmer.",
-      },
-      beine: {
-        name: "Beine",
-        title: "Laser-Haarentfernung an den Beinen",
-        intro: "Vom Unterschenkel bis zum Ganzkörperpaket: Das Hochleistungs-Handstück erfasst große Flächen zügig und präzise.",
-        note: "Große Zonen wie die Beine dauern länger als kleine. Je nach Umfang sollten Sie mit 30 bis 75 Minuten pro Sitzung rechnen.",
-      },
-    } satisfies Record<ZoneSlug, { name: string; title: string; intro: string; note: string }>,
   },
 
   about: {
@@ -326,7 +259,7 @@ const COPY_DE = {
       },
       {
         q: "Wo finde ich die Preise?",
-        a: "Jeder Standort hat eine eigene Preisliste. Sie finden sie auf der Seite Ihres Studios, dort können Sie auch direkt online buchen.",
+        a: "Die Preise unterscheiden sich je nach Standort und Behandlungsbereich. Fragen Sie Ihr Studio gern telefonisch oder per WhatsApp, oder buchen Sie direkt online.",
       },
     ] as Faq[],
     toggle: "Antwort ein- oder ausblenden",
@@ -353,6 +286,28 @@ const COPY_DE = {
     close: "Schließen",
   },
 
+  ratgeber: {
+    eyebrow: "Ratgeber",
+    title: "Wissenswertes zur Laser-Haarentfernung",
+    intro:
+      "Antworten auf die Fragen, die uns in den Studios am häufigsten gestellt werden, von der Anzahl der Sitzungen bis zur richtigen Vorbereitung.",
+    readMore: "Weiterlesen",
+    minutes: (n: number) => `${n} Min. Lesezeit`,
+    dateLocale: "de-DE",
+    home: "Startseite",
+    crumbLabel: "Brotkrümelnavigation",
+    answer: "Kurz gesagt",
+    toc: "Inhalt",
+    faqTitle: "Häufige Fragen",
+    disclaimer:
+      "Dieser Ratgeber dient der allgemeinen Information und ersetzt keine persönliche Beratung. Ob und wie wir Ihre Haut behandeln, besprechen wir vor der ersten Sitzung mit Ihnen.",
+    nearYou: "Laser-Haarentfernung in Ihrer Nähe",
+    ctaTitle: "Noch Fragen?",
+    ctaBody: "Wir beraten Sie gern persönlich in Ihrem Studio. Ihren Termin buchen Sie direkt online.",
+    ctaStudios: "Standorte ansehen",
+    moreTitle: "Weitere Artikel",
+  },
+
   contact: {
     eyebrow: "Kontakt",
     title: "Wir sind für Sie da",
@@ -373,11 +328,11 @@ const COPY_DE = {
     tagline: (studios: number) => `Dauerhafte Haarentfernung an ${word(DE_NUMBERS, studios)} Standorten in Deutschland.`,
     studios: "Standorte",
     company: "Unternehmen",
-    treatments: "Behandlungen",
     contact: "Kontakt",
     links: [
       { label: "Über uns", href: "/#ueber-uns" },
       { label: "Häufige Fragen", href: "/#faq" },
+      { label: "Ratgeber", href: "/ratgeber" },
       { label: "Franchise & Karriere", href: "/franchise-karriere" },
     ] as Link[],
     legal: [
@@ -613,6 +568,7 @@ const COPY_EN: Copy = {
     planned: "planned",
     links: [
       { label: "About", href: "/#ueber-uns" },
+      { label: "Guide", href: "/ratgeber" },
       { label: "Careers", href: "/franchise-karriere" },
       { label: "Contact", href: "/kontakt" },
     ],
@@ -660,7 +616,7 @@ const COPY_EN: Copy = {
 
   treatments: {
     listLabel: "Treatment areas",
-    cta: "Prices & booking",
+    cta: "Choose a location",
     items: {
       gesicht: {
         name: "Face",
@@ -686,73 +642,6 @@ const COPY_EN: Copy = {
         name: "Aquafacial",
         body: "Deep cleansing, a gentle peel and intense hydration in one treatment, for a fresh, even complexion.",
         alt: "Close-up of smooth, well-kept facial skin",
-      },
-    },
-  },
-
-  zones: {
-    eyebrow: "Laser hair removal",
-    listEyebrow: "Treatment areas",
-    book: "Book now",
-    toStudios: "See locations",
-    facts: [
-      { value: "8–12", label: "sessions on average" },
-      { value: "−15 °C", label: "contact cooling for comfortable sessions" },
-      { value: "4", label: "wavelengths for different skin and hair types" },
-      { value: "NiSV", label: "certified specialists" },
-    ],
-    stepsEyebrow: "How it works",
-    stepsTitle: "How your treatment works",
-    steps: [
-      {
-        title: "Consultation",
-        body: "We discuss your skin type, hair structure and the area you want treated, and tailor the treatment to them.",
-      },
-      {
-        title: "Preparation",
-        body: "Shave the area the day before and avoid sunbathing and sunbeds for two weeks beforehand.",
-      },
-      {
-        title: "Treatment",
-        body: "The SG XLaser Pro combines diode, alexandrite and Nd:YAG wavelengths. Contact cooling down to −15 °C keeps your skin comfortably cool.",
-      },
-      {
-        title: "Result",
-        body: "Generally 8 to 12 sessions are needed. After that we recommend a top-up about once a year.",
-      },
-    ],
-    noteTitle: "Good to know",
-    studiosTitle: (zone: string) => `${zone} hair removal near you`,
-    othersTitle: "More treatment areas",
-    cityTitle: (city: string) => `Laser hair removal in ${city}`,
-    cityIntro: (city: string) =>
-      `At our studio in ${city} we permanently remove hair on the face, underarms, intimate area and legs, with the SG XLaser Pro and NiSV-certified specialists.`,
-    more: "Learn more",
-    items: {
-      gesicht: {
-        name: "Face",
-        title: "Laser hair removal on the face",
-        intro:
-          "We treat the upper lip, chin and cheeks with small pulses and a steady hand, so the skin around them stays untouched. Contact cooling down to −15 °C makes the short facial sessions comfortable.",
-        note: "Before a facial treatment, make-up must be removed completely and the skin cleaned thoroughly. Small areas like the face are among the shortest sessions.",
-      },
-      achseln: {
-        name: "Underarms",
-        title: "Laser hair removal on the underarms",
-        intro: "Treated in a few minutes and smooth for good: no more daily shaving, razor burn or ingrown hairs.",
-        note: "The underarms are a small area and quick to treat. Shave them the day before your session and avoid sunbathing and sunbeds for two weeks beforehand.",
-      },
-      intimbereich: {
-        name: "Intimate area",
-        title: "Laser hair removal in the intimate area",
-        intro: "We treat the bikini line and intimate area with a cooled handpiece and adjusted intensity, discreetly and at your pace.",
-        note: "For sensitive skin we adjust the intensity individually. Contact cooling down to −15 °C makes the treatment noticeably more comfortable.",
-      },
-      beine: {
-        name: "Legs",
-        title: "Laser hair removal on the legs",
-        intro: "From the lower legs to the full-body package: the high-performance handpiece covers large areas quickly and precisely.",
-        note: "Large areas like the legs take longer than small ones. Depending on the extent, allow 30 to 75 minutes per session.",
       },
     },
   },
@@ -899,7 +788,7 @@ const COPY_EN: Copy = {
       },
       {
         q: "Where can I find the prices?",
-        a: "Every location has its own price list. You will find it on your studio's page, where you can also book online.",
+        a: "Prices differ by location and treatment area. Just ask your studio by phone or WhatsApp, or book online directly.",
       },
     ],
     toggle: "Show or hide answer",
@@ -926,6 +815,28 @@ const COPY_EN: Copy = {
     close: "Close",
   },
 
+  ratgeber: {
+    eyebrow: "Guide",
+    title: "What to know about laser hair removal",
+    intro:
+      "Answers to the questions we are asked most often in our studios, from the number of sessions to the right preparation.",
+    readMore: "Read more",
+    minutes: (n: number) => `${n} min read`,
+    dateLocale: "en-GB",
+    home: "Home",
+    crumbLabel: "Breadcrumb",
+    answer: "In short",
+    toc: "Contents",
+    faqTitle: "Frequently asked questions",
+    disclaimer:
+      "This guide is for general information and does not replace a personal consultation. We discuss with you before the first session whether and how we treat your skin.",
+    nearYou: "Laser hair removal near you",
+    ctaTitle: "Any questions?",
+    ctaBody: "We are happy to advise you in person at your studio. You can book your appointment online.",
+    ctaStudios: "See locations",
+    moreTitle: "More articles",
+  },
+
   contact: {
     eyebrow: "Contact",
     title: "We are here for you",
@@ -946,11 +857,11 @@ const COPY_EN: Copy = {
     tagline: (studios: number) => `Permanent hair removal at ${word(EN_NUMBERS, studios)} locations across Germany.`,
     studios: "Locations",
     company: "Company",
-    treatments: "Treatments",
     contact: "Contact",
     links: [
       { label: "About", href: "/#ueber-uns" },
       { label: "FAQ", href: "/#faq" },
+      { label: "Guide", href: "/ratgeber" },
       { label: "Franchise & careers", href: "/franchise-karriere" },
     ],
     legal: [

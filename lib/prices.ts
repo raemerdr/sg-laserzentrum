@@ -15,8 +15,8 @@ export type PriceGroup = { title: string; items: PriceItem[] };
 export type StudioPrices = Partial<Record<ServiceId, PriceGroup[]>>;
 
 /**
- * Every studio has its own price list. The client sends them separately;
- * until a studio has entries, its page shows a "Preisliste folgt" note.
+ * Every studio has its own price list; the client sends them separately.
+ * The price list is currently not shown on the studio pages (see StudioPage).
  */
 export const PRICES: Record<StudioSlug, StudioPrices> = {
   frankfurt: {},
@@ -29,8 +29,9 @@ export const PRICES: Record<StudioSlug, StudioPrices> = {
 };
 
 /**
- * Shown on every studio page, without a label, until that studio's real prices
- * are added. They look real to visitors: replace them before launch.
+ * Layout sample. The price list falls back to it for a studio without real
+ * prices, and it looks real to visitors: fill in PRICES before switching the
+ * price list back on.
  */
 export const SAMPLE_PRICES: StudioPrices = {
   laser: [

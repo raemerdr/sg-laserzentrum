@@ -51,8 +51,7 @@
 
 .cols {
   display: grid;
-  /* the contact column is wider so the email address stays on one line */
-  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.6fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 32px;
 }
 

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { COMPANY, CONTACT, CREDIT } from "@/lib/site";
 import { PLANNED_CITIES, STUDIOS } from "@/lib/locations";
-import { ZONES, zonePath } from "@/lib/zones";
 import { useCopy } from "../LangProvider";
 import Button from "../ui/Button";
 import SgMonogram from "../ui/SgMonogram";
@@ -40,17 +39,6 @@ export default function Footer() {
                 {PLANNED_CITIES.map((city) => (
                   <li key={city} className={styles.planned}>
                     {city} · {t.footer.planned}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h2 className={`t-mono ${styles.heading}`}>{t.footer.treatments}</h2>
-              <ul className={styles.list}>
-                {ZONES.map((z) => (
-                  <li key={z.slug}>
-                    <Link href={zonePath(z.slug)}>{t.zones.items[z.slug].name}</Link>
                   </li>
                 ))}
               </ul>

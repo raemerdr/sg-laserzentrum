@@ -6,7 +6,6 @@ import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type 
 import { CONTACT } from "@/lib/site";
 import { PLANNED_CITIES, STUDIOS, findStudio } from "@/lib/locations";
 import { PUBLISHED_SERVICES } from "@/lib/services";
-import { ZONES, zonePath } from "@/lib/zones";
 import { lockScroll } from "@/lib/scroll";
 import { useCopy } from "../LangProvider";
 import Button from "../ui/Button";
@@ -63,7 +62,6 @@ export default function Nav() {
   const studio = pathname.startsWith("/standorte/") ? findStudio(pathname.split("/")[2] ?? "") : undefined;
   const treatmentLinks = [
     ...t.nav.treatmentLinks.slice(0, 1),
-    ...ZONES.map((z) => ({ label: t.zones.items[z.slug].name, href: zonePath(z.slug) })),
     // further published services (Aquafacial once it launches) sit in the same stage
     ...PUBLISHED_SERVICES.filter((id) => id !== "laser").map((id) => ({ label: t.services[id], href: "/#behandlungen" })),
     ...t.nav.treatmentLinks.slice(1),

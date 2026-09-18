@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { STUDIOS, findStudio, type StudioSlug } from "@/lib/locations";
 import { useCopy } from "../LangProvider";
+import Listbox, { type ListboxHandle } from "../ui/Listbox";
 import Photo from "../ui/Photo";
 import Reveal from "../ui/Reveal";
 import SplitWords from "../ui/SplitWords";
@@ -11,11 +12,14 @@ import styles from "./BookingCta.module.css";
 export default function BookingCta({ studio }: { studio?: StudioSlug }) {
   const t = useCopy();
   const [slug, setSlug] = useState<string>(studio ?? "");
+  const picker = useRef<ListboxHandle>(null);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
     const target = findStudio(slug);
-    if (target) window.open(target.booking, "_blank", "noopener,noreferrer");
+    // no studio chosen yet: open the list instead of doing nothing
+    if (!target) return picker.current?.open();
+    window.open(target.booking, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -33,26 +37,17 @@ export default function BookingCta({ studio }: { studio?: StudioSlug }) {
         </Reveal>
         <form className={styles.form} onSubmit={submit}>
           <div className={styles.selectWrap}>
-            <label htmlFor="booking-cta-studio" className="sr-only">
-              {t.booking.select}
-            </label>
-            <select
+            {/* opens upwards: the footer's curve covers the space below the form */}
+            <Listbox
+              ref={picker}
               id="booking-cta-studio"
-              className={styles.select}
-              required
+              label={t.booking.select}
+              placeholder={t.booking.select}
+              options={STUDIOS.map((s) => ({ value: s.slug, label: s.city, hint: `${s.street}, ${s.zip}` }))}
               value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-            >
-              <option value="" disabled>
-                {t.booking.select}
-              </option>
-              {STUDIOS.map((s) => (
-                <option key={s.slug} value={s.slug}>
-                  {s.city}
-                </option>
-              ))}
-            </select>
-            <span className={styles.chevron} aria-hidden="true" />
+              onChange={setSlug}
+              placement="top"
+            />
           </div>
           <button type="submit" className={styles.submit}>
             {t.booking.submit}

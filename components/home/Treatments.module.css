@@ -104,25 +104,9 @@
   color: var(--muted);
 }
 
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 20px;
+.cta {
   justify-self: start;
   margin-top: 8px;
-}
-
-/* quieter text link to the zone page beside the booking button */
-.more {
-  padding-bottom: 2px;
-  border-bottom: 1px solid var(--line);
-  font-weight: 500;
-  transition: border-color 0.3s var(--ease-out);
-}
-
-.more:hover {
-  border-color: var(--ink);
 }
 
 @media (max-width: 999px) {

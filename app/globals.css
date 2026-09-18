@@ -259,9 +259,13 @@ html[data-js] .reveal[data-in="true"] {
   transform: none;
 }
 
+/* Each word moves to the next line whole. Only a word longer than the whole
+   line, like "Datenschutzerklärung" on a phone, breaks inside itself: at its
+   own hyphen, or at a syllable (the page sets lang="de"). */
 .word {
   display: inline-block;
-  white-space: pre;
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 html[data-js] [data-words="view"] .word {

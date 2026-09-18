@@ -7,8 +7,6 @@ import Faq from "../sections/Faq";
 import Reviews from "../sections/Reviews";
 import StudioList from "../sections/StudioList";
 import Panel from "../ui/Panel";
-import ZoneLinks from "../zones/ZoneLinks";
-import PriceList from "./PriceList";
 import StudioFacts from "./StudioFacts";
 import StudioHero from "./StudioHero";
 
@@ -22,8 +20,8 @@ export default function StudioPage({ slug }: { slug: string }) {
       <StudioHero studio={studio} />
       <Panel>
         <StudioFacts studio={studio} />
-        <ZoneLinks title={t.zones.cityTitle(studio.city)} intro={t.zones.cityIntro(studio.city)} />
-        <PriceList studio={studio} />
+        {/* The price list (./PriceList, data in lib/prices.ts) is off until the
+            studios send their real prices; add <PriceList studio={studio} /> back here. */}
         <Reviews limit={2} />
         <Faq />
         <StudioList exclude={studio.slug} title={t.studio.others} />
