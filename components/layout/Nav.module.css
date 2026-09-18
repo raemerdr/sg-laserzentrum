@@ -20,11 +20,17 @@
     color 0.45s var(--ease-out);
 }
 
-/* Over the hero photography the bar clears to transparent with cream type. */
-.bar[data-transparent="true"] {
+/* Over the dark home hero the bar clears to transparent with cream type. */
+.bar[data-transparent="dark"] {
   --bar-line: rgba(251, 246, 239, 0.24);
   background: transparent;
   color: #fbf6ef;
+}
+
+/* Over the bright studio photos it clears too but keeps its dark type. */
+.bar[data-transparent="light"] {
+  --bar-line: rgba(var(--ink-rgb), 0.12);
+  background: transparent;
 }
 
 @keyframes bar-in {
@@ -65,7 +71,7 @@
   transition: color 0.45s var(--ease-out);
 }
 
-.bar[data-transparent="true"] .brand {
+.bar[data-transparent="dark"] .brand {
   color: #fbf6ef;
 }
 
@@ -217,8 +223,12 @@ a.dropLink:hover {
   background: var(--stone);
 }
 
-.bar[data-transparent="true"] .action:hover {
+.bar[data-transparent="dark"] .action:hover {
   background: rgba(251, 246, 239, 0.12);
+}
+
+.bar[data-transparent="light"] .action:hover {
+  background: rgba(var(--paper-rgb), 0.45);
 }
 
 .menuAction {
@@ -389,8 +399,36 @@ a.dropLink:hover {
     top: 56px;
   }
 
+  /* On phones the whole menu fits one screen: link size and spacing follow
+     the screen height, and scrolling is only a fallback for landscape. */
+  .sheetInner {
+    gap: clamp(20px, 3.5svh, 40px);
+    padding: 16px var(--gutter) 20px;
+  }
+
+  .sheetLink {
+    gap: 16px;
+    padding: clamp(6px, 1.4svh, 16px) 0 clamp(5px, 1.1svh, 12px);
+    font-size: clamp(26px, min(9vw, 4.6svh), 40px);
+  }
+
+  .sheetAside {
+    gap: clamp(16px, 2.5svh, 32px);
+    padding-top: 0;
+  }
+
+  .sheetLabel {
+    margin-bottom: 10px;
+  }
+
   .sheetStudios {
+    gap: 4px 24px;
     font-size: 16px;
+  }
+
+  /* "Buchen" stays in the bar right above the open menu */
+  .sheetBook {
+    display: none;
   }
 }
 

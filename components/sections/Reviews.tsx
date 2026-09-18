@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, type CSSProperties } from "react";
-import { FACTS } from "@/lib/site";
+import { FACTS, GOOGLE_REVIEWS_URL } from "@/lib/site";
 import { useCopy } from "../LangProvider";
+import GoogleLogo from "../ui/GoogleLogo";
 import SplitWords from "../ui/SplitWords";
 import ProvenExpert from "./ProvenExpert";
 import styles from "./Reviews.module.css";
@@ -76,7 +77,14 @@ export default function Reviews({ limit }: { limit?: number }) {
       </div>
 
       <div className={styles.summary}>
-        <p className="t-mono">{t.reviews.summary(FACTS.googleReviews)}</p>
+        <a className={styles.google} href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
+          <span className={styles.googleTop} aria-hidden="true">
+            <GoogleLogo size={24} />
+            <span className={styles.googleStars}>★★★★★</span>
+          </span>
+          <span className={`t-h2 ${styles.googleText}`}>{t.reviews.summary(FACTS.googleReviews)}</span>
+          <span className="sr-only">{t.a11y.opensNewTab}</span>
+        </a>
         <ProvenExpert />
       </div>
     </section>

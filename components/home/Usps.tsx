@@ -23,7 +23,7 @@ export default function Usps() {
               <Photo
                 src={u.photo.src}
                 alt={u.photo.alt}
-                sizes="(max-width: 599px) 100vw, (max-width: 999px) 50vw, 34vw"
+                sizes="(max-width: 599px) 50vw, (max-width: 1199px) 34vw, 17vw"
                 position={u.photo.position}
                 className={styles.photo}
               />

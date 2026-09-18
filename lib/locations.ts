@@ -126,6 +126,17 @@ export function findStudio(slug: string): Studio | undefined {
   return (STUDIOS as readonly Studio[]).find((s) => s.slug === slug);
 }
 
+/**
+ * City priority from the client's SEO direction (Köln was not listed and
+ * comes last). Used where cities are named for search engines, such as meta
+ * descriptions; on-page lists stay alphabetical.
+ */
+const SEO_PRIORITY: StudioSlug[] = ["mannheim", "frankfurt", "stuttgart", "karlsruhe", "mainz", "nuernberg", "koeln"];
+
+export function studiosByPriority(): Studio[] {
+  return SEO_PRIORITY.map(findStudio).filter((s): s is Studio => s !== undefined);
+}
+
 export function hoursFor(studio: Studio): OpeningHours {
   return { ...DEFAULT_HOURS, ...studio.hours };
 }

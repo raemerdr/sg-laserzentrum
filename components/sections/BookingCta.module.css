@@ -26,6 +26,40 @@
   mask-image: linear-gradient(to bottom, transparent, #000 26%);
 }
 
+.drift {
+  position: absolute;
+  inset: 0;
+}
+
+/* Parallax: the photo inside the faded backdrop is taller than the section
+   and drifts down as the section scrolls through view, while the fade stays
+   put. The timeline belongs to the section, since its clipping would
+   otherwise hold the photo still. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section {
+      view-timeline-name: --booking;
+    }
+
+    .drift {
+      top: -12%;
+      bottom: -12%;
+      animation: drift linear both;
+      animation-timeline: --booking;
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateY(-9%);
+  }
+  to {
+    transform: translateY(9%);
+  }
+}
+
 .content {
   display: grid;
   justify-items: center;

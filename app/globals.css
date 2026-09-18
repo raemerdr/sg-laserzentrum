@@ -32,7 +32,6 @@
   --paper-muted: rgba(var(--paper-rgb), 0.72);
   --paper-line: rgba(var(--paper-rgb), 0.16);
   --scrim: rgba(22, 21, 20, 0.34);
-  --scrim-deep: rgba(19, 12, 6, 0.5);
 
   --font-serif: var(--font-literata), "Iowan Old Style", Georgia, serif;
   /* The Rankings, the client's display serif: wordmark, hero word, menu */

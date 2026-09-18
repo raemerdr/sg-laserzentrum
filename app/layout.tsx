@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     template: "%s | SG Laserzentrum",
   },
   description:
-    "SG Laserzentrum ist spezialisiert auf dauerhafte Haarentfernung: moderne Lasertechnik, NiSV-zertifiziertes Fachpersonal und faire, transparente Preise an sieben Standorten in Deutschland.",
+    "Dauerhafte Haarentfernung mit Laser: NiSV-zertifiziertes Fachpersonal, moderne Lasertechnik und faire Preise in sieben Studios in Deutschland.",
   openGraph: {
     type: "website",
     locale: "de_DE",

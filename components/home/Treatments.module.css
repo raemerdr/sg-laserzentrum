@@ -104,28 +104,25 @@
   color: var(--muted);
 }
 
-.cta {
-  display: inline-flex;
+.actions {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 12px 20px;
   justify-self: start;
   margin-top: 8px;
+}
+
+/* quieter text link to the zone page beside the booking button */
+.more {
   padding-bottom: 2px;
   border-bottom: 1px solid var(--line);
   font-weight: 500;
   transition: border-color 0.3s var(--ease-out);
 }
 
-.cta:hover {
+.more:hover {
   border-color: var(--ink);
-}
-
-.cta svg {
-  transition: transform 0.35s var(--ease-out);
-}
-
-.cta:hover svg {
-  transform: translateX(3px);
 }
 
 @media (max-width: 999px) {
@@ -138,17 +135,17 @@
     grid-template-rows: auto auto auto;
     align-content: center;
     justify-items: stretch;
-    gap: 20px;
-    padding: 84px 24px 28px;
+    gap: 16px;
+    padding: 76px 24px 24px;
   }
 
   .deck {
     order: -1;
     width: 100%;
-    height: clamp(220px, 42svh, 420px);
+    height: clamp(200px, 36svh, 420px);
     aspect-ratio: auto;
     /* room for the cards peeking out below */
-    margin-bottom: 30px;
+    margin-bottom: 24px;
   }
 
   .card {
@@ -159,15 +156,14 @@
     opacity: 0;
   }
 
+  /* one treatment per line under the photo, the active one in ink */
   .list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 16px;
+    gap: 2px;
   }
 
   .item {
-    font-size: 20px;
-    line-height: 26px;
+    font-size: 22px;
+    line-height: 28px;
     letter-spacing: -0.3px;
   }
 

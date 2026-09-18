@@ -1,24 +1,65 @@
+/* Centred head, then the address, contact and hours cards stacked on the
+   left with the map beside them, stretched to the same height. */
 .section {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   gap: 16px;
   max-width: calc(var(--max) + 2 * var(--gutter));
   margin: 0 auto;
-  padding: clamp(150px, 20vw, 290px) var(--gutter) 0;
+  padding: clamp(120px, 14vw, 200px) var(--gutter) 0;
+}
+
+/* centred title and intro, like the other section heads */
+.head {
+  grid-column: 1 / -1;
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  margin-bottom: clamp(24px, 3vw, 40px);
+  text-align: center;
+}
+
+.intro {
+  max-width: 460px;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.cards {
+  display: grid;
+  align-content: start;
+  gap: 16px;
 }
 
 .card {
   display: grid;
   align-content: start;
   gap: 16px;
-  height: 100%;
   padding: 28px;
   border-radius: var(--r-card);
-  background: var(--stone);
+  background: var(--white);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+/* round cream badge holding the card's line icon */
+.badge {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 .label {
-  margin-bottom: 8px;
   color: var(--muted);
 }
 
@@ -34,17 +75,25 @@
   gap: 6px;
 }
 
+/* the underline sits on the words only, not under the icons */
 .link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   justify-self: start;
+}
+
+.linkText {
   border-bottom: 1px solid var(--line);
   transition: border-color 0.3s var(--ease-out);
 }
 
-.link:hover {
+.link:hover .linkText {
   border-color: var(--ink);
+}
+
+.lead {
+  color: var(--muted);
 }
 
 .hours {
@@ -75,5 +124,10 @@
 @media (max-width: 899px) {
   .section {
     grid-template-columns: 1fr;
+  }
+
+  .map {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
   }
 }

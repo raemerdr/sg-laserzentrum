@@ -1,15 +1,9 @@
-/* Full-width map under the address, contact and hours cards, with the same
-   radius. The stone surface shows while the map loads. */
-
-.section {
-  max-width: calc(var(--max) + 2 * var(--gutter));
-  margin: 0 auto;
-  padding: 16px var(--gutter) 0;
-}
+/* The map frame: same radius as the cards, stone surface while it loads.
+   The facts section decides its size. */
 
 .frame {
   position: relative;
-  aspect-ratio: 16 / 7;
+  min-height: 420px;
   overflow: hidden;
   border-radius: var(--r-card);
   background: var(--stone);
@@ -23,10 +17,4 @@
   border: 0;
   /* calm Google's colours toward the black, white and nude palette */
   filter: saturate(0.35) sepia(0.06);
-}
-
-@media (max-width: 899px) {
-  .frame {
-    aspect-ratio: 4 / 5;
-  }
 }

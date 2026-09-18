@@ -47,7 +47,7 @@ export default function Hero() {
         </p>
 
         <h1 id="hero-title" className={styles.word}>
-          <span className="sr-only">{t.hero.brand}</span>
+          <span className="sr-only">{t.hero.heading}</span>
           <span aria-hidden="true">
             {[...t.hero.word].map((letter, i) => (
               <span key={i} className={styles.letter} style={{ "--i": i } as CSSProperties}>

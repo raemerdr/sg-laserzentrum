@@ -52,9 +52,7 @@ export default function Careers() {
   const t = useCopy();
   return (
     <div>
-      <PageHeader eyebrow={t.careers.eyebrow} title={t.careers.title} intro={t.careers.intro(STUDIOS.length)}>
-        {process.env.NODE_ENV !== "production" && <p className={`t-mono ${styles.draft}`}>{t.careers.draft}</p>}
-      </PageHeader>
+      <PageHeader eyebrow={t.careers.eyebrow} title={t.careers.title} intro={t.careers.intro(STUDIOS.length)} />
 
       <section className={styles.cards}>
         <OfferCard offer={t.careers.franchise} image="/images/studio.jpg" />
@@ -65,7 +63,7 @@ export default function Careers() {
         <SplitWords as="h2" id="careers-contact" text={t.careers.contactTitle} className="t-h2" />
         <p className={styles.contactBody}>{t.careers.contactBody}</p>
         <div className={styles.contactActions}>
-          <Button href={`mailto:${CONTACT.email}`} icon="arrow">
+          <Button href={`mailto:${CONTACT.email}?subject=${encodeURIComponent(t.careers.contactSubject)}`} icon="arrow">
             {CONTACT.email}
           </Button>
           <Button href={CONTACT.whatsapp} external variant="stone" icon="external">

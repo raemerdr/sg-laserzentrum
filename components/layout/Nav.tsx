@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type 
 import { CONTACT } from "@/lib/site";
 import { PLANNED_CITIES, STUDIOS, findStudio } from "@/lib/locations";
 import { PUBLISHED_SERVICES } from "@/lib/services";
+import { ZONES, zonePath } from "@/lib/zones";
 import { lockScroll } from "@/lib/scroll";
 import { useCopy } from "../LangProvider";
 import Button from "../ui/Button";
@@ -17,18 +18,23 @@ import styles from "./Nav.module.css";
 
 type Dropdown = "treatments" | "studios";
 
+type HeroTone = "dark" | "light";
+
 /**
- * True when the page content directly under the bar belongs to a hero marked
- * `data-nav-overlay`. Hit testing (rather than scroll position) respects the
+ * The tone of the hero directly under the bar, from its `data-nav-overlay`
+ * ("light" for bright photography, anything else dark), or null when no
+ * hero is there. Hit testing (rather than scroll position) respects the
  * sticky stacks: the bar turns solid as the paper panel slides under it.
  */
-function heroUnder(bar: HTMLElement) {
+function heroUnder(bar: HTMLElement): HeroTone | null {
   const hits = document.elementsFromPoint(window.innerWidth / 2, bar.offsetHeight / 2);
   for (const el of hits) {
     if (bar.contains(el) || !el.closest("main")) continue;
-    return el.closest("[data-nav-overlay]") !== null;
+    const hero = el.closest<HTMLElement>("[data-nav-overlay]");
+    if (!hero) return null;
+    return hero.dataset.navOverlay === "light" ? "light" : "dark";
   }
-  return false;
+  return null;
 }
 
 function Chevron() {
@@ -46,8 +52,10 @@ export default function Nav() {
   const { openBooking } = useBooking();
   const [dropdown, setDropdown] = useState<Dropdown | null>(null);
   const [open, setOpen] = useState(false);
-  // pages that open on a photograph start with a clear bar
-  const [overHero, setOverHero] = useState(() => pathname === "/" || pathname.startsWith("/standorte/"));
+  // pages that open on a photograph start with a clear bar in the photo's tone
+  const [overHero, setOverHero] = useState<HeroTone | null>(() =>
+    pathname === "/" ? "dark" : pathname.startsWith("/standorte/") ? "light" : null,
+  );
   const barRef = useRef<HTMLElement>(null);
   const menuBtnRef = useRef<HTMLButtonElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -55,6 +63,7 @@ export default function Nav() {
   const studio = pathname.startsWith("/standorte/") ? findStudio(pathname.split("/")[2] ?? "") : undefined;
   const treatmentLinks = [
     ...t.nav.treatmentLinks.slice(0, 1),
+    ...ZONES.map((z) => ({ label: t.zones.items[z.slug].name, href: zonePath(z.slug) })),
     // further published services (Aquafacial once it launches) sit in the same stage
     ...PUBLISHED_SERVICES.filter((id) => id !== "laser").map((id) => ({ label: t.services[id], href: "/#behandlungen" })),
     ...t.nav.treatmentLinks.slice(1),
@@ -141,9 +150,9 @@ export default function Nav() {
 
   return (
     <>
-      <header ref={barRef} className={styles.bar} data-transparent={overHero && !open && dropdown === null}>
+      <header ref={barRef} className={styles.bar} data-transparent={!open && dropdown === null ? (overHero ?? undefined) : undefined}>
         <div className={styles.inner}>
-          <Link href="/" className={styles.brand} aria-label={t.nav.home} onClick={closeAll}>
+          <Link href="/" className={styles.brand} aria-label={t.nav.home} onClick={(e) => follow(e, "/")}>
             <SgMonogram className={styles.logo} />
           </Link>
 
@@ -186,7 +195,7 @@ export default function Nav() {
                   <ul className={styles.studios}>
                     {STUDIOS.map((s) => (
                       <li key={s.slug}>
-                        <Link href={`/standorte/${s.slug}`} className={styles.dropLink} onClick={closeAll}>
+                        <Link href={`/standorte/${s.slug}`} className={styles.dropLink} onClick={(e) => follow(e, `/standorte/${s.slug}`)}>
                           {s.city}
                           <span className={styles.dropMeta}>{s.zip.split(" ")[0]}</span>
                         </Link>
@@ -199,7 +208,7 @@ export default function Nav() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/standorte" className={`${styles.dropFoot} ${styles.caps}`} onClick={closeAll}>
+                  <Link href="/standorte" className={`${styles.dropFoot} ${styles.caps}`} onClick={(e) => follow(e, "/standorte")}>
                     {t.nav.allStudios}
                     <Icon name="arrow" size={14} />
                   </Link>
@@ -283,7 +292,7 @@ export default function Nav() {
               <ul className={styles.sheetStudios}>
                 {STUDIOS.map((s) => (
                   <li key={s.slug}>
-                    <Link href={`/standorte/${s.slug}`} onClick={closeAll}>
+                    <Link href={`/standorte/${s.slug}`} onClick={(e) => follow(e, `/standorte/${s.slug}`)}>
                       {s.city}
                     </Link>
                   </li>
@@ -303,13 +312,14 @@ export default function Nav() {
               </div>
             </div>
             {studio ? (
-              <Button href={studio.booking} external size="lg" icon="external">
+              <Button href={studio.booking} external size="lg" icon="external" className={styles.sheetBook}>
                 {t.nav.book}
               </Button>
             ) : (
               <Button
                 size="lg"
                 icon="arrow"
+                className={styles.sheetBook}
                 onClick={() => {
                   closeAll();
                   openBooking();

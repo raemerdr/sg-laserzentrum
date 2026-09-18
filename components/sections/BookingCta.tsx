@@ -21,7 +21,9 @@ export default function BookingCta({ studio }: { studio?: StudioSlug }) {
   return (
     <section id="termin" className={styles.section} aria-labelledby="booking-cta-title" data-scroll-offset="0">
       <div className={styles.backdrop} aria-hidden="true">
-        <Photo src="/images/booking-bg.jpg" alt="" sizes="100vw" position="50% 40%" />
+        <div className={styles.drift}>
+          <Photo src="/images/booking-bg.jpg" alt="" sizes="100vw" position="50% 40%" />
+        </div>
       </div>
 
       <div className={styles.content}>

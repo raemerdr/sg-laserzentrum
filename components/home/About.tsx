@@ -1,14 +1,35 @@
 "use client";
 
+import { getImageProps } from "next/image";
 import { STUDIOS } from "@/lib/locations";
 import { scrollToElement } from "@/lib/scroll";
 import { useCopy } from "../LangProvider";
 import { useBooking } from "../layout/BookingProvider";
 import Button from "../ui/Button";
-import Photo from "../ui/Photo";
 import Reveal from "../ui/Reveal";
 import SplitWords from "../ui/SplitWords";
 import styles from "./About.module.css";
+
+/**
+ * The studio photograph, art-directed: the wide shot on landscape screens and
+ * a tall version of the same room on portrait ones, so phones get a sharp
+ * room instead of a blown-up slice of the wide image.
+ */
+function AboutPicture({ alt }: { alt: string }) {
+  const common = { alt, sizes: "100vw" } as const;
+  const { props: wide } = getImageProps({ ...common, src: "/images/studio.jpg", width: 2400, height: 1018 });
+  const {
+    props: { srcSet: tall },
+  } = getImageProps({ ...common, src: "/images/studio-mobile.jpg", width: 1170, height: 2096 });
+
+  return (
+    <picture className={styles.picture}>
+      <source media="(max-aspect-ratio: 4/5)" srcSet={tall} sizes={common.sizes} />
+      {/* eslint-disable-next-line jsx-a11y/alt-text -- alt comes through getImageProps */}
+      <img {...wide} />
+    </picture>
+  );
+}
 
 export default function About() {
   const t = useCopy();
@@ -28,7 +49,7 @@ export default function About() {
   return (
     <section className={styles.about} aria-labelledby="about-title">
       <div className={styles.media}>
-        <Photo src="/images/studio.jpg" alt={t.about.imageAlt} sizes="100vw" position="50% 60%" />
+        <AboutPicture alt={t.about.imageAlt} />
       </div>
       <div className={styles.veil} aria-hidden="true" />
       <div className={styles.inner}>

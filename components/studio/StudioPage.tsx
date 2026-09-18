@@ -7,10 +7,10 @@ import Faq from "../sections/Faq";
 import Reviews from "../sections/Reviews";
 import StudioList from "../sections/StudioList";
 import Panel from "../ui/Panel";
+import ZoneLinks from "../zones/ZoneLinks";
 import PriceList from "./PriceList";
 import StudioFacts from "./StudioFacts";
 import StudioHero from "./StudioHero";
-import StudioMap from "./StudioMap";
 
 export default function StudioPage({ slug }: { slug: string }) {
   const t = useCopy();
@@ -22,7 +22,7 @@ export default function StudioPage({ slug }: { slug: string }) {
       <StudioHero studio={studio} />
       <Panel>
         <StudioFacts studio={studio} />
-        <StudioMap studio={studio} />
+        <ZoneLinks title={t.zones.cityTitle(studio.city)} intro={t.zones.cityIntro(studio.city)} />
         <PriceList studio={studio} />
         <Reviews limit={2} />
         <Faq />

@@ -44,6 +44,17 @@
     grid-template-columns: 1fr;
   }
 
+  /* centred eyebrow, statement and copy above the photo */
+  .text {
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .body {
+    margin-inline: auto;
+  }
+
   .media {
     aspect-ratio: 4 / 5;
     max-height: 720px;

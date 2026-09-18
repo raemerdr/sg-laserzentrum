@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { PUBLISHED_TREATMENTS } from "@/lib/services";
 import { scrollToY } from "@/lib/scroll";
+import { zoneForTreatment, zonePath } from "@/lib/zones";
 import { useCopy } from "../LangProvider";
-import Icon from "../ui/Icon";
+import Button from "../ui/Button";
 import Photo from "../ui/Photo";
 import styles from "./Treatments.module.css";
 
@@ -65,6 +66,7 @@ export default function Treatments() {
 
   const current = items[active];
   const copy = t.treatments.items[current.id];
+  const zone = zoneForTreatment(current.id);
 
   return (
     <section id="behandlungen" className={styles.section} aria-labelledby="treatments-title">
@@ -110,10 +112,17 @@ export default function Treatments() {
             <p key={`body-${current.id}`} className={styles.swap}>
               {copy.body}
             </p>
-            <Link href="/standorte" className={styles.cta}>
-              {t.treatments.cta}
-              <Icon name="arrow" />
-            </Link>
+            <div className={styles.actions}>
+              <Button href="/standorte" icon="arrow">
+                {t.treatments.cta}
+              </Button>
+              {zone && (
+                <Link href={zonePath(zone.slug)} className={styles.more}>
+                  {t.zones.more}
+                  <span className="sr-only">: {t.zones.items[zone.slug].title}</span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>

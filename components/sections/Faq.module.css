@@ -19,12 +19,12 @@
 
 .item {
   border-radius: var(--r-item);
-  background: var(--stone);
+  background: var(--white);
   transition: background-color 0.4s var(--ease-out);
 }
 
 .item:hover {
-  background: var(--stone-deep);
+  background: var(--stone);
 }
 
 .question {

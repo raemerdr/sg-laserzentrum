@@ -18,8 +18,8 @@ export default function PriceList({ studio }: { studio: Studio }) {
   const t = useCopy();
   const real = pricesFor(studio.slug);
   const hasReal = servicesWithPrices(real).length > 0;
-  // Until the studio's list arrives, development shows labelled sample data.
-  const prices = hasReal ? real : process.env.NODE_ENV !== "production" ? SAMPLE_PRICES : {};
+  // Until the studio's own list arrives, every build shows the sample prices, unlabelled.
+  const prices = hasReal ? real : SAMPLE_PRICES;
   const services = servicesWithPrices(prices);
   const [tab, setTab] = useState<ServiceId | undefined>(services[0]);
   const shown = tab && services.includes(tab) ? tab : services[0];
@@ -49,7 +49,6 @@ export default function PriceList({ studio }: { studio: Studio }) {
         </Reveal>
       ) : (
         <Reveal className={styles.card}>
-          {!hasReal && <p className={`t-mono ${styles.sample}`}>{t.studio.pricesSample}</p>}
 
           {services.length > 1 && (
             <div className={styles.tabs} role="tablist">

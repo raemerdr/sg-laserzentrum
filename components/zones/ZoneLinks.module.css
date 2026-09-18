@@ -1,0 +1,94 @@
+/* Photo cards for the treatment zones, each linking to its landing page. */
+
+.section {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(120px, 14vw, 200px) var(--gutter) 0;
+}
+
+.head {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  margin-bottom: clamp(40px, 5vw, 64px);
+  text-align: center;
+}
+
+.intro {
+  max-width: 540px;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+  gap: 16px;
+}
+
+.cardWrap {
+  height: 100%;
+}
+
+.card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  height: 100%;
+  padding: 8px 8px 24px;
+  border-radius: var(--r-card);
+  background: var(--white);
+  transition: background-color 0.3s var(--ease-out);
+}
+
+.card:hover {
+  background: var(--stone);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 1;
+  margin-bottom: 8px;
+  overflow: hidden;
+  border-radius: var(--r-inner);
+  background: var(--stone);
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 16px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+}
+
+.name svg {
+  transition: transform 0.35s var(--ease-out);
+}
+
+.card:hover .name svg {
+  transform: translateX(3px);
+}
+
+.text {
+  padding: 0 16px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 22px;
+}
+
+@media (max-width: 1099px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 599px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

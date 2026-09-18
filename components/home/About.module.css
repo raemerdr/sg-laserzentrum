@@ -16,6 +16,45 @@
   inset: 0;
 }
 
+.picture img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 60%;
+}
+
+/* On phones the photo drifts a little slower than the page: it is taller
+   than the section and slides down as the section scrolls through view. The
+   timeline belongs to the section, because the photo's own clipping box
+   never scrolls and would hold the drift still. */
+@supports (animation-timeline: view()) {
+  @media (max-width: 899px) and (prefers-reduced-motion: no-preference) {
+    .about {
+      view-timeline-name: --about;
+    }
+
+    .picture img {
+      top: -8%;
+      height: 116%;
+      object-position: 50% 50%;
+      animation: drift linear both;
+      animation-timeline: --about;
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateY(-6.5%);
+  }
+  to {
+    transform: translateY(6.5%);
+  }
+}
+
 /* light cream fade from the top behind the copy instead of a dark scrim */
 .veil {
   position: absolute;

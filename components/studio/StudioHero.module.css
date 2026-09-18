@@ -7,7 +7,7 @@
   height: 100svh;
   min-height: 600px;
   overflow: hidden;
-  color: var(--paper);
+  color: var(--ink);
 }
 
 .media {
@@ -15,12 +15,40 @@
   inset: 0;
 }
 
-.scrim {
+/* Parallax: the photo stays pinned while the page slides over it, so it rises
+   slowly over the first screen of scrolling, a fraction of the content's
+   speed. It is taller than the hero so its bottom edge never shows. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .media {
+      bottom: -15%;
+      animation: drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translateY(-12%);
+  }
+}
+
+/* soft cream light behind the centred copy instead of a dark scrim, so the
+   studio photo keeps its own brightness and the dark text stays readable;
+   a faint fade along the top does the same for the clear nav bar */
+.veil {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to bottom, rgba(19, 12, 6, 0.25), transparent 30%, transparent 60%, rgba(19, 12, 6, 0.3)),
-    var(--scrim-deep);
+    linear-gradient(to bottom, rgba(var(--paper-rgb), 0.5), rgba(var(--paper-rgb), 0) 20%),
+    radial-gradient(
+      ellipse 60% 55% at 50% 52%,
+      rgba(var(--paper-rgb), 0.78) 0%,
+      rgba(var(--paper-rgb), 0.5) 45%,
+      rgba(var(--paper-rgb), 0) 100%
+    );
 }
 
 .center {
@@ -35,11 +63,11 @@
 }
 
 .eyebrow {
-  color: var(--paper-muted);
+  color: var(--muted);
 }
 
 .address {
-  color: var(--paper-muted);
+  color: var(--muted);
 }
 
 .actions {

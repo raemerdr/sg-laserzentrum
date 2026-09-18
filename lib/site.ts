@@ -38,11 +38,21 @@ export const CONTACT = {
   instagram: "https://www.instagram.com/sg_laserzentrum_mannheim/",
 };
 
+/** Agency credit in the footer, in English on every language version. */
+export const CREDIT = {
+  label: "Site made by",
+  name: "nüll.",
+  url: "https://xn--nll-hoa.com/",
+};
+
 /** Figures the client asked to feature. Update them here only. */
 export const FACTS = {
   treatments: "30.000",
   googleReviews: "600",
 };
+
+/** Google Maps search listing every SG Laserzentrum studio with its rating and reviews. */
+export const GOOGLE_REVIEWS_URL = "https://www.google.com/maps/search/?api=1&query=SG%20Laserzentrum";
 
 /**
  * ProvenExpert. Paste the profile URL and the seal image URL from the

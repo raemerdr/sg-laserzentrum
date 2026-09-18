@@ -92,6 +92,39 @@
   text-align: center;
 }
 
+/* the Google reviews link: the G and five stars on top, the count below as
+   large as a section heading, on the page background */
+.google {
+  display: inline-grid;
+  justify-items: center;
+  gap: 16px;
+  max-width: 100%;
+  text-align: center;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+.google:hover {
+  opacity: 0.72;
+}
+
+.googleTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.googleStars {
+  color: var(--gold);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 3px;
+}
+
+.googleText {
+  max-width: 16em;
+  text-wrap: balance;
+}
+
 @media (max-width: 699px) {
   .stage {
     --card: 84vw;

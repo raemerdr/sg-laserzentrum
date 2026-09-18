@@ -29,8 +29,8 @@ export const PRICES: Record<StudioSlug, StudioPrices> = {
 };
 
 /**
- * Layout preview for development only. Never rendered in production, and
- * labelled as sample data wherever it appears.
+ * Shown on every studio page, without a label, until that studio's real prices
+ * are added. They look real to visitors: replace them before launch.
  */
 export const SAMPLE_PRICES: StudioPrices = {
   laser: [

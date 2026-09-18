@@ -4,6 +4,7 @@ import Imprint from "@/components/pages/Imprint";
 
 export const metadata: Metadata = {
   title: "Impressum",
+  description: "Impressum von SG Laserzentrum: Anbieterkennzeichnung, Kontakt und Registerangaben.",
   alternates: { canonical: "/impressum" },
 };
 

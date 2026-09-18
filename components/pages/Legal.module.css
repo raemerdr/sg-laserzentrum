@@ -19,6 +19,24 @@
   color: var(--muted);
 }
 
+.heading {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+}
+
+.list {
+  display: grid;
+  gap: 6px;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.muted {
+  color: var(--muted);
+}
+
 .strong {
   font-weight: 500;
 }
