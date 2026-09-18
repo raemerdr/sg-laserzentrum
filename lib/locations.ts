@@ -56,7 +56,7 @@ export const STUDIOS = [
     phone: "01525 5823470",
     phoneHref: "tel:+4915255823470",
     whatsapp: "http://wa.me/message/WJGAUTLGVEXRK1",
-    booking: "https://www.studiobookr.com/sg-beauty-71344",
+    booking: "https://www.studiobookr.com/sg-beauty-karlsruhe-dauerhafte-haarentfernung-73845#/",
     image: "/images/studio-karlsruhe.jpg",
   },
   {

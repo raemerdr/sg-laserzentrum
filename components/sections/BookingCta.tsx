@@ -37,7 +37,7 @@ export default function BookingCta({ studio }: { studio?: StudioSlug }) {
         </Reveal>
         <form className={styles.form} onSubmit={submit}>
           <div className={styles.selectWrap}>
-            {/* opens upwards: the footer's curve covers the space below the form */}
+            {/* prefers opening upwards into the photo; below the form the footer's curve begins */}
             <Listbox
               ref={picker}
               id="booking-cta-studio"
