@@ -6,7 +6,7 @@ import Reveal from "../ui/Reveal";
 import SplitWords from "../ui/SplitWords";
 import styles from "./Belief.module.css";
 
-/** Two columns: an eyebrow over a large statement, beside a tall portrait. */
+/** Two columns: an eyebrow over a large statement, beside a tall photograph. */
 export default function Belief() {
   const t = useCopy();
   return (
@@ -25,7 +25,7 @@ export default function Belief() {
       </div>
 
       <Reveal className={styles.media} delay={120}>
-        <Photo src="/images/belief-portrait.jpg" alt={t.belief.imageAlt} sizes="(max-width: 899px) 92vw, 600px" />
+        <Photo src="/images/belief-legs.jpg" alt={t.belief.imageAlt} sizes="(max-width: 899px) 92vw, 600px" />
       </Reveal>
     </section>
   );

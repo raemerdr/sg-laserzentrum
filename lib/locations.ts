@@ -27,6 +27,10 @@ type StudioInput = {
   phoneHref: string;
   whatsapp: string | null;
   booking: string;
+  /**
+   * Header photo. Generated from the studio's photos on the old site, so it
+   * shows the real room; Köln had none and gets a generic SG room for now.
+   */
   image: string;
   /** Per-studio hours once the client confirms them. */
   hours?: Partial<OpeningHours>;
@@ -42,7 +46,7 @@ export const STUDIOS = [
     phoneHref: "tel:+491606337377",
     whatsapp: "https://wa.me/491606337377",
     booking: "https://www.studiobookr.com/sg-beauty-72869",
-    image: "/images/vorteil-3.jpg",
+    image: "/images/studio-frankfurt.jpg",
   },
   {
     slug: "karlsruhe",
@@ -53,7 +57,7 @@ export const STUDIOS = [
     phoneHref: "tel:+4915255823470",
     whatsapp: "http://wa.me/message/WJGAUTLGVEXRK1",
     booking: "https://www.studiobookr.com/sg-beauty-71344",
-    image: "/images/vorteil-2.jpg",
+    image: "/images/studio-karlsruhe.jpg",
   },
   {
     slug: "koeln",
@@ -64,7 +68,7 @@ export const STUDIOS = [
     phoneHref: "tel:+491709931346",
     whatsapp: null,
     booking: "https://www.studiobookr.com/sg-laserzentrum-koeln-76670",
-    image: "/images/studio.jpg",
+    image: "/images/studio-koeln.jpg",
   },
   {
     slug: "mainz",
@@ -75,7 +79,7 @@ export const STUDIOS = [
     phoneHref: "tel:+4915221799094",
     whatsapp: "http://wa.me/message/KIFZ2RDI7H7YH1",
     booking: "https://www.studiobookr.com/sg-beauty-73325",
-    image: "/images/hero-chair.jpg",
+    image: "/images/studio-mainz.jpg",
   },
   {
     slug: "mannheim",
@@ -86,7 +90,7 @@ export const STUDIOS = [
     phoneHref: "tel:+4917683393934",
     whatsapp: "http://wa.me/message/YEEFLIC27DFEO1",
     booking: "https://www.studiobookr.com/sinem-gizem-beauty-gbr-71750",
-    image: "/images/laser.jpg",
+    image: "/images/studio-mannheim.jpg",
   },
   {
     slug: "nuernberg",
@@ -97,7 +101,7 @@ export const STUDIOS = [
     phoneHref: "tel:+491722632858",
     whatsapp: "https://wa.me/491722632858",
     booking: "https://www.studiobookr.com/sg-laserzentrum-nuernberg-74077",
-    image: "/images/silk.jpg",
+    image: "/images/studio-nuernberg.jpg",
   },
   {
     slug: "stuttgart",
@@ -108,7 +112,7 @@ export const STUDIOS = [
     phoneHref: "tel:+4917630636683",
     whatsapp: "http://wa.me/message/HVGZUS2BWHG6I1",
     booking: "https://www.studiobookr.com/sg-beauty-stuttgart-73466",
-    image: "/images/portrait.jpg",
+    image: "/images/studio-stuttgart.jpg",
   },
 ] as const satisfies readonly StudioInput[];
 
@@ -126,9 +130,18 @@ export function hoursFor(studio: Studio): OpeningHours {
   return { ...DEFAULT_HOURS, ...studio.hours };
 }
 
-/** Google Maps search link built from the address, so no map embed is loaded. */
+/** What both Google Maps links search for, so the map pin and the route link agree. */
+function mapsQuery(studio: Studio) {
+  return `SG Laserzentrum, ${studio.street}, ${studio.zip}`;
+}
+
+/** Google Maps search link built from the address, for route planning. */
 export function mapsUrl(studio: Studio) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    `SG Laserzentrum, ${studio.street}, ${studio.zip}`,
-  )}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery(studio))}`;
+}
+
+/** Keyless Google Maps embed of the same search, in the page language. */
+export function mapsEmbedUrl(studio: Studio, lang: string) {
+  const params = new URLSearchParams({ q: mapsQuery(studio), hl: lang, z: "16", output: "embed" });
+  return `https://maps.google.com/maps?${params}`;
 }

@@ -46,8 +46,8 @@ export const FACTS = {
 
 /**
  * ProvenExpert. Paste the profile URL and the seal image URL from the
- * ProvenExpert dashboard ("Siegel & Widgets"). While both are null nothing
- * is rendered in production and a labelled slot is shown in development.
+ * ProvenExpert dashboard ("Siegel & Widgets"). While either is null the
+ * seal is not rendered.
  */
 export const PROVEN_EXPERT = {
   profileUrl: null as string | null,

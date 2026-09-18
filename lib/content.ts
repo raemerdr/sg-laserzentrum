@@ -73,7 +73,7 @@ const COPY_DE = {
     eyebrow: "Unser Anspruch",
     title: "Wir glauben an glatte Haut, die bleibt.",
     body: "Dauerhafte Haarentfernung ist Vertrauenssache. Deshalb arbeitet jedes unserer Studios mit denselben Standards, derselben Technik und einem Team, das regelmäßig geschult wird.",
-    imageAlt: "Frau mit geschlossenen Augen streicht mit den Fingerspitzen über ihren glatten Hals",
+    imageAlt: "Glatte Beine einer Frau, in die Luft gestreckt und überkreuzt, vor sandfarbenem Hintergrund",
   },
 
   services: {
@@ -208,7 +208,6 @@ const COPY_DE = {
     provenExpert: {
       label: "ProvenExpert",
       link: "Alle Bewertungen auf ProvenExpert",
-      devSlot: "ProvenExpert-Siegel: erscheint hier, sobald Profil-URL und Siegel in lib/site.ts eingetragen sind.",
     },
   },
 
@@ -322,6 +321,10 @@ const COPY_DE = {
     pricesSample: "Beispieldaten · nur in der Entwicklung sichtbar",
     others: "Weitere Standorte",
     all: "Alle Standorte",
+    map: {
+      label: "Karte",
+      title: (city: string) => `Google Maps: SG Laserzentrum ${city}`,
+    },
   },
 
   studiosPage: {
@@ -384,7 +387,7 @@ const COPY_DE = {
     controller: "Verantwortliche Stelle",
     pending:
       "Die vollständige Datenschutzerklärung wird derzeit überarbeitet und hier veröffentlicht. Bei Fragen zum Datenschutz erreichen Sie uns jederzeit unter den oben genannten Kontaktdaten.",
-    devNote: "Vor dem Livegang: vollständigen Text einsetzen (u. a. Hosting, Studiolution-Buchung, ProvenExpert, WhatsApp).",
+    devNote: "Vor dem Livegang: vollständigen Text einsetzen (u. a. Hosting, Studiolution-Buchung, ProvenExpert, WhatsApp, Google Maps).",
   },
 
   notFound: {
@@ -457,7 +460,7 @@ const COPY_EN: Copy = {
     eyebrow: "Our promise",
     title: "We believe in smooth skin that lasts.",
     body: "Permanent hair removal is a matter of trust. That is why every one of our studios works to the same standards, with the same technology and a team that is trained regularly.",
-    imageAlt: "Woman with closed eyes running her fingertips along her smooth neck",
+    imageAlt: "A woman's smooth legs raised into the air and crossed, against a sand-coloured backdrop",
   },
 
   services: {
@@ -591,7 +594,6 @@ const COPY_EN: Copy = {
     provenExpert: {
       label: "ProvenExpert",
       link: "All reviews on ProvenExpert",
-      devSlot: "ProvenExpert seal: appears here once the profile URL and seal are set in lib/site.ts.",
     },
   },
 
@@ -705,6 +707,10 @@ const COPY_EN: Copy = {
     pricesSample: "Sample data · visible in development only",
     others: "Other locations",
     all: "All locations",
+    map: {
+      label: "Map",
+      title: (city: string) => `Google Maps: SG Laserzentrum ${city}`,
+    },
   },
 
   studiosPage: {
@@ -767,7 +773,7 @@ const COPY_EN: Copy = {
     controller: "Controller",
     pending:
       "The full privacy policy is being revised and will be published here. If you have questions about data protection, you can reach us at any time using the contact details above.",
-    devNote: "Before launch: insert the full text (hosting, Studiolution booking, ProvenExpert, WhatsApp and so on).",
+    devNote: "Before launch: insert the full text (hosting, Studiolution booking, ProvenExpert, WhatsApp, Google Maps and so on).",
   },
 
   notFound: {

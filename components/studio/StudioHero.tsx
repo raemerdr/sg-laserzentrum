@@ -13,7 +13,7 @@ export default function StudioHero({ studio }: { studio: Studio }) {
   return (
     <section data-nav-overlay className={styles.hero} aria-labelledby="studio-title">
       <div className={styles.media}>
-        {/* placeholder photography, not this studio, so it is decorative */}
+        {/* the photo sits behind the headline, so it is decorative */}
         <Photo src={studio.image} alt="" sizes="100vw" preload />
       </div>
       <div className={styles.scrim} aria-hidden="true" />

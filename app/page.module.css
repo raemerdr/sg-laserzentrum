@@ -5,6 +5,10 @@
 .stackTop {
   position: relative;
   z-index: 2;
+  /* contain the panel's negative bottom margin: otherwise it collapses through
+     this box, the box (and the sticky hero's range) runs 80px too far, and the
+     hero shows under the panel's soft edge instead of the About photograph */
+  display: flow-root;
 }
 
 .stackBottom {
