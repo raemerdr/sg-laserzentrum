@@ -57,6 +57,11 @@
   max-width: 580px;
 }
 
+/* slides down to the studio picker in the booking section */
+.action {
+  margin-top: 8px;
+}
+
 @media (max-width: 899px) {
   .inner {
     gap: 20px;

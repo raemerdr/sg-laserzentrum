@@ -11,6 +11,9 @@
   margin-top: clamp(80px, 10vw, 160px);
   padding: 120px var(--gutter) calc(var(--curve) + 96px);
   overflow: hidden;
+  /* "Termin buchen" in the About section lands the section flush with the
+     top, which leaves the centred picker in the middle of the screen */
+  scroll-margin-top: 0;
 }
 
 .backdrop {
