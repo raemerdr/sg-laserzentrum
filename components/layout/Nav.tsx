@@ -224,23 +224,6 @@ export default function Nav() {
           </nav>
 
           <div className={styles.actions}>
-            {studio ? (
-              <a className={`${styles.action} ${styles.caps}`} href={studio.booking} target="_blank" rel="noopener noreferrer">
-                {bookLabel}
-                <span className="sr-only">{t.a11y.opensNewTab}</span>
-              </a>
-            ) : (
-              <button
-                type="button"
-                className={`${styles.action} ${styles.caps}`}
-                onClick={() => {
-                  closeAll();
-                  openBooking();
-                }}
-              >
-                {bookLabel}
-              </button>
-            )}
             <button
               ref={menuBtnRef}
               type="button"
@@ -255,6 +238,24 @@ export default function Nav() {
             >
               {open ? t.nav.close : t.nav.menu}
             </button>
+            {/* the booking button holds the corner of the fixed bar, so it stays in reach at every scroll position */}
+            {studio ? (
+              <a className={`${styles.action} ${styles.book} ${styles.caps}`} href={studio.booking} target="_blank" rel="noopener noreferrer">
+                {bookLabel}
+                <span className="sr-only">{t.a11y.opensNewTab}</span>
+              </a>
+            ) : (
+              <button
+                type="button"
+                className={`${styles.action} ${styles.book} ${styles.caps}`}
+                onClick={() => {
+                  closeAll();
+                  openBooking();
+                }}
+              >
+                {bookLabel}
+              </button>
+            )}
           </div>
         </div>
       </header>

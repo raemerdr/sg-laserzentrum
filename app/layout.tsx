@@ -7,6 +7,7 @@ import { BookingProvider } from "@/components/layout/BookingProvider";
 import Nav from "@/components/layout/Nav";
 import SkipLink from "@/components/layout/SkipLink";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -88,6 +89,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <SkipLink />
             <Nav />
             {children}
+            <WhatsAppButton />
             <SmoothScroll />
             <DevLangToggle />
           </BookingProvider>

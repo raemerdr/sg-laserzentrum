@@ -1,16 +1,23 @@
 "use client";
 
 import { useEffect, useRef, type CSSProperties } from "react";
+import { STUDIOS, mapsUrl, type Studio } from "@/lib/locations";
+import { STUDIO_REVIEWS } from "@/lib/reviews";
 import { FACTS, GOOGLE_REVIEWS_URL } from "@/lib/site";
-import { useCopy } from "../LangProvider";
+import { useLang } from "../LangProvider";
 import GoogleLogo from "../ui/GoogleLogo";
+import Icon from "../ui/Icon";
 import SplitWords from "../ui/SplitWords";
 import ProvenExpert from "./ProvenExpert";
 import styles from "./Reviews.module.css";
 
-export default function Reviews({ limit }: { limit?: number }) {
-  const t = useCopy();
-  const items = t.reviews.items.slice(0, limit);
+/**
+ * On a studio page, `studio` swaps in that studio's own Google reviews and
+ * adds a link to its Google listing; the home page shows the brand-wide ones.
+ */
+export default function Reviews({ studio }: { studio?: Studio }) {
+  const { lang, t } = useLang();
+  const items = studio ? STUDIO_REVIEWS[studio.slug].map((r) => ({ name: r.name, quote: r[lang] })) : t.reviews.items;
   const stageRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +52,12 @@ export default function Reviews({ limit }: { limit?: number }) {
       <div ref={stageRef} className={styles.stage} style={{ "--count": items.length } as CSSProperties}>
         <div ref={stickyRef} className={styles.sticky}>
           <div className={styles.titleWrap}>
-            <SplitWords as="h2" id="reviews-title" text={t.reviews.title} className="t-display" />
+            <SplitWords
+              as="h2"
+              id="reviews-title"
+              text={studio ? t.reviews.studioTitle(studio.city) : t.reviews.title}
+              className="t-display"
+            />
           </div>
 
           <ul className={styles.track}>
@@ -67,7 +79,10 @@ export default function Reviews({ limit }: { limit?: number }) {
                   </div>
                   <figcaption className={styles.details}>
                     <span className="t-mono">{r.name}</span>
-                    <span className={`t-mono ${styles.source}`}>{t.reviews.source}</span>
+                    <span className={styles.source}>
+                      <GoogleLogo size={16} />
+                      <span className="t-mono">{t.reviews.source}</span>
+                    </span>
                   </figcaption>
                 </figure>
               </li>
@@ -82,9 +97,20 @@ export default function Reviews({ limit }: { limit?: number }) {
             <GoogleLogo size={24} />
             <span className={styles.googleStars}>★★★★★</span>
           </span>
-          <span className={`t-h2 ${styles.googleText}`}>{t.reviews.summary(FACTS.googleReviews)}</span>
+          <span className={`t-h2 ${styles.googleText}`}>{t.reviews.summary(FACTS.googleReviews, STUDIOS.length)}</span>
           <span className="sr-only">{t.a11y.opensNewTab}</span>
         </a>
+        {studio && (
+          <a className={styles.studioLink} href={mapsUrl(studio)} target="_blank" rel="noopener noreferrer">
+            <span className={styles.studioLinkText}>
+              {studio.google
+                ? t.reviews.studioRating(studio.google.rating, studio.google.count, studio.city)
+                : t.reviews.studioLink(studio.city)}
+            </span>
+            <Icon name="external" size={14} />
+            <span className="sr-only">{t.a11y.opensNewTab}</span>
+          </a>
+        )}
         <ProvenExpert />
       </div>
     </section>

@@ -33,7 +33,7 @@ export const ARTICLES = [
     slug: "vorbereitung-laser-haarentfernung",
     image: "/images/ratgeber-vorbereitung-laser-haarentfernung.jpg",
     published: "2026-09-18",
-    updated: "2026-09-18",
+    updated: "2026-09-22",
   },
   {
     slug: "tut-laser-haarentfernung-weh",
@@ -471,7 +471,7 @@ const DE: Record<ArticleSlug, ArticleCopy> = {
     intro:
       "Eine gute Vorbereitung macht die Laser-Haarentfernung angenehmer und das Ergebnis besser. Die meisten Punkte sind schnell erledigt, einige sollten Sie aber schon ein paar Wochen vor dem Termin im Blick haben. Hier finden Sie alles, was vor, während und nach der Behandlung wichtig ist.",
     answer:
-      "Zur Vorbereitung auf die Laser-Haarentfernung rasieren Sie die Zone am Tag vorher glatt und meiden zwei Wochen lang Sonnenbäder und Solarium. Zupfen, Wachsen und Epilieren sind während der Behandlungsreihe tabu, weil der Laser die Haarwurzel braucht. Verzichten Sie vorher auf Impfungen und Antibiotika, und entfernen Sie bei Gesichtsbehandlungen das Make-up vollständig.",
+      "Zur Vorbereitung auf die Laser-Haarentfernung rasieren Sie die Zone am Tag vorher glatt und meiden zwei Wochen lang Sonnenbäder und Solarium. Zupfen, Wachsen und Epilieren sind während der Behandlungsreihe tabu, weil der Laser die Haarwurzel braucht. Informieren Sie uns vorab über Medikamente und kürzlich erhaltene Impfungen, und entfernen Sie bei Gesichtsbehandlungen das Make-up vollständig.",
     blocks: [
       { type: "h2", text: "Checkliste: Was Sie vor der Behandlung beachten sollten" },
       {
@@ -479,7 +479,7 @@ const DE: Record<ArticleSlug, ArticleCopy> = {
         items: [
           "Zwei Wochen vorher: Sonnenbäder und Solarium meiden und auch auf Selbstbräuner verzichten.",
           "Während der ganzen Behandlungsreihe: nur rasieren, nicht zupfen, wachsen oder epilieren.",
-          "Vor dem Termin: auf Impfungen und Antibiotika verzichten und uns über Medikamente informieren, die Sie regelmäßig einnehmen.",
+          "Vor dem Termin: uns über Medikamente und kürzlich erhaltene Impfungen informieren. Bei Bedarf ärztliche Rücksprache halten oder den Termin verschieben.",
           "Am Tag vorher: die Zone glatt rasieren.",
           "Am Behandlungstag: die Haut reinigen und keine Creme, kein Deo und kein Make-up auf die Zone auftragen.",
         ],
@@ -1007,7 +1007,7 @@ const EN: Record<ArticleSlug, ArticleCopy> = {
     intro:
       "Good preparation makes laser hair removal more comfortable and the result better. Most points are quickly done, but a few you should keep in mind a couple of weeks before your appointment. Here you will find everything that matters before, during and after treatment.",
     answer:
-      "To prepare for laser hair removal, shave the area smooth the day before and avoid sunbathing and sunbeds for two weeks. Plucking, waxing and epilating are off limits during the course of treatment, because the laser needs the hair root. Avoid vaccinations and antibiotics beforehand, and for facial treatments remove all make-up.",
+      "To prepare for laser hair removal, shave the area smooth the day before and avoid sunbathing and sunbeds for two weeks. Plucking, waxing and epilating are off limits during the course of treatment, because the laser needs the hair root. Tell us beforehand about any medication and recent vaccinations, and for facial treatments remove all make-up.",
     blocks: [
       { type: "h2", text: "Checklist: what to consider before treatment" },
       {
@@ -1015,7 +1015,7 @@ const EN: Record<ArticleSlug, ArticleCopy> = {
         items: [
           "Two weeks before: avoid sunbathing and sunbeds, and skip self-tanner too.",
           "Throughout the course of treatment: only shave; do not pluck, wax or epilate.",
-          "Before your appointment: avoid vaccinations and antibiotics, and tell us about any medication you take regularly.",
+          "Before your appointment: tell us about any medication and recent vaccinations. If necessary, check with your doctor or postpone the appointment.",
           "The day before: shave the area smooth.",
           "On the day: clean the skin and apply no cream, deodorant or make-up to the area.",
         ],

@@ -44,7 +44,7 @@
   background:
     linear-gradient(to bottom, rgba(var(--paper-rgb), 0.5), rgba(var(--paper-rgb), 0) 20%),
     radial-gradient(
-      ellipse 60% 55% at 50% 52%,
+      ellipse 64% 60% at 50% 54%,
       rgba(var(--paper-rgb), 0.78) 0%,
       rgba(var(--paper-rgb), 0.5) 45%,
       rgba(var(--paper-rgb), 0) 100%
@@ -76,4 +76,10 @@
   justify-content: center;
   gap: 8px;
   margin-top: 8px;
+}
+
+/* the brand's figures, so a visitor arriving from a map search sees its size */
+.facts {
+  justify-self: stretch;
+  margin-top: 20px;
 }

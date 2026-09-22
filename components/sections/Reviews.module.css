@@ -5,14 +5,15 @@
 }
 
 /* Full-bleed stage. Everything past its first screen of height is scroll
-   distance: while the view is pinned, the cards travel from past the right
-   edge to past the left edge, at 0.8px of scroll per px of travel. */
+   distance: while the view is pinned, the cards travel in from past the right
+   edge until the last one rests at the right gutter, at 0.7px of scroll per px
+   of travel; then the page scrolls on. */
 .stage {
   --card: clamp(300px, 32vw, 440px);
   --gap: clamp(16px, 2vw, 28px);
   --track: calc(var(--count) * var(--card) + (var(--count) - 1) * var(--gap));
   --progress: 0;
-  height: calc(100svh + (100vw + var(--track)) * 0.8);
+  height: calc(100svh + (var(--track) + var(--gutter)) * 0.7);
   margin-inline: calc(50% - 50vw);
 }
 
@@ -34,18 +35,20 @@
   grid-area: 1 / 1;
 }
 
+/* fades out as the cards pass over it, gone by the time they cover it */
 .titleWrap {
   justify-self: center;
   max-width: 880px;
   padding: 0 var(--gutter);
   text-align: center;
+  opacity: clamp(0, calc((0.6 - var(--progress)) / 0.54), 1);
 }
 
 .track {
   display: flex;
   gap: var(--gap);
   width: max-content;
-  transform: translateX(calc((1 - var(--progress)) * 100cqw - var(--progress) * 100%));
+  transform: translateX(calc(100cqw - var(--progress) * (100% + var(--gutter))));
   will-change: transform;
 }
 
@@ -66,11 +69,12 @@
   width: 100%;
 }
 
+/* Google's rating yellow, the same as in its logo */
 .stars {
   display: flex;
   gap: 4px;
   margin-bottom: 20px;
-  color: var(--ink);
+  color: #fbbc05;
   font-size: 14px;
   letter-spacing: 2px;
 }
@@ -80,7 +84,11 @@
   gap: 8px;
 }
 
+/* the Google G, then the source in words */
 .source {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: var(--muted);
 }
 
@@ -114,7 +122,7 @@
 }
 
 .googleStars {
-  color: var(--gold);
+  color: #fbbc05;
   font-size: 20px;
   line-height: 1;
   letter-spacing: 3px;
@@ -123,6 +131,22 @@
 .googleText {
   max-width: 16em;
   text-wrap: balance;
+}
+
+/* the studio's own Google listing, under the brand-wide count */
+.studioLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.studioLinkText {
+  border-bottom: 1px solid var(--faint);
+  transition: border-color 0.3s var(--ease-out);
+}
+
+.studioLink:hover .studioLinkText {
+  border-color: var(--ink);
 }
 
 @media (max-width: 699px) {
@@ -152,6 +176,10 @@
   .titleWrap,
   .track {
     grid-area: auto;
+  }
+
+  .titleWrap {
+    opacity: 1;
   }
 
   .track {

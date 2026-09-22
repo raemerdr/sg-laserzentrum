@@ -2,120 +2,243 @@
   max-width: calc(var(--max) + 2 * var(--gutter));
   margin: 0 auto;
   padding: clamp(120px, 14vw, 200px) var(--gutter) 0;
-  text-align: center;
 }
 
-/* The name sits above the machine; the machine's top edge overlaps just the
-   bottom of the letters, for a little depth. */
-.stage {
-  --name-size: clamp(48px, 12.5vw, 184px);
+/* the headline and copy beside the device photo */
+.top {
   display: grid;
-  justify-items: center;
-  margin-top: clamp(16px, 2vw, 28px);
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: center;
+  gap: clamp(32px, 5.5vw, 80px);
+}
+
+.head {
+  display: grid;
+  justify-items: start;
+  gap: 20px;
 }
 
 .title {
-  position: relative;
-  z-index: 0;
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-variation-settings: "opsz" 72;
-  font-size: var(--name-size);
-  line-height: 0.95;
-  letter-spacing: clamp(-8px, -0.55vw, -2px);
-  text-wrap: balance;
-}
-
-/* the cut-out has no backdrop, so a soft floor shadow grounds it */
-.machine {
-  position: relative;
-  z-index: 1;
-  isolation: isolate;
-  display: flex;
-  justify-content: center;
-  margin-top: calc(var(--name-size) * -0.3);
-}
-
-.machine::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 50%;
-  bottom: -10px;
-  width: clamp(240px, 26vw, 420px);
-  height: 36px;
-  transform: translateX(-50%);
-  background: radial-gradient(closest-side, rgba(var(--ink-rgb), 0.18), rgba(var(--ink-rgb), 0));
-}
-
-.machineImage {
-  width: auto;
-  height: clamp(440px, 56vw, 760px);
+  max-width: 940px;
 }
 
 .body {
-  max-width: 600px;
-  margin: clamp(40px, 5vw, 64px) auto 0;
+  max-width: 580px;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.device {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--stone-deep);
+}
+
+/* the product shot's cool studio grey, warmed to sit on the cream page */
+.devicePhoto {
+  filter: sepia(0.2) saturate(0.95);
+}
+
+/* ─────────────── Wavelengths ───────────────
+   Full bleed: the illustration, its top and bottom edges fading into the
+   page, over four columns of copy. Both are the width of the screen, so each
+   column stays centred under its beam (the beams sit at the centres of the
+   image's quarters). */
+
+.chart {
+  margin: clamp(40px, 5vw, 72px) calc(50% - 50vw) 0;
+}
+
+.scene {
+  display: flex;
+  flex-direction: column;
+}
+
+.waves {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding-top: clamp(8px, 1vw, 16px);
+}
+
+.wave {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 8px;
+  padding: 0 clamp(14px, 1.6vw, 24px);
+  text-align: center;
+}
+
+.nm {
   color: var(--muted);
 }
 
-.specs {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  margin-top: clamp(48px, 6vw, 88px);
-  border-top: 1px solid var(--line);
+.waveTitle {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-variation-settings: "opsz" 36;
+  font-size: clamp(20px, 1.8vw, 28px);
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+  text-wrap: balance;
 }
 
-.spec {
-  display: grid;
-  align-content: start;
-  gap: 12px;
-  padding: 32px 16px 0;
+.waveBody {
+  color: rgba(var(--ink-rgb), 0.68);
+  font-size: 14px;
+  line-height: 20px;
+  text-wrap: pretty;
 }
 
-.spec + .spec {
-  border-left: 1px solid var(--line);
+.skin {
+  position: relative;
+  flex: none;
+  aspect-ratio: 3168 / 1344;
 }
 
-.specValue {
+/* the render is soft; deeper contrast and colour make the layers, hairs and
+   glowing roots read at a glance */
+.skin img {
+  filter: contrast(1.18) saturate(1.25) brightness(0.97);
+}
+
+/* Both edges fade into the page: the "air" above the skin (the skin surface
+   sits 12.7% down) and a strip below the deepest root (88% down), so the
+   copy underneath rests on paper. */
+.skin::before,
+.skin::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.skin::before {
+  top: 0;
+  height: 13%;
+  background: linear-gradient(to bottom, var(--paper), rgba(var(--paper-rgb), 0));
+}
+
+.skin::after {
+  bottom: 0;
+  height: 11%;
+  background: linear-gradient(to top, var(--paper), rgba(var(--paper-rgb), 0));
+}
+
+/* Read out on desktop, where the labels sit under their beams; shown on
+   phones, where the labels become a list. */
+.caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ─────────────── Cooling ─────────────── */
+
+.cooling {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 2.4vw, 32px);
+  max-width: 680px;
+  margin: clamp(40px, 5vw, 64px) auto 0;
+}
+
+.coolingValue {
+  flex: none;
   font-family: var(--font-serif);
   font-variation-settings: "opsz" 36;
-  font-size: clamp(28px, 3.1vw, 44px);
+  font-size: clamp(36px, 3.6vw, 52px);
   line-height: 1;
-  letter-spacing: clamp(-1.5px, -0.1vw, -0.5px);
+  letter-spacing: clamp(-2px, -0.12vw, -1px);
   font-variant-numeric: lining-nums;
 }
 
-.specLabel {
-  color: var(--muted);
+.coolingText {
+  display: grid;
+  gap: 6px;
+  padding-left: clamp(20px, 2.4vw, 32px);
+  border-left: 1px solid var(--line);
 }
 
-/* narrow screens: a plain list, value left and label right */
+.coolingBody {
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Narrow screens: the photo moves under the centred headline. */
 @media (max-width: 899px) {
-  .specs {
+  .top {
     grid-template-columns: 1fr;
+  }
+
+  .head {
+    justify-items: center;
+    text-align: center;
+  }
+}
+
+/* Tablets: the four columns stay on their beams and the copy tightens. */
+@media (max-width: 999px) {
+  .waveTitle {
+    font-size: 19px;
+  }
+
+  .waveBody {
+    font-size: 13px;
+    line-height: 18px;
+  }
+}
+
+/* Phones: the picture edge to edge, then the four wavelengths as a list, in
+   the order of the beams from left to right. */
+@media (max-width: 699px) {
+  .waves {
+    grid-template-columns: 1fr;
+    padding: 8px var(--gutter) 0;
+  }
+
+  .wave {
+    justify-items: start;
+    gap: 6px;
+    padding: 16px 0;
     text-align: left;
   }
 
-  .spec {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
+  .wave + .wave {
+    border-top: 1px solid var(--line);
+  }
+
+  .caption {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0 0 12px;
+    padding: 0 var(--gutter);
+    overflow: visible;
+    clip-path: none;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 20px;
+    white-space: normal;
+  }
+
+  .cooling {
+    align-items: flex-start;
+    flex-direction: column;
     gap: 16px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--line);
   }
 
-  .spec + .spec {
+  .coolingText {
+    padding: 16px 0 0;
     border-left: 0;
-  }
-
-  .specValue {
-    font-size: 24px;
-    line-height: 28px;
-  }
-
-  .specLabel {
-    text-align: right;
+    border-top: 1px solid var(--line);
   }
 }

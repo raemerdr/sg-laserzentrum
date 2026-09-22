@@ -24,7 +24,8 @@
   /* raised cards */
   --white: #fcf8f2;
   /* logo gold */
-  --gold: #b99864;
+  --gold-rgb: 185, 152, 100;
+  --gold: rgb(var(--gold-rgb)); /* #b99864 */
 
   --muted: rgba(var(--ink-rgb), 0.64);
   --faint: rgba(var(--ink-rgb), 0.14);
@@ -50,9 +51,19 @@
   --curve: clamp(110px, 20.8vw, 300px);
   --bleed: 80px;
   --nav-h: 64px;
+  /* the floating WhatsApp button, which layouts near the corner keep clear of */
+  --wa-size: 56px;
+  --wa-offset: 24px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@media (max-width: 599px) {
+  :root {
+    --wa-size: 52px;
+    --wa-offset: 16px;
+  }
 }
 
 /* ─────────────────────────────── Reset ─────────────────────────────── */

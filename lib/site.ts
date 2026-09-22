@@ -45,11 +45,21 @@ export const CREDIT = {
   url: "https://xn--nll-hoa.com/",
 };
 
-/** Figures the client asked to feature. Update them here only. */
+/**
+ * Figures the client asked to feature. Update them here only. The review count
+ * is the total across all studios' Google profiles. Customer profiles (about
+ * 9,000) include booked no-shows, so the client does not want them shown.
+ */
 export const FACTS = {
   treatments: "30.000",
-  googleReviews: "600",
+  googleReviews: "1.200",
 };
+
+/**
+ * The founders, named in this order under their photo on the home page.
+ * The photo is still to come; an empty frame holds its place until then.
+ */
+export const FOUNDERS = [{ name: "Sinem Bulukgiray" }, { name: "Gizem Achenbach" }] as const;
 
 /** Google Maps search listing every SG Laserzentrum studio with its rating and reviews. */
 export const GOOGLE_REVIEWS_URL = "https://www.google.com/maps/search/?api=1&query=SG%20Laserzentrum";

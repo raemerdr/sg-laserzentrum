@@ -3,6 +3,7 @@
 import { CONTACT } from "@/lib/site";
 import { hoursFor, mapsUrl, type Studio, type TimeRange } from "@/lib/locations";
 import { useCopy } from "../LangProvider";
+import Button from "../ui/Button";
 import Icon from "../ui/Icon";
 import Reveal from "../ui/Reveal";
 import SplitWords from "../ui/SplitWords";
@@ -90,6 +91,9 @@ export default function StudioFacts({ studio }: { studio: Studio }) {
               <dd>{range(hours.sunday)}</dd>
             </div>
           </dl>
+          <Button href={studio.booking} external icon="external" className={styles.book}>
+            {t.studio.book}
+          </Button>
         </Reveal>
       </div>
 

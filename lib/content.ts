@@ -1,10 +1,13 @@
 import type { ServiceId, TreatmentId } from "./services";
+import { FACTS } from "./site";
 
 export type Lang = "de" | "en";
 
 type Link = { label: string; href: string };
 type Faq = { q: string; a: string; list?: string[] };
 type PolicySection = { title: string; body: string[]; list?: string[]; after?: string[] };
+export type FactId = "treatments" | "reviews" | "studios" | "nisv";
+type Fact = { id: FactId; value: string; label: string };
 /** `position` is the photo's object-position inside the tall card crop. */
 type Usp = { title: string; body: string; photo: { src: string; alt: string; position: string } };
 
@@ -51,6 +54,7 @@ const COPY_DE = {
     menuClose: "Menü schließen",
     home: "SG Laserzentrum Startseite",
     contact: "Kontakt",
+    whatsapp: "Per WhatsApp schreiben",
   },
 
   intro: {
@@ -61,9 +65,19 @@ const COPY_DE = {
   hero: {
     brand: "SG Laserzentrum",
     heading: "SG Laserzentrum: dauerhafte Haarentfernung mit Laser",
+    eyebrow: "Schönheit beginnt mit Vertrauen",
+    mark: "SG",
     word: "Laserzentrum",
-    intro: "SG Laserzentrum – dauerhafte Haarentfernung mit Gefühl für Ihre Haut.",
-    labels: (studios: number) => ["Dauerhafte Haarentfernung", "Moderne Lasertechnologie", `${studios} Standorte in Deutschland`],
+    intro: "Dauerhafte Haarentfernung mit Gefühl für Ihre Haut.",
+    cta: "Standort wählen & Termin buchen",
+    factsLabel: "SG Laserzentrum in Zahlen",
+    /** The trust figures, in the order of the client's approved hero layout. */
+    facts: (studios: number, treatments: string, reviews: string): Fact[] => [
+      { id: "treatments", value: `${treatments}+`, label: "Behandlungen" },
+      { id: "reviews", value: `${reviews}+`, label: "Google-Bewertungen" },
+      { id: "studios", value: String(studios), label: "Standorte in Deutschland" },
+      { id: "nisv", value: "NiSV", label: "zertifiziertes Fachpersonal" },
+    ],
     imageAlt: "Nahaufnahme eines Frauengesichts mit glatter, strahlender Haut",
   },
 
@@ -120,22 +134,34 @@ const COPY_DE = {
     eyebrow: "Über uns",
     title: "Ganz auf eines spezialisiert",
     body: (studios: number) =>
-      `SG Laserzentrum wurde 2022 gegründet und widmet sich seitdem zu 100 % der dauerhaften Haarentfernung. Unser Fachpersonal ist nach NiSV zertifiziert, wird regelmäßig intern geschult und arbeitet mit moderner Lasertechnologie, heute an ${word(DE_NUMBERS, studios)} Standorten in Deutschland.`,
+      `Seit der Gründung 2022 ist SG Laserzentrum zu 100 % auf dauerhafte Haarentfernung spezialisiert. Unser Fachpersonal ist nach NiSV zertifiziert, wird regelmäßig intern geschult und arbeitet mit moderner Lasertechnologie, heute an ${word(DE_NUMBERS, studios)} Standorten in Deutschland.`,
     imageAlt: "Heller Behandlungsraum mit Liege, Vorhängen und Pflanzen",
+  },
+
+  story: {
+    eyebrow: "Unsere Geschichte",
+    title: "Von einem Standort zur Marke",
+    body: (studios: number) =>
+      `Unsere Reise begann 2022 mit einer klaren Idee: dauerhafte Haarentfernung professioneller, persönlicher und moderner zu machen. Heute steht SG Laserzentrum für spezialisierte Laserbehandlungen an ${word(DE_NUMBERS, studios)} Standorten.`,
+  },
+
+  founders: {
+    title: "Die Frauen hinter SG",
+    intro: "Sie haben SG Laserzentrum gegründet und führen es bis heute selbst: persönlich und mit einem hohen Anspruch an jede einzelne Behandlung.",
+    photoPending: "Foto folgt",
+    role: "Gründerinnen und Geschäftsführerinnen",
+    international: {
+      title: "International inspiriert",
+      body: "Wir schauen bewusst über den deutschen Markt hinaus und verfolgen die internationalen Beauty- und Ästhetikmärkte. Neue Technologien und Behandlungskonzepte prüfen wir sorgfältig und übernehmen, was fachlich überzeugt und unserem Qualitätsanspruch entspricht. So entwickeln wir SG stetig weiter.",
+      markets: ["Südkorea", "China", "Türkei", "Spanien", "Italien"],
+    },
   },
 
   proof: {
     eyebrow: "Warum SG Laserzentrum",
-    title: "Was uns ausmacht",
-    stats: (studios: number, treatments: string, reviews: string) => [
-      { value: `${treatments}+`, label: "durchgeführte Behandlungen" },
-      { value: `${reviews}+`, label: "positive Google-Bewertungen" },
-      { value: String(studios), label: "Standorte in Deutschland" },
-      { value: "2022", label: "gegründet" },
-    ],
     usps: (studios: number): Usp[] => [
       {
-        title: "100\u00A0% Haarentfernung",
+        title: "100\u00A0% spezialisiert auf dauerhafte Haarentfernung",
         body: "Wir konzentrieren uns auf eine einzige Behandlung und beherrschen sie entsprechend gut.",
         photo: { src: "/images/usp-spezialisiert.jpg", alt: "Glatte, nackte Schulter einer Frau im warmen Licht", position: "60% 50%" },
       },
@@ -169,25 +195,36 @@ const COPY_DE = {
 
   technology: {
     eyebrow: "Technologie",
-    title: "SG XLaser Pro",
-    body: "Ein Hochleistungs-Medizinlaser mit vier Wellenlängen, abgestimmt auf unterschiedliche Haut- und Haartypen. Die integrierte Kontaktkühlung bis −15 °C kühlt die Haut während der Behandlung und macht die Sitzung spürbar angenehmer.",
-    specs: [
-      { value: "755 nm", label: "Alexandrit" },
-      { value: "808 nm", label: "Diode" },
-      { value: "955 nm", label: "Ergänzende Wellenlänge" },
-      { value: "1064 nm", label: "Nd:YAG" },
-      { value: "−15 °C", label: "Kontaktkühlung" },
+    // "Medizinlaser" only once the device's official classification is confirmed; until then "Hochleistungslaser".
+    title: "Vier Wellenlängen. Eine Behandlung, individuell abgestimmt auf Ihren Haut- und Haartyp.",
+    body: "Jede Wellenlänge erreicht eine andere Tiefe der Haut. Unser Hochleistungslaser SG XLaser Pro vereint alle vier in einem Gerät. So stimmen wir jede Sitzung auf Ihre Haut und Ihr Haar ab.",
+    imageAlt: "Der SG XLaser Pro mit Touchscreen und Handstück",
+    chartLabel: "Wie tief die vier Wellenlängen in die Haut reichen",
+    chartAlt:
+      "Illustration eines Hautquerschnitts: Vier Lichtstrahlen folgen je einem Haar bis zur Wurzel und reichen von links nach rechts immer tiefer.",
+    wavelengths: [
+      { nm: "755 nm", title: "Helle Haut, feines Haar", body: "wirkt nah an der Oberfläche" },
+      { nm: "808 nm", title: "Viele Haut- und Haartypen", body: "der vielseitige Standard" },
+      { nm: "955 nm", title: "Tiefer sitzende Haarwurzeln", body: "ergänzt die Wirkung in der Tiefe" },
+      { nm: "1064 nm", title: "Dunklere Hauttypen", body: "reicht am tiefsten und schont die Oberfläche" },
     ],
-    imageAlt: "SG XLaser Pro mit Touchscreen und Handstück",
+    cooling: {
+      value: "−15 °C",
+      label: "Kontaktkühlung",
+      body: "Die integrierte Kühlung schützt die Haut während der Behandlung und macht die Sitzung spürbar angenehmer.",
+    },
   },
 
   reviews: {
     title: "Vertrauen, das man in jeder Bewertung liest",
+    studioTitle: (city: string) => `Stimmen aus unserem Studio in ${city}`,
     source: "Google-Bewertung",
     rating: "5 von 5 Sternen",
     quoteOpen: "„",
     quoteClose: "“",
-    summary: (reviews: string) => `Über ${reviews} positive Google-Bewertungen`,
+    summary: (reviews: string, studios: number) => `Über ${reviews} Google-Bewertungen an ${word(DE_NUMBERS, studios)} Standorten`,
+    studioLink: (city: string) => `Bewertungen für ${city} auf Google ansehen`,
+    studioRating: (rating: string, count: number, city: string) => `${rating} von 5 Sternen aus ${count} Google-Bewertungen in ${city}`,
     items: [
       // Quoted verbatim from Google reviews shown on sg-laserzentrum.de. Do not edit the wording.
       {
@@ -211,6 +248,11 @@ const COPY_DE = {
         name: "Vanessa G.",
         quote:
           "Ich bin das zweite Mal hier und super zufrieden. Sehr sauberes Studio und nette Gespräche während der Behandlungen. Einfühlsame Mitarbeiter, und ich wurde von Anfang an hervorragend beraten. Klare Empfehlung!",
+      },
+      {
+        name: "Yasmin",
+        quote:
+          "Ich hatte gestern meine 6. Behandlung, und ich bin mehr als zufrieden. Sei es die Mitarbeiterinnen, die extrem viel Wert auf deinen Komfort legen, oder einfach nur die Behandlung. Kann ich nur mehr als weiterempfehlen!",
       },
     ],
     provenExpert: {
@@ -249,12 +291,12 @@ const COPY_DE = {
       },
       {
         q: "Was sollte ich vor der Behandlung beachten?",
-        a: "Vier Dinge helfen uns, das beste Ergebnis zu erzielen:",
+        a: "Vier Dinge helfen uns, Sie sicher und mit dem besten Ergebnis zu behandeln:",
         list: [
           "Am Tag vor der Behandlung die Zone glatt rasieren.",
           "Bei Gesichtsbehandlungen Make-up vollständig entfernen.",
           "Zwei Wochen vorher Sonnenbäder und Solarium meiden.",
-          "Vorher auf Impfungen und Antibiotika verzichten.",
+          "Uns vorab über Medikamente und kürzlich erhaltene Impfungen informieren. Bei Bedarf ärztliche Rücksprache halten oder den Termin verschieben.",
         ],
       },
       {
@@ -394,7 +436,7 @@ const COPY_DE = {
         "Ein Konzept mit klarem Fokus: dauerhafte Haarentfernung",
         "Moderne Lasertechnologie",
         "Schulungen nach unseren internen Standards",
-        "Eine Marke mit über 600 positiven Google-Bewertungen",
+        `Eine Marke mit über ${FACTS.googleReviews} Google-Bewertungen`,
       ],
       cta: "Franchise-Anfrage senden",
       subject: "Franchise-Anfrage: eigenes SG Laserzentrum eröffnen",
@@ -573,7 +615,7 @@ const COPY_EN: Copy = {
       { label: "Contact", href: "/kontakt" },
     ],
     start: "Home",
-    book: "Book now",
+    book: "Book appointment",
     bookShort: "Book",
     menu: "Menu",
     close: "Close",
@@ -581,6 +623,7 @@ const COPY_EN: Copy = {
     menuClose: "Close menu",
     home: "SG Laserzentrum home",
     contact: "Contact",
+    whatsapp: "Message us on WhatsApp",
   },
 
   intro: {
@@ -591,9 +634,18 @@ const COPY_EN: Copy = {
   hero: {
     brand: "SG Laserzentrum",
     heading: "SG Laserzentrum: permanent laser hair removal",
+    eyebrow: "Beauty begins with trust",
+    mark: "SG",
     word: "Laserzentrum",
-    intro: "SG Laserzentrum – permanent hair removal with a feel for your skin.",
-    labels: (studios: number) => ["Permanent hair removal", "Modern laser technology", `${studios} locations in Germany`],
+    intro: "Permanent hair removal with a feel for your skin.",
+    cta: "Choose a location & book",
+    factsLabel: "SG Laserzentrum in figures",
+    facts: (studios: number, treatments: string, reviews: string): Fact[] => [
+      { id: "treatments", value: `${treatments.replace(".", ",")}+`, label: "treatments" },
+      { id: "reviews", value: `${reviews.replace(".", ",")}+`, label: "Google reviews" },
+      { id: "studios", value: String(studios), label: "locations in Germany" },
+      { id: "nisv", value: "NiSV", label: "certified specialists" },
+    ],
     imageAlt: "Close-up of a woman's face with smooth, glowing skin",
   },
 
@@ -650,22 +702,34 @@ const COPY_EN: Copy = {
     eyebrow: "About us",
     title: "Specialised in one thing",
     body: (studios: number) =>
-      `SG Laserzentrum was founded in 2022 and has been 100% dedicated to permanent hair removal ever since. Our specialists are NiSV certified, trained in-house on a regular basis and work with modern laser technology, today at ${word(EN_NUMBERS, studios)} locations across Germany.`,
+      `Since it was founded in 2022, SG Laserzentrum has been 100% specialised in permanent hair removal. Our specialists are NiSV certified, trained in-house on a regular basis and work with modern laser technology, today at ${word(EN_NUMBERS, studios)} locations across Germany.`,
     imageAlt: "Bright treatment room with a couch, curtains and plants",
+  },
+
+  story: {
+    eyebrow: "Our story",
+    title: "From one location to a brand",
+    body: (studios: number) =>
+      `Our journey began in 2022 with a clear idea: to make permanent hair removal more professional, more personal and more modern. Today SG Laserzentrum stands for specialised laser treatments across ${word(EN_NUMBERS, studios)} locations.`,
+  },
+
+  founders: {
+    title: "The women behind SG",
+    intro: "They founded SG Laserzentrum and still run it themselves: personally, and with high standards for every single treatment.",
+    photoPending: "Photo to follow",
+    role: "Founders and managing directors",
+    international: {
+      title: "Internationally inspired",
+      body: "We deliberately look beyond the German market and follow the international beauty and aesthetics markets. We carefully evaluate new technologies and treatment concepts and adopt what makes professional sense and meets our quality standards. That is how we keep developing SG.",
+      markets: ["South Korea", "China", "Turkey", "Spain", "Italy"],
+    },
   },
 
   proof: {
     eyebrow: "Why SG Laserzentrum",
-    title: "What sets us apart",
-    stats: (studios: number, treatments: string, reviews: string) => [
-      { value: `${treatments.replace(".", ",")}+`, label: "treatments performed" },
-      { value: `${reviews}+`, label: "positive Google reviews" },
-      { value: String(studios), label: "locations in Germany" },
-      { value: "2022", label: "founded" },
-    ],
     usps: (studios: number): Usp[] => [
       {
-        title: "100% hair removal",
+        title: "100% specialised in permanent hair removal",
         body: "We focus on a single treatment and are very good at it as a result.",
         photo: { src: "/images/usp-spezialisiert.jpg", alt: "A woman's smooth bare shoulder in warm light", position: "60% 50%" },
       },
@@ -699,25 +763,35 @@ const COPY_EN: Copy = {
 
   technology: {
     eyebrow: "Technology",
-    title: "SG XLaser Pro",
-    body: "A high-performance medical laser with four wavelengths, matched to different skin and hair types. Built-in contact cooling down to −15 °C cools the skin during treatment and makes the session noticeably more comfortable.",
-    specs: [
-      { value: "755 nm", label: "Alexandrite" },
-      { value: "808 nm", label: "Diode" },
-      { value: "955 nm", label: "Supporting wavelength" },
-      { value: "1064 nm", label: "Nd:YAG" },
-      { value: "−15 °C", label: "Contact cooling" },
+    title: "Four wavelengths. One treatment, individually tailored to your skin and hair type.",
+    body: "Each wavelength reaches a different depth in the skin. Our high-performance SG XLaser Pro combines all four in one device, so we tailor every session to your skin and hair.",
+    imageAlt: "The SG XLaser Pro with its touchscreen and handpiece",
+    chartLabel: "How deep the four wavelengths reach into the skin",
+    chartAlt:
+      "Illustration of a skin cross-section: four beams of light each follow a hair down to its root, reaching deeper from left to right.",
+    wavelengths: [
+      { nm: "755 nm", title: "Light skin, fine hair", body: "works close to the surface" },
+      { nm: "808 nm", title: "Many skin and hair types", body: "the versatile standard" },
+      { nm: "955 nm", title: "Deeper-seated hair roots", body: "adds effect at depth" },
+      { nm: "1064 nm", title: "Darker skin types", body: "reaches deepest and spares the surface" },
     ],
-    imageAlt: "SG XLaser Pro with touchscreen and handpiece",
+    cooling: {
+      value: "−15 °C",
+      label: "Contact cooling",
+      body: "Built-in cooling protects the skin during treatment and makes the session noticeably more comfortable.",
+    },
   },
 
   reviews: {
     title: "Trust you can read in every review",
+    studioTitle: (city: string) => `Voices from our ${city} studio`,
     source: "Google review",
     rating: "5 out of 5 stars",
     quoteOpen: "“",
     quoteClose: "”",
-    summary: (reviews: string) => `Over ${reviews} positive Google reviews`,
+    summary: (reviews: string, studios: number) => `Over ${reviews.replace(".", ",")} Google reviews across ${word(EN_NUMBERS, studios)} locations`,
+    studioLink: (city: string) => `See reviews for ${city} on Google`,
+    studioRating: (rating: string, count: number, city: string) => `${rating.replace(",", ".")} out of 5 stars from ${count} Google reviews in ${city}`,
     items: [
       {
         name: "Anna B.",
@@ -740,6 +814,11 @@ const COPY_EN: Copy = {
         name: "Vanessa G.",
         quote:
           "This is my second visit and I am very happy. A very clean studio and pleasant conversations during the treatments. Caring staff, and I was given excellent advice from the start. A clear recommendation!",
+      },
+      {
+        name: "Yasmin",
+        quote:
+          "I had my sixth treatment yesterday and I am more than happy. Whether it is the staff, who put so much care into your comfort, or simply the treatment itself. I can more than recommend it!",
       },
     ],
     provenExpert: {
@@ -778,12 +857,12 @@ const COPY_EN: Copy = {
       },
       {
         q: "What should I do before a treatment?",
-        a: "Four things help us get the best result:",
+        a: "Four things help us treat you safely and get the best result:",
         list: [
           "Shave the area smooth the day before.",
           "For facial treatments, remove all make-up.",
           "Avoid sunbathing and tanning beds for two weeks beforehand.",
-          "Avoid vaccinations and antibiotics beforehand.",
+          "Tell us about any medication and recent vaccinations beforehand. If necessary, check with your doctor or postpone the appointment.",
         ],
       },
       {
@@ -923,7 +1002,7 @@ const COPY_EN: Copy = {
         "A concept with a clear focus: permanent hair removal",
         "Modern laser technology",
         "Training to our in-house standards",
-        "A brand with over 600 positive Google reviews",
+        `A brand with over ${FACTS.googleReviews.replace(".", ",")} Google reviews`,
       ],
       cta: "Send a franchise enquiry",
       subject: "Franchise-Anfrage: eigenes SG Laserzentrum eröffnen",

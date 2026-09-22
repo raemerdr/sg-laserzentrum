@@ -121,6 +121,11 @@
   text-align: right;
 }
 
+.book {
+  justify-self: start;
+  margin-top: 4px;
+}
+
 @media (max-width: 899px) {
   .section {
     grid-template-columns: 1fr;

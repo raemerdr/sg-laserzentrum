@@ -1,6 +1,7 @@
-/* Full-bleed skin close-up with one giant word along the bottom, a short
-   line of copy above it on the right and three expanded labels beneath,
-   after the Marsea campaign layout. */
+/* The client's approved hero, after their phone layout: a full-bleed skin
+   close-up with everything anchored bottom left: a short promise, SG over
+   LASERZENTRUM, one line of copy, the booking button and the trust figures.
+   Desktop keeps the same stack and lays the figures out along the bottom. */
 
 .hero {
   position: sticky;
@@ -21,12 +22,13 @@
   object-position: 50% 42%;
 }
 
+/* dark enough at the bottom for the copy stacked over the photo */
 .shade {
   position: absolute;
   inset: 0;
   background:
     linear-gradient(to bottom, rgba(19, 12, 6, 0.4) 0%, rgba(19, 12, 6, 0) 22%),
-    linear-gradient(to top, rgba(19, 12, 6, 0.55) 0%, rgba(19, 12, 6, 0.16) 36%, rgba(19, 12, 6, 0) 60%);
+    linear-gradient(to top, rgba(19, 12, 6, 0.74) 0%, rgba(19, 12, 6, 0.44) 38%, rgba(19, 12, 6, 0) 72%);
 }
 
 .content {
@@ -36,30 +38,58 @@
   right: var(--pad);
   bottom: clamp(18px, 2.4vw, 34px);
   display: grid;
-  /* the word is sized from this box's width */
+  /* one column as wide as the box: the lockup's empty side bearing may overhang it */
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  /* the lockup is sized from this box's width */
   container-type: inline-size;
 }
 
-.intro {
-  justify-self: end;
-  max-width: 270px;
-  margin-bottom: clamp(14px, 1.9cqi, 30px);
-  font-size: clamp(13px, 1.1cqi, 16px);
-  line-height: 1.4;
-  font-variation-settings: "wdth" 125;
+/* three short lines on phones, as in the approved layout */
+.eyebrow {
+  max-width: 11em;
+  font-size: clamp(11px, 0.95cqi, 13px);
+  font-weight: 450;
+  line-height: 1.55;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-variation-settings: "wdth" 112;
+}
+
+/* ─────────────── Lockup ───────────────
+   Phones: LASERZENTRUM fills --span and SG sits above it at --ratio times its
+   size, the proportion of the approved layout. Landscape: one line, see below.
+   --word-w and --mark-w are the measured ink widths of the words in em of
+   The Rankings; re-measure them if the words or the font change. */
+
+.lockup {
+  --word-w: 8.66;
+  --ratio: 1.37;
+  --span: 100cqi;
+  --word-size: calc(var(--span) / var(--word-w));
+  display: grid;
+  justify-items: start;
+  margin: clamp(12px, 1.4cqi, 20px) 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.86;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* the side bearing pulled out, so the ink lines up with the copy edge */
+.mark,
+.word {
+  margin-left: -0.04em;
+  letter-spacing: -0.005em;
+}
+
+.mark {
+  font-size: calc(var(--word-size) * var(--ratio));
 }
 
 .word {
-  /* width of the word in em, measured for The Rankings; the word fills the box */
-  --fit: 8.72;
-  margin: 0 0 0 -0.03em;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: calc(100cqi / var(--fit));
-  line-height: 0.76;
-  letter-spacing: -0.005em;
-  text-transform: uppercase;
-  white-space: nowrap;
+  font-size: var(--word-size);
 }
 
 .letter {
@@ -84,40 +114,132 @@
   }
 }
 
-.labels {
+/* the line of copy and the button: stacked on phones, side by side on landscape */
+.row {
+  justify-self: stretch;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: baseline;
-  gap: 16px;
-  margin-top: clamp(12px, 1.5cqi, 24px);
-  font-size: clamp(10px, 0.88cqi, 13px);
-  line-height: 1.3;
+  justify-items: start;
+  margin-top: clamp(14px, 1.6cqi, 22px);
+}
+
+.intro {
+  max-width: 14em;
+  font-size: clamp(15px, 1.3cqi, 19px);
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+/* ─────────────── Booking button ─────────────── */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 48px;
+  margin-top: 18px;
+  padding: 0 22px 0 26px;
+  border: 0;
+  border-radius: 999px;
+  background: #fbf6ef;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-variation-settings: "wdth" 125;
+  box-shadow: 0 10px 30px rgba(19, 12, 6, 0.18);
+  transition: background-color 0.3s var(--ease-out);
 }
 
-.labels li:nth-child(2) {
-  text-align: center;
+.cta:hover {
+  background: var(--white);
 }
 
-.labels li:nth-child(3) {
-  text-align: right;
+.cta:focus-visible {
+  outline-color: #fbf6ef;
+  outline-offset: 4px;
+  border-radius: 999px;
 }
 
-@media (max-width: 699px) {
+.ctaIcon {
+  flex: none;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.cta:hover .ctaIcon {
+  transform: translateX(3px);
+}
+
+/* ─────────────── Trust figures ───────────────
+   The row itself is ui/TrustFacts; here it only gets its place. */
+
+.facts {
+  justify-self: stretch;
+  margin-top: clamp(28px, 3.2cqi, 44px);
+}
+
+/* Phones and portrait screens: the stack rises clear of the floating
+   WhatsApp button, which then sits below the figures. */
+@media (max-width: 699px), (max-aspect-ratio: 4/5) {
+  .content {
+    bottom: calc(var(--wa-size) + var(--wa-offset) + 14px);
+  }
+}
+
+/* Landscape: SG LASERZENTRUM on one line across the width, the promise and
+   the copy on one line each, the button at the right, and the figures on a
+   hairline, stopping short of the WhatsApp corner. */
+@media (min-width: 700px) and (min-aspect-ratio: 401/500) {
+  .shade {
+    background:
+      linear-gradient(to bottom, rgba(19, 12, 6, 0.4) 0%, rgba(19, 12, 6, 0) 22%),
+      linear-gradient(to top, rgba(19, 12, 6, 0.72) 0%, rgba(19, 12, 6, 0.36) 42%, rgba(19, 12, 6, 0) 70%),
+      linear-gradient(to right, rgba(19, 12, 6, 0.42) 0%, rgba(19, 12, 6, 0.14) 40%, rgba(19, 12, 6, 0) 62%);
+  }
+
+  .eyebrow {
+    max-width: none;
+  }
+
+  /* SG a little larger than the word, both on one baseline, together filling
+     the width; on short screens the line gets shorter so the stack stays
+     under the nav. --gap is the space between them in em of SG. */
+  .lockup {
+    --mark-w: 1.41;
+    --ratio: 1.5;
+    --gap: 0.2;
+    --span: min(100cqi, max(520px, (100svh - 433px) * 8.7));
+    --word-size: calc(var(--span) / ((var(--mark-w) + var(--gap)) * var(--ratio) + var(--word-w)));
+    display: flex;
+    align-items: baseline;
+  }
+
+  .word {
+    margin-left: calc(var(--word-size) * var(--ratio) * var(--gap) - 0.04em);
+  }
+
+  /* two columns: the copy on one line at the left, the button at the right */
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 32px;
+    margin-top: clamp(20px, 2cqi, 30px);
+  }
+
   .intro {
-    justify-self: start;
-    max-width: 300px;
+    max-width: none;
   }
 
-  .labels {
-    grid-template-columns: 1fr;
-    gap: 4px;
+  .cta {
+    justify-self: end;
+    height: 52px;
+    margin-top: 0;
+    font-size: 12px;
   }
 
-  .labels li:nth-child(n) {
-    text-align: left;
+  .facts {
+    padding: clamp(18px, 1.8cqi, 26px) calc(var(--wa-size) + var(--wa-offset) - var(--pad) + 16px) 0 0;
+    border-top: 1px solid rgba(251, 246, 239, 0.28);
   }
 }
 

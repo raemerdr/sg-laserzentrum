@@ -84,13 +84,14 @@
   line-height: 18px;
 }
 
+/* the last row stops short of the corner the WhatsApp button floats in */
 .bottom {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px 32px;
-  padding-top: 24px;
+  padding: 24px calc(var(--wa-size) + var(--wa-offset) - var(--gutter) + 16px) 0 0;
   border-top: 1px solid var(--paper-line);
   color: var(--paper-muted);
 }

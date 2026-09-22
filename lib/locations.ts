@@ -34,6 +34,12 @@ type StudioInput = {
   image: string;
   /** Per-studio hours once the client confirms them. */
   hours?: Partial<OpeningHours>;
+  /**
+   * Rating and review count from the studio's Google profile, once the client
+   * sends them (e.g. `{ rating: "4,9", count: 312 }`). The studio page shows
+   * them beside the link to its Google reviews; without them only the link shows.
+   */
+  google?: { rating: string; count: number };
 };
 
 export const STUDIOS = [

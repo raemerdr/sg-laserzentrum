@@ -1,8 +1,9 @@
 import About from "@/components/home/About";
 import Belief from "@/components/home/Belief";
+import Founders from "@/components/home/Founders";
 import Hero from "@/components/home/Hero";
-import Proof from "@/components/home/Proof";
 import Statement from "@/components/home/Statement";
+import Story from "@/components/home/Story";
 import Technology from "@/components/home/Technology";
 import Treatments from "@/components/home/Treatments";
 import Usps from "@/components/home/Usps";
@@ -14,7 +15,7 @@ import Reviews from "@/components/sections/Reviews";
 import StudioList from "@/components/sections/StudioList";
 import Panel from "@/components/ui/Panel";
 import PinToBottom from "@/components/ui/PinToBottom";
-import { COMPANY, CONTACT, SITE_URL } from "@/lib/site";
+import { COMPANY, CONTACT, FOUNDERS, SITE_URL } from "@/lib/site";
 import type { Metadata } from "next";
 import styles from "./page.module.css";
 
@@ -34,6 +35,7 @@ const organizationJsonLd = {
   email: CONTACT.email,
   telephone: CONTACT.phoneHref.replace("tel:", ""),
   foundingDate: String(COMPANY.founded),
+  founder: FOUNDERS.map((f) => ({ "@type": "Person", name: f.name })),
 };
 
 export default function Home() {
@@ -61,7 +63,8 @@ export default function Home() {
             <Usps />
           </PinToBottom>
           <Panel>
-            <Proof />
+            <Story />
+            <Founders />
             <Technology />
             <Reviews />
             <Faq />

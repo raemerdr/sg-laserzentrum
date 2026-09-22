@@ -6,6 +6,7 @@ import { useCopy } from "../LangProvider";
 import Button from "../ui/Button";
 import Photo from "../ui/Photo";
 import SplitWords from "../ui/SplitWords";
+import TrustFacts from "../ui/TrustFacts";
 import styles from "./StudioHero.module.css";
 
 export default function StudioHero({ studio }: { studio: Studio }) {
@@ -38,6 +39,7 @@ export default function StudioHero({ studio }: { studio: Studio }) {
             </Button>
           )}
         </div>
+        <TrustFacts className={`rise ${styles.facts}`} style={{ "--delay": "750ms" } as CSSProperties} />
       </div>
     </section>
   );
